@@ -73,6 +73,10 @@ public class PaymentActivity extends AppCompatActivity implements View.OnClickLi
         loadingView.dismiss();
     }
 
+    public boolean isDialogShow(){
+        return loadingView.isVisible();
+    }
+
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.backHome) {

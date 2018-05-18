@@ -39,6 +39,9 @@ public class PaymentFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        if (activity.isDialogShow()){
+            activity.dismissDialog();
+        }
         activity = null;
         timer.cancel();
         timer = null;
