@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+     android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="80dp"
+    >
+
+    <ImageView
+        android:id="@+id/gov_item_iv"
+        android:layout_width="276dp"
+        android:layout_height="276dp"
+        android:layout_gravity="center_horizontal"/>
+
+    <TextView
+        android:id="@+id/gov_item_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:layout_gravity="bottom|center"
+        android:layout_marginBottom="15dp"
+        android:textSize="40sp"/>
+
+</FrameLayout>

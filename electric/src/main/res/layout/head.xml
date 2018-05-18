@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="140dp"
+    android:gravity="center_vertical"
+    android:background="@color/head_color"
+    android:orientation="horizontal">
+
+    <ImageView
+        android:layout_width="340dp"
+        android:layout_height="126dp"
+        android:src="@mipmap/logo"
+        android:alpha="1"
+        android:layout_marginLeft="@dimen/head_margin" />
+
+    <View
+        android:layout_width="2dp"
+        android:layout_height="100dp"
+        android:layout_marginLeft="@dimen/head_margin"
+        android:background="#ffffffff"/>
+
+    <ImageView
+        android:layout_width="48dp"
+        android:layout_height="42dp"
+        android:layout_marginLeft="@dimen/head_margin"
+        android:src="@mipmap/message"/>
+
+    <TextView
+        android:layout_width="667dp"
+        android:layout_height="37dp"
+        android:layout_marginLeft="34dp"
+        android:text="【限行提示】今天星期三，限行尾号 3 和 8"
+        android:textColor="#ffffffff"
+        android:textSize="36sp"
+        />
+
+    <View
+        android:layout_width="2dp"
+        android:layout_height="100dp"
+        android:layout_marginLeft="@dimen/head_margin"
+        android:background="#ffffffff"
+        />
+
+    <TextView
+        android:layout_width="230dp"
+        android:layout_height="34dp"
+        android:text="2018年3月1日"
+        android:textColor="#ffffffff"
+        android:textSize="36sp"
+        android:layout_marginLeft="@dimen/head_margin"
+        />
+
+</LinearLayout>

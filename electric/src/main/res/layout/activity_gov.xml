@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@mipmap/bg"
+    tools:context="com.payexpress.electric.mvp.ui.activity.gov.GovActivity">
+
+    <include layout="@layout/head"/>
+
+    <FrameLayout
+        android:id="@+id/e_frame"
+        android:layout_marginTop="140dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+<include layout="@layout/bottom"/>
+
+</FrameLayout>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="white">#FFFFFF</color>
+    <color name="head_color">#26000000</color>
+    <color name="input_color">#999999</color>
+    <color name="input_solid">#EEEEEE</color>
+    <color name="keyboard_num_color">#166BBD</color>
+    <color name="button_next_color">#37C4FF</color>
+    <color name="user_info_left_color">#888888</color>
+    <color name="user_info_right_color">#444444</color>
+    <color name="user_info_line_color">#ffdddddd</color>
+    <color name="balance_color">#10B520</color>
+    <color name="result_dialog_text_color">#999999</color>
+</resources>

@@ -1,0 +1,30 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="head_margin">126dp</dimen>
+    <dimen name="electric_item_text">36sp</dimen>
+    <dimen name="electric_item_text_margin">30dp</dimen>
+    <dimen name="electric_item_text_place">26sp</dimen>
+    <dimen name="e_place_margin">16dp</dimen>
+    <dimen name="user_info_top">54dp</dimen>
+    <dimen name="user_info_left">91dp</dimen>
+    <dimen name="user_info_width">1014dp</dimen>
+    <dimen name="user_info_height">755dp</dimen>
+    <dimen name="user_info_right">94dp</dimen>
+    <dimen name="user_info_bottom">44dp</dimen>
+    <dimen name="user_info_radius">20dp</dimen>
+    <dimen name="body_top">8dp</dimen>
+    <dimen name="body_bottom">41dp</dimen>
+    <dimen name="body_height">804dp</dimen>
+    <dimen name="has_bottom_body_height">901dp</dimen>
+    <dimen name="user_info_input_radius">50dp</dimen>
+    <dimen name="keyboard_num">48sp</dimen>
+    <dimen name="keyboard_width">624dp</dimen>
+    <dimen name="user_info_text_place">32sp</dimen>
+    <dimen name="user_info_balance">40sp</dimen>
+    <dimen name="result_dialog_width">730dp</dimen>
+    <dimen name="result_dialog_height">606dp</dimen>
+    <dimen name="result_dialog_text">28sp</dimen>
+    <dimen name="has_keyboard_body_height">860dp</dimen>
+</resources>

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@mipmap/bg"
+    tools:context=".mvp.ui.activity.payment.electric.CommonPowerActivity">
+
+    <include layout="@layout/head"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/body_height"
+        android:layout_marginTop="@dimen/body_top"
+        android:layout_marginBottom="@dimen/body_bottom"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/c_pay"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical">
+            <ImageView
+                android:layout_width="270dp"
+                android:layout_height="270dp"
+                android:src="@mipmap/ic_jiaofeichongzhi"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/str_030"
+                android:textColor="@color/white"
+                android:layout_marginTop="@dimen/electric_item_text_margin"
+                android:textSize="@dimen/electric_item_text"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/c_balance"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:layout_marginLeft="200dp"
+            android:layout_marginRight="200dp"
+            android:orientation="vertical">
+            <ImageView
+                android:layout_width="270dp"
+                android:layout_height="270dp"
+                android:src="@mipmap/ic_dianfeiyuerchaxun"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/str_031"
+                android:textColor="@color/white"
+                android:layout_marginTop="@dimen/electric_item_text_margin"
+                android:textSize="@dimen/electric_item_text"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/c_check"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical">
+            <ImageView
+                android:layout_width="270dp"
+                android:layout_height="270dp"
+                android:src="@mipmap/ic_goudianjiluchaxun"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/str_029"
+                android:textColor="@color/white"
+                android:layout_marginTop="@dimen/electric_item_text_margin"
+                android:textSize="@dimen/electric_item_text"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <include layout="@layout/bottom"/>
+
+</LinearLayout>

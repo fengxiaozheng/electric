@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@mipmap/bg"
+    tools:context="com.payexpress.electric.mvp.ui.activity.life.LifeActivity">
+
+    <include layout="@layout/head"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/life_rv"
+        android:layout_marginTop="@dimen/body_top"
+        android:layout_width="1632dp"
+        android:layout_height="@dimen/body_height"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="@dimen/body_bottom"
+        android:paddingLeft="150dp"
+        android:paddingRight="150dp"
+        android:background="@drawable/gov_recycleview"
+        tools:listitem="@layout/gov_item">
+    </android.support.v7.widget.RecyclerView>
+
+    <include layout="@layout/bottom"/>
+
+</LinearLayout>

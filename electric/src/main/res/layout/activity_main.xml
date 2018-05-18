@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@mipmap/bg"
+    tools:context="com.payexpress.electric.mvp.ui.activity.MainActivity">
+
+    <include android:id="@+id/home_head"
+        layout="@layout/head"/>
+
+    <LinearLayout
+        android:id="@+id/home_nc"
+        android:layout_width="1700dp"
+        android:layout_height="890dp"
+        android:orientation="vertical"
+        android:background="@drawable/home_gg"
+        android:layout_below="@id/home_head"
+        android:layout_marginTop="25dp">
+
+        <ImageView
+            android:layout_width="1700dp"
+            android:layout_height="890dp"
+            android:src="@mipmap/bg"/>
+    </LinearLayout>
+    
+<LinearLayout
+    android:layout_width="220dp"
+    android:layout_height="890dp"
+    android:layout_toRightOf="@id/home_nc"
+    android:layout_below="@id/home_head"
+    android:layout_marginTop="25dp"
+    android:gravity="center"
+    android:background="@drawable/home_service"
+    android:orientation="vertical">
+    <ImageView
+        android:layout_width="160dp"
+        android:layout_height="160dp"
+        android:src="@mipmap/gov_ion"
+        android:layout_marginTop="60dp"
+        android:onClick="toGov"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:textColor="@color/white"
+        android:textSize="32sp"
+        android:onClick="toGov"
+        android:text="政务服务"/>
+
+    <ImageView
+        android:layout_width="160dp"
+        android:layout_height="160dp"
+        android:src="@mipmap/pay_ion"
+        android:layout_marginTop="60dp"
+        android:onClick="toBPayment"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:textColor="@color/white"
+        android:textSize="32sp"
+        android:text="便民缴费"/>
+
+    <ImageView
+        android:layout_width="160dp"
+        android:layout_height="160dp"
+        android:src="@mipmap/life_ion"
+        android:layout_marginTop="60dp"
+        android:onClick="toLife"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:textColor="@color/white"
+        android:textSize="32sp"
+        android:onClick="toLife"
+        android:text="生活服务"/>
+</LinearLayout>
+
+</RelativeLayout>
