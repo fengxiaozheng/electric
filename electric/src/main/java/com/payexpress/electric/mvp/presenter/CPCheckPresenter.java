@@ -5,7 +5,7 @@ import com.jess.arms.di.scope.ActivityScope;
 import com.jess.arms.mvp.BasePresenter;
 import com.jess.arms.utils.RxLifecycleUtils;
 import com.payexpress.electric.mvp.contract.CPCheckContract;
-import com.payexpress.electric.mvp.model.entity.CPUserInfoRes;
+import com.payexpress.electric.mvp.model.entity.payment.CPUserInfoRes;
 
 import javax.inject.Inject;
 
@@ -46,6 +46,10 @@ public class CPCheckPresenter extends BasePresenter<CPCheckContract.Model, CPChe
                         }
                     }
                 });
+
+    }
+
+    public void getBalance(String userNo) {
 
     }
 

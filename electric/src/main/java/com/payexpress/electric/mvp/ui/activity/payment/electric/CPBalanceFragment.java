@@ -1,51 +1,38 @@
 package com.payexpress.electric.mvp.ui.activity.payment.electric;
 
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
 
 import com.payexpress.electric.R;
+import com.payexpress.electric.mvp.ui.activity.payment.PaymentFragment;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link CPBalanceFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link CPBalanceFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class CPBalanceFragment extends Fragment {
+
+public class CPBalanceFragment extends PaymentFragment implements View.OnClickListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private static final String ARG_PARAM = "param";
 
     // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private String mParam;
+    private TextView mTextView;
+    private Button mButton;
 
 
     public CPBalanceFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment CPBalanceFragment.
-     */
     // TODO: Rename and change types and number of parameters
-    public static CPBalanceFragment newInstance(String param1, String param2) {
+    public static CPBalanceFragment newInstance(String param) {
         CPBalanceFragment fragment = new CPBalanceFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putString(ARG_PARAM, param);
         fragment.setArguments(args);
         return fragment;
     }
@@ -54,8 +41,7 @@ public class CPBalanceFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            mParam = getArguments().getString(ARG_PARAM);
         }
     }
 
@@ -66,4 +52,19 @@ public class CPBalanceFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_cpbalance, container, false);
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        mTextView = view.findViewById(R.id.cp_query_balance);
+        mButton = view.findViewById(R.id.cp_query_ok);
+        mButton.setOnClickListener(this);
+        mTextView.setText(mParam);
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.cp_query_ok) {
+            activity.complete();
+        }
+    }
 }

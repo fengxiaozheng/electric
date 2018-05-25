@@ -17,7 +17,7 @@ import android.widget.LinearLayout;
 
 import com.payexpress.electric.R;
 import com.payexpress.electric.app.utils.KeyboardUtils;
-import com.payexpress.electric.mvp.model.entity.SmartUserInfo;
+import com.payexpress.electric.mvp.model.entity.payment.SmartUserInfo;
 import com.payexpress.electric.mvp.ui.activity.payment.PaymentFragment;
 import com.payexpress.electric.mvp.ui.adapter.KeyboardAdapter;
 import com.payexpress.electric.mvp.ui.adapter.OnItemClickListener;

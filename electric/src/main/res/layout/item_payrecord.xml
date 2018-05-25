@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="1814dp"
+    android:layout_height="100dp"
+    >
+
+    <View
+        android:id="@+id/rd_view"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="#ffdddddd"
+        />
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:stretchColumns="1">
+        <TableRow>
+            <TextView
+                android:id="@+id/pr_trans_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="36sp"
+                android:textColor="#444444"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="43dp"
+                android:text="22222"/>
+
+            <TextView
+                android:id="@+id/pr_trans_no"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="22222"
+                android:textColor="#444444"
+                android:textSize="36sp" />
+
+            <TextView
+                android:id="@+id/pr_trans_amount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginEnd="165dp"
+                android:paddingEnd="45dp"
+                android:text="22222"
+                android:textColor="#444444"
+                android:textSize="36sp" />
+        </TableRow>
+    </TableLayout>
+
+
+
+</LinearLayout>

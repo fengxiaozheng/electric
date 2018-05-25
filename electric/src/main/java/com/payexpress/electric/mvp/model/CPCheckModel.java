@@ -6,7 +6,7 @@ import com.jess.arms.mvp.BaseModel;
 import com.payexpress.electric.mvp.contract.CPCheckContract;
 import com.payexpress.electric.mvp.model.api.Api;
 import com.payexpress.electric.mvp.model.api.service.CommonService;
-import com.payexpress.electric.mvp.model.entity.CPUserInfoRes;
+import com.payexpress.electric.mvp.model.entity.payment.CPUserInfoRes;
 
 import org.json.JSONException;
 

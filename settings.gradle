@@ -1,2 +1,2 @@
-include ':electric', ':catloadinglibrary'
+include ':electric', ':dialoglibrary', ':shapeloading', ':status-ui'
 include':arms'

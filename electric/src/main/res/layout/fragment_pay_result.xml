@@ -9,7 +9,7 @@
         android:layout_width="@dimen/result_dialog_width"
         android:layout_height="@dimen/result_dialog_height"
         android:orientation="vertical"
-        android:layout_marginTop="146dp"
+        android:layout_marginTop="136dp"
         android:background="@drawable/pay_result_body"
         android:layout_gravity="center_horizontal">
         <TextView
@@ -26,7 +26,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
-            android:layout_marginTop="47dp"
+            android:layout_marginTop="40dp"
             android:orientation="horizontal">
             <TextView
                 android:layout_width="wrap_content"
@@ -60,12 +60,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/result_dialog_text"
+                android:layout_marginEnd="20dp"
                 android:textColor="@color/result_dialog_text_color"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
+
             android:layout_marginTop="28dp"
             android:orientation="horizontal">
             <TextView
@@ -74,12 +75,14 @@
                 android:layout_marginLeft="82dp"
                 android:text="@string/str_044"
                 android:textSize="@dimen/result_dialog_text"
+                android:gravity="center_vertical"
                 android:textColor="@color/result_dialog_text_color"/>
             <TextView
                 android:id="@+id/pr_user_address"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/result_dialog_text"
+                android:layout_marginEnd="20dp"
                 android:textColor="@color/result_dialog_text_color"/>
         </LinearLayout>
         <LinearLayout
@@ -109,7 +112,7 @@
             android:textColor="@color/white"
             android:textSize="42sp"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="48dp"
+            android:layout_marginTop="40dp"
             android:background="@drawable/button_next"
             android:text="@string/complete"/>
     </LinearLayout>

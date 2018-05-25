@@ -2,7 +2,6 @@ package com.payexpress.electric.mvp.ui.activity.payment.electric;
 
 
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -26,8 +25,8 @@ import com.payexpress.electric.app.utils.KeyboardUtils;
 import com.payexpress.electric.di.component.DaggerCPCheckComponent;
 import com.payexpress.electric.di.module.CPCheckModule;
 import com.payexpress.electric.mvp.contract.CPCheckContract;
-import com.payexpress.electric.mvp.model.entity.CPUserInfoRes;
-import com.payexpress.electric.mvp.model.entity.SmartUserInfo;
+import com.payexpress.electric.mvp.model.entity.payment.CPUserInfoRes;
+import com.payexpress.electric.mvp.model.entity.payment.SmartUserInfo;
 import com.payexpress.electric.mvp.presenter.CPCheckPresenter;
 import com.payexpress.electric.mvp.ui.activity.payment.PaymentActivity;
 import com.payexpress.electric.mvp.ui.adapter.KeyboardAdapter;
@@ -61,8 +60,6 @@ public class CPCheckUserFragment extends BaseFragment<CPCheckPresenter, PaymentA
     @BindView(R.id.tv_notice1)
     TextView tv_notice;
 
-    private CountDownTimer timer;
-
     private static final String ARG_PARAM = "param";
 
     private int mParam;
@@ -92,8 +89,8 @@ public class CPCheckUserFragment extends BaseFragment<CPCheckPresenter, PaymentA
 
         switch (position) {
             case 0:
-            sb.append("1");
-            break;
+                sb.append("1");
+                break;
             case 1:
                 sb.append("2");
                 break;
@@ -146,8 +143,18 @@ public class CPCheckUserFragment extends BaseFragment<CPCheckPresenter, PaymentA
     @Override
     public void success(CPUserInfoRes data) {
         activity.dismissDialog();
-        activity.start(CPCheckUserFragment.this,
-                CPUserInfoFragment.newInstance(data), "CPUserInfoFragment");
+        switch (mParam) {
+            case 0:
+                activity.start(CPCheckUserFragment.this,
+                        CPBalanceFragment.newInstance(data.getBalance()), "CPBalanceFragment");
+                break;
+            case 1:
+                activity.start(CPCheckUserFragment.this,
+                        CPUserInfoFragment.newInstance(data), "CPUserInfoFragment");
+                break;
+            default:
+                break;
+        }
     }
 
 
@@ -174,7 +181,6 @@ public class CPCheckUserFragment extends BaseFragment<CPCheckPresenter, PaymentA
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-      //  mEditText.setInputType(InputType.TYPE_NULL);
         KeyboardUtils.disableShowInput(mEditText);
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
@@ -198,23 +204,9 @@ public class CPCheckUserFragment extends BaseFragment<CPCheckPresenter, PaymentA
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        timer = new CountDownTimer(300*1000, 1000) {
-            @Override
-            public void onTick(long millisUntilFinished) {
-                if (millisUntilFinished/1000 >= 1) {
-                    bottom_time.setText(String.valueOf(millisUntilFinished / 1000));
-                }
-            }
-
-            @Override
-            public void onFinish() {
-                activity.back();
-            }
-        }.start();
+    public void onPause() {
+        super.onPause();
     }
-
 
     @Override
     public void setData(@Nullable Object data) {
@@ -231,23 +223,19 @@ public class CPCheckUserFragment extends BaseFragment<CPCheckPresenter, PaymentA
     void click() {
         switch (mParam) {
             case 0:
-                activity.start(CPCheckUserFragment.this,
-                        new CPBalanceFragment(), "CPBalanceFragment");
+                startQuery();
                 break;
             case 1:
+                startQuery();
+                break;
+            case 2:
                 String str = mEditText.getText().toString();
                 if (TextUtils.isEmpty(str) || str.length() < 10) {
                     Toast.makeText(activity, "请输入十位用户号", Toast.LENGTH_SHORT).show();
                 } else {
-                    if (mPresenter != null) {
-                        activity.showDialog();
-                        mPresenter.getUserInfo(str);
-                    }
+                    activity.start(CPCheckUserFragment.this,
+                            CPRecordFragment.newInstance(false, str), "CPRecordFragment");
                 }
-                break;
-            case 2:
-                activity.start(CPCheckUserFragment.this,
-                        CPRecordFragment.newInstance(false), "CPRecordFragment");
                 break;
             case 3:
                 SmartUserInfo info = new SmartUserInfo();
@@ -260,6 +248,18 @@ public class CPCheckUserFragment extends BaseFragment<CPCheckPresenter, PaymentA
         }
     }
 
+    private void startQuery() {
+        String str = mEditText.getText().toString();
+        if (TextUtils.isEmpty(str) || str.length() < 10) {
+            Toast.makeText(activity, "请输入十位用户号", Toast.LENGTH_SHORT).show();
+        } else {
+            if (mPresenter != null) {
+                activity.showDialog();
+                mPresenter.getUserInfo(str);
+            }
+        }
+    }
+
     private TextWatcher watch = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -268,7 +268,6 @@ public class CPCheckUserFragment extends BaseFragment<CPCheckPresenter, PaymentA
 
         @Override
         public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
         }
 
         @Override
@@ -276,11 +275,4 @@ public class CPCheckUserFragment extends BaseFragment<CPCheckPresenter, PaymentA
             mEditText.setSelection(mEditText.getText().length());
         }
     };
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        timer.cancel();
-        timer = null;
-    }
 }

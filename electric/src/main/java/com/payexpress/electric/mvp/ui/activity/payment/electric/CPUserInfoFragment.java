@@ -1,12 +1,12 @@
 package com.payexpress.electric.mvp.ui.activity.payment.electric;
 
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,10 +14,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.payexpress.electric.R;
 import com.payexpress.electric.app.utils.KeyboardUtils;
-import com.payexpress.electric.mvp.model.entity.CPUserInfoRes;
+import com.payexpress.electric.mvp.model.entity.payment.CPUserInfoRes;
+import com.payexpress.electric.mvp.model.entity.payment.ElectricPayInfo;
 import com.payexpress.electric.mvp.ui.activity.payment.PaymentFragment;
 import com.payexpress.electric.mvp.ui.adapter.KeyboardAdapter;
 import com.payexpress.electric.mvp.ui.adapter.OnItemClickListener;
@@ -47,7 +49,6 @@ public class CPUserInfoFragment extends PaymentFragment implements
     private TextView tv_notice;
     private TextView tv_time;
     private StringBuilder sb;
-    private CountDownTimer timer;
 
     public CPUserInfoFragment() {
         // Required empty public constructor
@@ -174,28 +175,20 @@ public class CPUserInfoFragment extends PaymentFragment implements
 
     @Override
     public void onClick(View v) {
-        if (v.getId() == R.id.btn_next) {
-            activity.start(CPUserInfoFragment.this,
-                    new PayResultFragment(), "PayResultFragment");
+        if (v.getId() == R.id.cp_next) {
+            if (TextUtils.isEmpty(mEditText.getText())){
+                Toast.makeText(activity, "请输入金额", Toast.LENGTH_SHORT).show();
+            }else {
+                ElectricPayInfo info = new ElectricPayInfo();
+                info.setFlag(0);
+                info.setUser_no(mParam.getGrid_user_code());
+                info.setUser_name(mParam.getGrid_user_name());
+                info.setUser_address(mParam.getAddress());
+                info.setPay_amount(String.format(mEditText.getText().toString(), "%.2f"));
+                activity.start(CPUserInfoFragment.this,
+                        StartPayFragment.newInstance(info), "StartPayFragment");
+            }
         }
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        timer = new CountDownTimer(300* 1000, 1000) {
-            @Override
-            public void onTick(long millisUntilFinished) {
-                if (millisUntilFinished/1000 >= 1) {
-                    tv_time.setText(String.valueOf(millisUntilFinished / 1000));
-                }
-
-            }
-
-            @Override
-            public void onFinish() {
-
-            }
-        }.start();
-    }
 }

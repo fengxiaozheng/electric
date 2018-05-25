@@ -13,7 +13,7 @@ import android.widget.LinearLayout;
 import com.jess.arms.base.BaseFragment;
 import com.jess.arms.di.component.AppComponent;
 import com.payexpress.electric.R;
-import com.payexpress.electric.mvp.model.entity.SmartUserInfo;
+import com.payexpress.electric.mvp.model.entity.payment.SmartUserInfo;
 import com.payexpress.electric.mvp.presenter.SmartPowerPresenter;
 import com.payexpress.electric.mvp.ui.activity.payment.PaymentActivity;
 
@@ -78,7 +78,7 @@ public class SmartPowerFragment extends BaseFragment<SmartPowerPresenter, Paymen
 
     @OnClick(R.id.s_check)
     void check() {
-        activity.start(SmartPowerFragment.this, CPRecordFragment.newInstance(true),
+        activity.start(SmartPowerFragment.this, CPRecordFragment.newInstance(true, ""),
                 "CPRecordFragment");
     }
 

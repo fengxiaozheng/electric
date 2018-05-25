@@ -1,17 +1,15 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="@dimen/user_info_height"
-    android:layout_marginTop="@dimen/user_info_top"
-    android:layout_marginBottom="@dimen/user_info_bottom"
-    android:gravity="center"
-    android:orientation="horizontal"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="@dimen/has_keyboard_body_height"
+android:layout_marginTop="@dimen/user_info_top"
+android:gravity="center"
     tools:context="com.payexpress.electric.mvp.ui.activity.payment.electric.SPUserInfoFragment">
 
     <LinearLayout
         android:id="@+id/e_smart"
         android:layout_width="@dimen/user_info_width"
-        android:layout_height="match_parent"
+        android:layout_height="@dimen/user_info_height"
         android:layout_marginLeft="@dimen/user_info_left"
         android:layout_marginRight="@dimen/user_info_right"
         android:background="@drawable/user_info"
@@ -76,8 +74,8 @@
                 android:id="@+id/cp_user_address"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
-                android:singleLine="true"
+                android:layout_marginStart="30dp"
+                android:layout_marginEnd="59dp"
                 android:textSize="@dimen/electric_item_text"
                 android:textColor="@color/user_info_right_color"/>
         </LinearLayout>
@@ -185,6 +183,10 @@
 
     <include layout="@layout/keyboard"/>
 
-</LinearLayout>
+    <include layout="@layout/bottom_notice"/>
+
+    <include layout="@layout/bottom_time"/>
+
+</FrameLayout>
 
 

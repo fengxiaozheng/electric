@@ -2,6 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="@dimen/has_bottom_body_height"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_marginTop="@dimen/body_top"
     tools:context="com.payexpress.electric.mvp.ui.activity.payment.electric.CPRecordFragment">
 
@@ -9,7 +10,7 @@
         android:layout_width="1814dp"
         android:layout_height="770dp"
         android:layout_marginTop="40dp"
-        android:paddingTop="20dp"
+        android:paddingTop="40dp"
         android:background="@drawable/pay_record"
         android:layout_gravity="center_horizontal">
 
@@ -91,7 +92,7 @@
             android:id="@+id/rd_view"
             android:layout_width="match_parent"
             android:layout_height="2dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="40dp"
             android:layout_below="@id/rd_user_name"
             android:background="#ffdddddd"
             />
@@ -132,109 +133,29 @@
             android:layout_below="@id/rd_view"
             android:text="充值金额"/>
 
-        <View
-            android:id="@+id/rd_view2"
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:layout_marginTop="20dp"
+        <FrameLayout
             android:layout_below="@id/rd_at"
-            android:background="#ffdddddd"
-            />
-
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rd_recycler"
             android:layout_width="match_parent"
-            android:layout_height="440dp"
-            android:layout_below="@id/rd_view2">
+            android:layout_height="510dp"
+            android:layout_marginTop="20dp">
         </android.support.v7.widget.RecyclerView>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:layout_below="@id/rd_recycler"
-            android:layout_marginTop="40dp"
-            android:orientation="horizontal">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="24sp"
-                android:textColor="#444444"
-                android:text="第"/>
-            <TextView
-                android:id="@+id/rd_current"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="24sp"
-                android:textColor="#444444"
-                android:text="2"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="24sp"
-                android:textColor="#444444"
-                android:text="页/共"/>
-            <TextView
-                android:id="@+id/rd_sum"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="24sp"
-                android:textColor="#444444"
-                android:text="4"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="24sp"
-                android:textColor="#444444"
-                android:text="页"/>
-            <Button
-                android:id="@+id/rd_start"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="40dp"
-                android:textColor="@color/white"
-                android:textSize="21sp"
-                android:background="@drawable/btn_record"
-                android:text="@string/str_048"/>
-            <Button
-                android:id="@+id/rd_back"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:textColor="@color/white"
-                android:textSize="21sp"
-                android:background="@drawable/btn_record"
-                android:text="@string/str_049"/>
-            <Button
-                android:id="@+id/rd_next"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:textColor="@color/white"
-                android:textSize="21sp"
-                android:background="@drawable/btn_record"
-                android:text="@string/str_050"/>
-            <Button
-                android:id="@+id/rd_end"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:textColor="@color/white"
-                android:textSize="21sp"
-                android:background="@drawable/btn_record"
-                android:text="@string/str_051"/>
-            <Button
-                android:id="@+id/rd_goback"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:textColor="@color/white"
-                android:textSize="21sp"
-                android:background="@drawable/btn_record"
-                android:text="返回"/>
-        </LinearLayout>
+        </FrameLayout>
 
     </RelativeLayout>
+
+    <com.mingle.widget.LoadingView
+        android:id="@+id/loadingView"
+        android:layout_width="1814dp"
+        android:layout_height="770dp"
+        android:layout_marginTop="40dp"
+        android:paddingTop="20dp"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/pay_record"
+        app:loadingText="加载中..."/>
 
     <include layout="@layout/bottom_notice"/>
     <include layout="@layout/bottom_time"/>

@@ -12,6 +12,7 @@
     <string name="notice2">2、若有疑问，请拨打客服热线400-016-0353</string>
     <string name="notice3">1、因行业限制，单笔缴费金额最高2万元；若缴费金额高于2万元，请分多笔缴费</string>
     <string name="notice4">1、户号由十位数字组成，是用电主体唯一标识</string>
+    <string name="notice5">1、此功能仅限查询，显示最近5笔缴费记录</string>
     <string name="str_001">社保</string>
     <string name="str_002">税务</string>
     <string name="str_003">房产</string>

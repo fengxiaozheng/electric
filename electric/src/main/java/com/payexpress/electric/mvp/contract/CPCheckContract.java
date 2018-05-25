@@ -4,7 +4,7 @@ import android.app.Activity;
 
 import com.jess.arms.mvp.IModel;
 import com.jess.arms.mvp.IView;
-import com.payexpress.electric.mvp.model.entity.CPUserInfoRes;
+import com.payexpress.electric.mvp.model.entity.payment.CPUserInfoRes;
 import com.payexpress.electric.mvp.ui.adapter.OnItemClickListener;
 
 import io.reactivex.Observable;

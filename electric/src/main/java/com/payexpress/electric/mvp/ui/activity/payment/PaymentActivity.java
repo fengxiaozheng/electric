@@ -3,19 +3,21 @@ package com.payexpress.electric.mvp.ui.activity.payment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.LinearLayout;
 
 import com.payexpress.electric.R;
 import com.payexpress.electric.mvp.ui.activity.MainActivity;
-import com.roger.catloadinglibrary.CatLoadingView;
+import com.payexpress.electric.mvp.ui.widget.LoadingDailog;
 
 public class PaymentActivity extends AppCompatActivity implements View.OnClickListener {
 
     private android.support.v4.app.FragmentManager mFragmentManager;
     private android.support.v4.app.FragmentTransaction mFragmentTransaction;
-    private CatLoadingView loadingView;
+    private LoadingDailog.Builder  builder;
+    private LoadingDailog loadingView;
     private LinearLayout backHome;
     private LinearLayout back;
     private Fragment getCurrent;
@@ -29,8 +31,8 @@ public class PaymentActivity extends AppCompatActivity implements View.OnClickLi
         mFragmentTransaction.add(R.id.e_frame, PaymentMainFragment.newInstance(), "PaymentMainFragment");
         mFragmentTransaction.addToBackStack("PaymentMainFragment");
         mFragmentTransaction.commit();
-        loadingView = CatLoadingView.newInstance();
-        loadingView.setClickCancelAble(false);
+        builder = new LoadingDailog.Builder(this);
+        loadingView = builder.setMessage("Loading...").create();
         backHome = findViewById(R.id.backHome);
         back = findViewById(R.id.back);
         backHome.setOnClickListener(this);
@@ -49,24 +51,28 @@ public class PaymentActivity extends AppCompatActivity implements View.OnClickLi
             finish();
         } else {
             mFragmentManager.popBackStack();
-            getCurrent.onStart();
+        //    getCurrent.onStart();
         }
 
+    }
+
+    public void complete() {
+        mFragmentManager.popBackStackImmediate("ElectricFragment", FragmentManager.POP_BACK_STACK_INCLUSIVE);
     }
 
     public void start(Fragment current, Fragment next, String tag) {
         mFragmentManager = getSupportFragmentManager();
         mFragmentTransaction = mFragmentManager.beginTransaction();
         mFragmentTransaction.hide(current);
-        getCurrent = current;
-        current.onPause();
+//        getCurrent = current;
+//        current.onPause();
         mFragmentTransaction.add(R.id.e_frame, next, tag);
         mFragmentTransaction.addToBackStack(tag);
         mFragmentTransaction.commit();
     }
 
     public void showDialog() {
-        loadingView.show(mFragmentManager, null);
+        loadingView.show();
     }
 
     public void dismissDialog() {
@@ -74,7 +80,7 @@ public class PaymentActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     public boolean isDialogShow(){
-        return loadingView.isVisible();
+        return loadingView.isShowing();
     }
 
     @Override

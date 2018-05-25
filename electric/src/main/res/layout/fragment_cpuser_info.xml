@@ -101,7 +101,7 @@
                 android:id="@+id/cp_user_address"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
+                android:layout_marginStart="30dp"
                 android:layout_marginEnd="59dp"
                 android:textSize="@dimen/electric_item_text"
                 android:textColor="@color/user_info_right_color"/>
@@ -115,7 +115,7 @@
             />
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="36dp"
             android:gravity="center_vertical"
             android:layout_marginTop="53dp"
             android:orientation="horizontal">

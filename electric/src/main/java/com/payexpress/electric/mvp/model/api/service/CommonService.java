@@ -15,7 +15,11 @@
  */
 package com.payexpress.electric.mvp.model.api.service;
 
-import com.payexpress.electric.mvp.model.entity.CPUserInfoRes;
+import com.payexpress.electric.mvp.model.entity.BaseResponse;
+import com.payexpress.electric.mvp.model.entity.payment.CPUserInfoRes;
+import com.payexpress.electric.mvp.model.entity.payment.CheckPayRes;
+import com.payexpress.electric.mvp.model.entity.payment.CodePayRes;
+import com.payexpress.electric.mvp.model.entity.payment.PayRecordRes;
 
 import io.reactivex.Observable;
 import retrofit2.http.Body;
@@ -34,5 +38,17 @@ public interface CommonService {
 
     @POST("proxy5001.json")
     Observable<CPUserInfoRes> getCommonUserInfo(@Body String req);
+
+    @POST("proxy4002.json")
+    Observable<CodePayRes> doPay(@Body String req);
+
+    @POST("proxy4003.json")
+    Observable<CheckPayRes> checkPayStatus(@Body String req);
+
+    @POST("proxy4011.json")
+    Observable<BaseResponse> commonElectricBuy(@Body String req);
+
+    @POST("proxy5007.json")
+    Observable<PayRecordRes> payRecord(@Body String req);
 
 }

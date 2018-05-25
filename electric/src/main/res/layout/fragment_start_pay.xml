@@ -1,13 +1,67 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="@dimen/has_keyboard_body_height"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginTop="@dimen/user_info_top"
+    android:gravity="center"
+    android:orientation="horizontal"
     tools:context="com.payexpress.electric.mvp.ui.activity.payment.electric.StartPayFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+    <LinearLayout
+        android:layout_width="624dp"
+        android:layout_height="755dp"
+        android:orientation="vertical"
+        android:layout_marginStart="50dp">
+        <cn.bingoogolapple.qrcode.zbar.ZBarView
+            android:id="@+id/zbarview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:qrcv_animTime="1000"
+            app:qrcv_borderColor="@android:color/white"
+            app:qrcv_borderSize="1dp"
+            app:qrcv_cornerColor="@color/colorPrimaryDark"
+            app:qrcv_cornerLength="20dp"
+            app:qrcv_cornerSize="3dp"
+            app:qrcv_isShowDefaultScanLineDrawable="true"
+            app:qrcv_maskColor="#33FFFFFF"
+            app:qrcv_rectWidth="760dp"
+            app:qrcv_topOffset="0dp"
+            app:qrcv_scanLineColor="@color/colorPrimaryDark" />
+    </LinearLayout>
+
+
+
+    <LinearLayout
+        android:layout_width="1157dp"
+        android:layout_height="755dp"
+        android:layout_marginStart="720dp"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:background="@drawable/electpay_right">
+        
+        <ImageView
+            android:layout_marginTop="20dp"
+            android:layout_width="911dp"
+            android:layout_height="403dp"
+            android:src="@mipmap/pay_head"/>
+
+        <View
+            android:layout_width="1157dp"
+            android:layout_height="2dp"
+            android:background="#ffdddddd"
+            android:layout_marginTop="10dp"/>
+        
+        <ImageView
+            android:id="@+id/ep_tel"
+            android:layout_width="911dp"
+            android:layout_height="260dp"
+            android:layout_marginTop="30dp"
+            android:src="@mipmap/pay_bottom"/>
+
+    </LinearLayout>
+
+
+    <include layout="@layout/bottom_time"/>
 
 </FrameLayout>
