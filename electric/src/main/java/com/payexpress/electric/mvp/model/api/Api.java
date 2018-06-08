@@ -27,5 +27,7 @@ package com.payexpress.electric.mvp.model.api;
 public interface Api {
     String BASE_URL = "http://182.140.224.136:7080/payexpress/";
     String ACCESS_TOKEN = "ZFTUSER_5BCAACF499D30D1E3B16AFA719797012";
+//    String BASE_URL = "http://192.168.10.251:8080/payexpress/";
+//    String ACCESS_TOKEN = "ZFTUSER_82A2E47E3A035D209D4118797DDFB016";
     String RequestSuccess = "0000";
 }

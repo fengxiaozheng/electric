@@ -1,11 +1,14 @@
 package com.payexpress.electric.mvp.presenter;
 
-import com.alibaba.fastjson.JSON;
 import com.jess.arms.di.scope.ActivityScope;
 import com.jess.arms.mvp.BasePresenter;
 import com.jess.arms.utils.RxLifecycleUtils;
 import com.payexpress.electric.mvp.contract.CPCheckContract;
 import com.payexpress.electric.mvp.model.entity.payment.CPUserInfoRes;
+import com.payexpress.electric.mvp.model.entity.payment.CardBalanceRes;
+import com.payexpress.electric.mvp.model.entity.payment.NoCardCheckReq;
+import com.payexpress.electric.mvp.model.entity.payment.NoCardCheckRes;
+import com.payexpress.electric.mvp.model.entity.payment.UserNoReq;
 
 import javax.inject.Inject;
 
@@ -23,13 +26,16 @@ public class CPCheckPresenter extends BasePresenter<CPCheckContract.Model, CPChe
     @Inject
     RxErrorHandler mErrorHandler;
 
+    private UserNoReq req;
+    private NoCardCheckReq checkReq;
+
     @Inject
     public CPCheckPresenter(CPCheckContract.Model model, CPCheckContract.View view) {
         super(model, view);
     }
 
 
-    public void getUserInfo(String userNo){
+    public void getUserInfo(String userNo) {
         mModel.getUserInfo(userNo)
                 .subscribeOn(Schedulers.io())
                 .subscribeOn(AndroidSchedulers.mainThread())
@@ -38,7 +44,6 @@ public class CPCheckPresenter extends BasePresenter<CPCheckContract.Model, CPChe
                 .subscribe(new ErrorHandleSubscriber<CPUserInfoRes>(mErrorHandler) {
                     @Override
                     public void onNext(CPUserInfoRes Response) {
-                        System.out.println("数据："+ JSON.toJSONString(Response));
                         if (Response.isSuccess()) {
                             mRootView.success(Response);
                         } else {
@@ -49,8 +54,54 @@ public class CPCheckPresenter extends BasePresenter<CPCheckContract.Model, CPChe
 
     }
 
-    public void getBalance(String userNo) {
+    public void noCardCheck(String userNo) {
+        if (checkReq == null) {
+            checkReq = new NoCardCheckReq();
+        }
+        checkReq.setG3(userNo);
+        mModel.noCardCheck(checkReq)
+                .subscribeOn(Schedulers.io())
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .compose(RxLifecycleUtils.bindToLifecycle(mRootView))
+                .subscribe(new ErrorHandleSubscriber<NoCardCheckRes>(mErrorHandler) {
+                    @Override
+                    public void onNext(NoCardCheckRes noCardCheckRes) {
+                        if (noCardCheckRes.isSuccess()) {
+                            getBalance(userNo);
+                        } else {
+                            mRootView.fail(noCardCheckRes.getRet_msg());
+                        }
+                    }
+                });
 
+    }
+
+    public void getBalance(String userNo) {
+        if (req == null) {
+            req = new UserNoReq();
+        }
+        req.setGrid_user_code(userNo);
+        mModel.queryCardBalance(req)
+                .subscribeOn(Schedulers.io())
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .compose(RxLifecycleUtils.bindToLifecycle(mRootView))
+                .subscribe(new ErrorHandleSubscriber<CardBalanceRes>(mErrorHandler) {
+                    @Override
+                    public void onNext(CardBalanceRes cardBalanceRes) {
+                        if (cardBalanceRes.isSuccess()) {
+                            CPUserInfoRes data = new CPUserInfoRes();
+                            data.setAddress(cardBalanceRes.getAddress());
+                            data.setBalance(cardBalanceRes.getBalance());
+                            data.setGrid_user_code(cardBalanceRes.getGrid_user_code());
+                            data.setGrid_user_name(cardBalanceRes.getGrid_user_name());
+                            mRootView.success(data);
+                        } else {
+                            mRootView.fail(cardBalanceRes.getRet_msg());
+                        }
+                    }
+                });
     }
 
     @Override

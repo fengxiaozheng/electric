@@ -16,6 +16,9 @@ android {
         targetSdkVersion rootProject.ext.android["targetSdkVersion"]
         versionCode rootProject.ext.android["versionCode"]
         versionName rootProject.ext.android["versionName"]
+        ndk {
+            abiFilters "armeabi ", "armeabi-v7a"
+        }
         testInstrumentationRunner rootProject.ext.dependencies["androidJUnitRunner"]
     }
     buildTypes {
@@ -59,6 +62,7 @@ dependencies {
     }
     //tools
     implementation 'com.android.support.constraint:constraint-layout:1.1.0'
+    implementation 'com.android.support:support-v4:27.1.1'
     annotationProcessor rootProject.ext.dependencies["dagger2-compiler"]
     implementation rootProject.ext.dependencies["progressmanager"]
     implementation rootProject.ext.dependencies["retrofit-url-manager"]

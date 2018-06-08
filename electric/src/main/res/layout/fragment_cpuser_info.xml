@@ -170,7 +170,7 @@
                 android:layout_height="100dp"
                 android:paddingLeft="55dp"
                 android:layout_marginLeft="28dp"
-                android:maxLength="10"
+                android:maxLength="8"
                 android:background="@drawable/user_input"
                 android:textSize="@dimen/electric_item_text"
                 android:textColor="@color/input_color"

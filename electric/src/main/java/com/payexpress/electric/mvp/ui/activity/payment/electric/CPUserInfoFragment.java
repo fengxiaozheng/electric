@@ -24,6 +24,8 @@ import com.payexpress.electric.mvp.ui.activity.payment.PaymentFragment;
 import com.payexpress.electric.mvp.ui.adapter.KeyboardAdapter;
 import com.payexpress.electric.mvp.ui.adapter.OnItemClickListener;
 
+import java.text.DecimalFormat;
+
 
 public class CPUserInfoFragment extends PaymentFragment implements
         OnItemClickListener, View.OnClickListener {
@@ -47,8 +49,8 @@ public class CPUserInfoFragment extends PaymentFragment implements
     private TextView cp_user_address;
     private TextView cp_user_balance;
     private TextView tv_notice;
-    private TextView tv_time;
     private StringBuilder sb;
+    private DecimalFormat format;
 
     public CPUserInfoFragment() {
         // Required empty public constructor
@@ -90,14 +92,15 @@ public class CPUserInfoFragment extends PaymentFragment implements
         cp_user_no = view.findViewById(R.id.cp_user_no);
         cp_user_should = view.findViewById(R.id.cp_user_should);
         tv_notice = view.findViewById(R.id.tv_notice1);
-        tv_time = view.findViewById(R.id.bottom_time);
         KeyboardUtils.disableShowInput(mEditText);
+        mEditText.requestFocus();
         mLayoutManager = new GridLayoutManager(getActivity(), 3);
         mAdapter = new KeyboardAdapter(KeyboardUtils.withPoint(), this);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
         sb = new StringBuilder();
+        format = new DecimalFormat("0.00");
         mEditText.addTextChangedListener(watch);
         cp_user_name.setText(mParam.getGrid_user_name());
         cp_user_no.setText(mParam.getGrid_user_code());
@@ -153,6 +156,9 @@ public class CPUserInfoFragment extends PaymentFragment implements
             default:
                 break;
         }
+        if (sb.length() > 8) {
+            sb.delete(8, sb.length());
+        }
         mEditText.setText(sb.toString());
     }
 
@@ -176,7 +182,8 @@ public class CPUserInfoFragment extends PaymentFragment implements
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.cp_next) {
-            if (TextUtils.isEmpty(mEditText.getText())){
+            String amount = mEditText.getText().toString();
+            if (TextUtils.isEmpty(amount)){
                 Toast.makeText(activity, "请输入金额", Toast.LENGTH_SHORT).show();
             }else {
                 ElectricPayInfo info = new ElectricPayInfo();
@@ -184,7 +191,7 @@ public class CPUserInfoFragment extends PaymentFragment implements
                 info.setUser_no(mParam.getGrid_user_code());
                 info.setUser_name(mParam.getGrid_user_name());
                 info.setUser_address(mParam.getAddress());
-                info.setPay_amount(String.format(mEditText.getText().toString(), "%.2f"));
+                info.setPay_amount(format.format(Double.parseDouble(amount)));
                 activity.start(CPUserInfoFragment.this,
                         StartPayFragment.newInstance(info), "StartPayFragment");
             }

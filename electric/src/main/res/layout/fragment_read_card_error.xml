@@ -1,0 +1,52 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/has_bottom_body_height"
+    android:layout_marginTop="@dimen/body_top"
+    tools:context="com.payexpress.electric.mvp.ui.activity.payment.electric.ReadCardErrorFragment">
+
+    <LinearLayout
+        android:layout_width="640dp"
+        android:layout_height="480dp"
+        android:orientation="vertical"
+        android:layout_marginTop="160dp"
+        android:background="@drawable/pay_record"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center_horizontal">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:src="@mipmap/img_fail"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/str_056"
+            android:layout_marginTop="30dp"
+            android:textColor="#333333"
+            android:textSize="32sp"/>
+        <TextView
+            android:id="@+id/fail_reason"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/str_056"
+            android:layout_marginTop="23dp"
+            android:textColor="#999999"
+            android:textSize="28sp"/>
+        <Button
+            android:id="@+id/btn_confirm"
+            android:layout_width="400dp"
+            android:layout_height="72dp"
+            android:textColor="@color/white"
+            android:textSize="42sp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="29dp"
+            android:background="@drawable/button_next"
+            android:text="@string/confirm"/>
+    </LinearLayout>
+
+    <include layout="@layout/bottom_notice"/>
+    <include layout="@layout/bottom_time"/>
+</FrameLayout>

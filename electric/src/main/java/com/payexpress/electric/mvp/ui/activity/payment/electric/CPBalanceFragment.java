@@ -16,10 +16,11 @@ import com.payexpress.electric.mvp.ui.activity.payment.PaymentFragment;
 public class CPBalanceFragment extends PaymentFragment implements View.OnClickListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM = "param";
-
+    private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_PARAM2 = "param2";
     // TODO: Rename and change types of parameters
-    private String mParam;
+    private String mParam1;
+    private boolean mParam2;
     private TextView mTextView;
     private Button mButton;
 
@@ -29,10 +30,11 @@ public class CPBalanceFragment extends PaymentFragment implements View.OnClickLi
     }
 
     // TODO: Rename and change types and number of parameters
-    public static CPBalanceFragment newInstance(String param) {
+    public static CPBalanceFragment newInstance(String param, boolean isSmart) {
         CPBalanceFragment fragment = new CPBalanceFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM, param);
+        args.putString(ARG_PARAM1, param);
+        args.putBoolean(ARG_PARAM2, isSmart);
         fragment.setArguments(args);
         return fragment;
     }
@@ -41,7 +43,8 @@ public class CPBalanceFragment extends PaymentFragment implements View.OnClickLi
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam = getArguments().getString(ARG_PARAM);
+            mParam1 = getArguments().getString(ARG_PARAM1);
+            mParam2 = getArguments().getBoolean(ARG_PARAM2);
         }
     }
 
@@ -58,13 +61,17 @@ public class CPBalanceFragment extends PaymentFragment implements View.OnClickLi
         mTextView = view.findViewById(R.id.cp_query_balance);
         mButton = view.findViewById(R.id.cp_query_ok);
         mButton.setOnClickListener(this);
-        mTextView.setText(mParam);
+        mTextView.setText(mParam1);
     }
 
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.cp_query_ok) {
-            activity.complete();
+            if (mParam2){
+                activity.sComplete();
+            }else {
+                activity.cComplete();
+            }
         }
     }
 }

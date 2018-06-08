@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
-    android:background="#ffffff"
+    android:background="@drawable/pay_record"
     >
 	
     <ImageView 
@@ -20,10 +20,10 @@
         android:layout_marginTop="30dp"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:text="暂无内容"
+        android:text="暂无缴费记录"
         android:gravity="center_horizontal"
         android:textColor="#929292"
-        android:textSize="16sp"
+        android:textSize="26sp"
          />
 
     <TextView

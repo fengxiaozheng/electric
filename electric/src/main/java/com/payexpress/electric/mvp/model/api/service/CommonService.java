@@ -17,9 +17,16 @@ package com.payexpress.electric.mvp.model.api.service;
 
 import com.payexpress.electric.mvp.model.entity.BaseResponse;
 import com.payexpress.electric.mvp.model.entity.payment.CPUserInfoRes;
+import com.payexpress.electric.mvp.model.entity.payment.CardBalanceRes;
 import com.payexpress.electric.mvp.model.entity.payment.CheckPayRes;
 import com.payexpress.electric.mvp.model.entity.payment.CodePayRes;
+import com.payexpress.electric.mvp.model.entity.payment.NoCardCheckRes;
 import com.payexpress.electric.mvp.model.entity.payment.PayRecordRes;
+import com.payexpress.electric.mvp.model.entity.payment.QuerySmartCardRes;
+import com.payexpress.electric.mvp.model.entity.payment.RewriteCardListRes;
+import com.payexpress.electric.mvp.model.entity.payment.RewriteCardRes;
+import com.payexpress.electric.mvp.model.entity.payment.RewriteTimesRes;
+import com.payexpress.electric.mvp.model.entity.payment.SmartCardBuyRes;
 
 import io.reactivex.Observable;
 import retrofit2.http.Body;
@@ -51,4 +58,30 @@ public interface CommonService {
     @POST("proxy5007.json")
     Observable<PayRecordRes> payRecord(@Body String req);
 
+    @POST("proxy4001.json")
+    Observable<NoCardCheckRes> noCardCheck(@Body String req);
+
+    @POST("proxy5009.json")
+    Observable<CardBalanceRes> queryCardBalance(@Body String req);
+
+    @POST("proxy4004.json")
+    Observable<BaseResponse> noCardElectricBuy(@Body String req);
+
+    @POST("proxy4007.json")
+    Observable<QuerySmartCardRes> querySmartCardInfo(@Body String req);
+
+    @POST("proxy4008.json")
+    Observable<SmartCardBuyRes> smartCardBuy(@Body String req);
+
+    @POST("proxy4009.json")
+    Observable<BaseResponse> smartCardBuyCheck(@Body String req);
+
+    @POST("proxy4020.json")
+    Observable<RewriteCardRes> rewriteCard(@Body String req);
+
+    @POST("proxy5010.json")
+    Observable<RewriteCardListRes> rewriteCardTimesList(@Body String req);
+
+    @POST("proxy5011.json")
+    Observable<RewriteTimesRes> rewriteCardTimes(@Body String req);
 }

@@ -66,4 +66,7 @@
     <string name="str_051">末页</string>
     <string name="str_052">请点击右侧数字输入手机号码</string>
     <string name="str_053">请输入主管密码</string>
+    <string name="str_054">无需插卡</string>
+    <string name="str_055">请将电卡“芯片”向上，插入卡槽</string>
+    <string name="str_056">购电失败</string>
 </resources>

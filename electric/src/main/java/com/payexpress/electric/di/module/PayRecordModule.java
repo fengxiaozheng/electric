@@ -11,6 +11,7 @@ import com.payexpress.electric.mvp.ui.adapter.PayRecordAdapter;
 
 import org.ayo.view.status.StatusUIManager;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -64,5 +65,11 @@ public class PayRecordModule {
     @Provides
     StatusUIManager provideUIManager() {
         return new StatusUIManager();
+    }
+
+    @FragmentScope
+    @Provides
+    DecimalFormat provideDecimalFormat() {
+        return new DecimalFormat("0.00");
     }
 }

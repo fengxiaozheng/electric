@@ -10,6 +10,12 @@ import com.payexpress.electric.mvp.model.entity.BaseResponse;
 import com.payexpress.electric.mvp.model.entity.payment.CheckPayRes;
 import com.payexpress.electric.mvp.model.entity.payment.CodePayReq;
 import com.payexpress.electric.mvp.model.entity.payment.CodePayRes;
+import com.payexpress.electric.mvp.model.entity.payment.NoCardBuyReq;
+import com.payexpress.electric.mvp.model.entity.payment.RewriteCardReq;
+import com.payexpress.electric.mvp.model.entity.payment.RewriteCardRes;
+import com.payexpress.electric.mvp.model.entity.payment.SmartCardBuyCheckReq;
+import com.payexpress.electric.mvp.model.entity.payment.SmartCardBuyReq;
+import com.payexpress.electric.mvp.model.entity.payment.SmartCardBuyRes;
 import com.payexpress.electric.mvp.model.entity.payment.TransNoReq;
 
 import javax.inject.Inject;
@@ -44,5 +50,29 @@ public class CodePayModel extends BaseModel implements ElectricPayContract.PayMo
     public Observable<BaseResponse> commonElectricBuy(TransNoReq req) {
         return mRepositoryManager.obtainRetrofitService(CommonService.class)
                 .commonElectricBuy(JSON.toJSONString(req));
+    }
+
+    @Override
+    public Observable<BaseResponse> noCardElectricBuy(NoCardBuyReq req) {
+        return mRepositoryManager.obtainRetrofitService(CommonService.class)
+                .noCardElectricBuy(JSON.toJSONString(req));
+    }
+
+    @Override
+    public Observable<SmartCardBuyRes> hsaCardElectricBuy(SmartCardBuyReq req) {
+        return mRepositoryManager.obtainRetrofitService(CommonService.class)
+                .smartCardBuy(JSON.toJSONString(req));
+    }
+
+    @Override
+    public Observable<BaseResponse> hasCardBuyCheck(SmartCardBuyCheckReq req) {
+        return mRepositoryManager.obtainRetrofitService(CommonService.class)
+                .smartCardBuyCheck(JSON.toJSONString(req));
+    }
+
+    @Override
+    public Observable<RewriteCardRes> rewriteCard(RewriteCardReq req) {
+        return mRepositoryManager.obtainRetrofitService(CommonService.class)
+                .rewriteCard(JSON.toJSONString(req));
     }
 }

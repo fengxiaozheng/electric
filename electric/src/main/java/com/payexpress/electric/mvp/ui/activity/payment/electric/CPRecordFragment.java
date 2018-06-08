@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.jess.arms.base.BaseFragment;
 import com.jess.arms.base.DefaultAdapter;
 import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.utils.ArmsUtils;
@@ -23,7 +22,7 @@ import com.payexpress.electric.di.module.PayRecordModule;
 import com.payexpress.electric.mvp.contract.PayRecordContract;
 import com.payexpress.electric.mvp.model.entity.payment.PayRecordRes;
 import com.payexpress.electric.mvp.presenter.PayRecordPresenter;
-import com.payexpress.electric.mvp.ui.activity.payment.PaymentActivity;
+import com.payexpress.electric.mvp.ui.activity.payment.BasePaymentFragment;
 
 import org.ayo.view.status.DefaultStatus;
 import org.ayo.view.status.StatusUIManager;
@@ -37,8 +36,8 @@ import butterknife.BindView;
  * Use the {@link CPRecordFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class CPRecordFragment extends BaseFragment<PayRecordPresenter, PaymentActivity>
-        implements PayRecordContract.PayRecordView{
+public class CPRecordFragment extends BasePaymentFragment<PayRecordPresenter>
+        implements PayRecordContract.PayRecordView, View.OnClickListener{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM = "param";
@@ -114,6 +113,7 @@ public class CPRecordFragment extends BaseFragment<PayRecordPresenter, PaymentAc
         mRecyclerView.setAdapter(mAdapter);
         if (mPresenter != null) {
             mPresenter.initStateUI(mRecyclerView);
+
             mPresenter.getRecordData(mUserNo);
         }
     }
@@ -128,6 +128,9 @@ public class CPRecordFragment extends BaseFragment<PayRecordPresenter, PaymentAc
         user_no.setText(res.getGrid_user_code());
         user_name.setText(res.getGrid_user_name());
         loadingView.setVisibility(View.GONE);
+        if (res.getRows().size() <= 0) {
+            mUiManager.show(DefaultStatus.STATUS_EMPTY);
+        }
     }
 
     @Override
@@ -148,5 +151,12 @@ public class CPRecordFragment extends BaseFragment<PayRecordPresenter, PaymentAc
         DefaultAdapter.releaseAllHolder(mRecyclerView);//super.onDestroy()之后会unbind,所有view被置为null,所以必须在之前调用
         super.onDestroy();
 
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.btn_to_pay) {
+            activity.sComplete();
+        }
     }
 }

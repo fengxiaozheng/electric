@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="640dp"
+    android:layout_height="480dp"
+    android:background="@drawable/pay_record">
+
+    <ImageView
+        android:id="@+id/iv_close"
+        android:layout_width="38dp"
+        android:layout_height="38dp"
+        android:layout_gravity="end|center_horizontal"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="20dp"
+        android:src="@mipmap/guanbi"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        android:gravity="center"
+        >
+
+        <ImageView
+            android:id="@+id/iv_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@mipmap/ka"/>
+
+            <TextView
+                android:id="@+id/tv_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="53dp"
+                android:textColor="#333333"
+                android:textSize="32sp"
+                android:src="@mipmap/tuoyuan"/>
+
+            <TextView
+                android:id="@+id/tv_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/str_055"
+                android:layout_marginTop="29dp"
+                android:textColor="#999999"
+                android:textSize="28sp"/>
+        </LinearLayout>
+</LinearLayout>

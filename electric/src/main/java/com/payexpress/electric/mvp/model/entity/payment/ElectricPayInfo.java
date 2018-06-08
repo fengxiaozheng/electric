@@ -14,6 +14,9 @@ public class ElectricPayInfo implements Serializable {
     private String user_no;
     private String user_address;
     private String pay_amount;
+    private boolean isSuccess;
+    private String telPhone;
+    private String writeCard;
 
     public int getFlag() {
         return flag;
@@ -53,5 +56,29 @@ public class ElectricPayInfo implements Serializable {
 
     public void setPay_amount(String pay_amount) {
         this.pay_amount = pay_amount;
+    }
+
+    public boolean isSuccess() {
+        return isSuccess;
+    }
+
+    public void setSuccess(boolean success) {
+        isSuccess = success;
+    }
+
+    public String getTelPhone() {
+        return telPhone;
+    }
+
+    public void setTelPhone(String telPhone) {
+        this.telPhone = telPhone;
+    }
+
+    public String getWriteCard() {
+        return writeCard;
+    }
+
+    public void setWriteCard(String writeCard) {
+        this.writeCard = writeCard;
     }
 }

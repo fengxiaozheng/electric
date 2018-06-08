@@ -11,10 +11,8 @@ import java.io.Serializable;
 
 public class BaseRequest implements Serializable {
 
-    private final String access_token = Api.ACCESS_TOKEN;
-
 
     public String getAccess_token() {
-        return access_token;
+        return Api.ACCESS_TOKEN;
     }
 }

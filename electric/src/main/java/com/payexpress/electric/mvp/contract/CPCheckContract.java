@@ -5,6 +5,10 @@ import android.app.Activity;
 import com.jess.arms.mvp.IModel;
 import com.jess.arms.mvp.IView;
 import com.payexpress.electric.mvp.model.entity.payment.CPUserInfoRes;
+import com.payexpress.electric.mvp.model.entity.payment.CardBalanceRes;
+import com.payexpress.electric.mvp.model.entity.payment.NoCardCheckReq;
+import com.payexpress.electric.mvp.model.entity.payment.NoCardCheckRes;
+import com.payexpress.electric.mvp.model.entity.payment.UserNoReq;
 import com.payexpress.electric.mvp.ui.adapter.OnItemClickListener;
 
 import io.reactivex.Observable;
@@ -26,5 +30,7 @@ public interface CPCheckContract {
 
     interface Model extends IModel {
         Observable<CPUserInfoRes> getUserInfo(String userNo);
+        Observable<NoCardCheckRes> noCardCheck(NoCardCheckReq req);
+        Observable<CardBalanceRes> queryCardBalance(UserNoReq req);
     }
 }

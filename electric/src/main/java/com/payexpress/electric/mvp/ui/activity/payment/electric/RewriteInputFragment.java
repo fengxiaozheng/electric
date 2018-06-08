@@ -5,16 +5,33 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
-import com.jess.arms.base.BaseFragment;
 import com.jess.arms.di.component.AppComponent;
 import com.payexpress.electric.R;
+import com.payexpress.electric.app.utils.KeyboardUtils;
+import com.payexpress.electric.app.utils.Psamcmd;
+import com.payexpress.electric.di.component.DaggerRewriteInputComponent;
+import com.payexpress.electric.di.module.RewriteInputModule;
+import com.payexpress.electric.mvp.contract.RewriteInputContract;
+import com.payexpress.electric.mvp.model.entity.payment.RewriteTimesAllParams;
 import com.payexpress.electric.mvp.presenter.RewriteInputPresenter;
-import com.payexpress.electric.mvp.ui.activity.payment.PaymentActivity;
+import com.payexpress.electric.mvp.ui.activity.payment.BasePaymentFragment;
+import com.payexpress.electric.mvp.ui.adapter.KeyboardAdapter;
+import com.payexpress.electric.mvp.ui.adapter.OnItemClickListener;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -24,55 +41,45 @@ import butterknife.OnClick;
  * Use the {@link RewriteInputFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class RewriteInputFragment extends BaseFragment<RewriteInputPresenter, PaymentActivity> {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+public class RewriteInputFragment extends BasePaymentFragment<RewriteInputPresenter>
+        implements RewriteInputContract.View, OnItemClickListener{
 
     @BindView(R.id.btn_next)
     Button mButton;
+    @BindView(R.id.rewrite_input)
+    EditText mEditText;
+    @BindView(R.id.keyboard)
+    RecyclerView mRecyclerView;
+    @BindView(R.id.tv_notice1)
+    TextView tv_notice;
+    @Inject
+    GridLayoutManager mLayoutManager;
+    @Inject
+    KeyboardAdapter mAdapter;
+    @Inject
+    StringBuilder sb;
+
+    private boolean isFirst = false;
 
 
     public RewriteInputFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment RewriteInputFragment.
-     */
+
     // TODO: Rename and change types and number of parameters
-    public static RewriteInputFragment newInstance(String param1, String param2) {
-        RewriteInputFragment fragment = new RewriteInputFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
+    public static RewriteInputFragment newInstance() {
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+        return new RewriteInputFragment();
     }
-
 
     @Override
     public void setupFragmentComponent(@NonNull AppComponent appComponent) {
-
+        DaggerRewriteInputComponent.builder()
+                .appComponent(appComponent)
+                .rewriteInputModule(new RewriteInputModule(this))
+                .build()
+                .inject(this);
     }
 
     @Override
@@ -82,7 +89,28 @@ public class RewriteInputFragment extends BaseFragment<RewriteInputPresenter, Pa
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
+        isFirst = true;
+        KeyboardUtils.disableShowInput(mEditText);
+        mEditText.requestFocus();
+        mRecyclerView.setHasFixedSize(true);
+        mLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+            @Override
+            public int getSpanSize(int position) {
+                if (position == 10) {
+                    return 2;
+                } else {
+                    return 1;
+                }
+            }
+        });
 
+        mRecyclerView.setLayoutManager(mLayoutManager);
+
+        mRecyclerView.setAdapter(mAdapter);
+
+        tv_notice.setText(getString(R.string.notice4));
+
+        mEditText.addTextChangedListener(watch);
     }
 
     @Override
@@ -92,7 +120,119 @@ public class RewriteInputFragment extends BaseFragment<RewriteInputPresenter, Pa
 
     @OnClick(R.id.btn_next)
     void click() {
-        activity.start(RewriteInputFragment.this, new RewriteTimesFragment(),
+        if (TextUtils.isEmpty(mEditText.getText().toString())){
+            Toast.makeText(activity, "请输入密码", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (isFirst) {
+            com.halio.Rfid.powerOff();
+            com.halio.Rfid.closeCommPort();
+            com.halio.Rfid.powerOn();
+            com.halio.Rfid.openCommPort();
+            Psamcmd.ResetGPIO(55);
+            Psamcmd.ResetGPIO(94);
+        }
+        isFirst = false;
+        if (mPresenter != null) {
+            mPresenter.readCard();
+        }
+    }
+
+    @Override
+    public void onItemClick(View view, int position) {
+        switch (position) {
+            case 0:
+                sb.append("1");
+                break;
+            case 1:
+                sb.append("2");
+                break;
+            case 2:
+                sb.append("3");
+                break;
+            case 3:
+                sb.append("4");
+                break;
+            case 4:
+                sb.append("5");
+                break;
+            case 5:
+                sb.append("6");
+                break;
+            case 6:
+                sb.append("7");
+                break;
+            case 7:
+                sb.append("8");
+                break;
+            case 8:
+                sb.append("9");
+                break;
+            case 9:
+                sb.append("0");
+                break;
+            case 10:
+                if (sb.length() > 0) {
+                    sb.delete(sb.length() - 1, sb.length());
+                }
+                break;
+            default:
+                break;
+        }
+        if (sb.length() > 10) {
+            sb.delete(10, sb.length());
+        }
+        mEditText.setText(sb.toString());
+    }
+
+    @Override
+    public void success(RewriteTimesAllParams data) {
+        activity.start(RewriteInputFragment.this, RewriteTimesFragment.newInstance(data),
                 "RewriteTimesFragment");
+    }
+
+    @Override
+    public void passwordError() {
+
+    }
+
+    @Override
+    public void readCardError() {
+
+    }
+
+    @Override
+    public OnItemClickListener getListener() {
+        return this;
+    }
+
+    @Override
+    public void showMessage(@NonNull String message) {
+
+    }
+
+    private TextWatcher watch = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+        }
+
+        @Override
+        public void afterTextChanged(Editable editable) {
+            mEditText.setSelection(mEditText.getText().length());
+        }
+    };
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (!TextUtils.isEmpty(mEditText.getText().toString())) {
+            mEditText.setText("");
+            sb.delete(0, sb.length());
+        }
     }
 }

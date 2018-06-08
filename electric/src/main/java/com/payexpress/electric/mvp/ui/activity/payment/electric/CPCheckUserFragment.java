@@ -18,7 +18,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.jess.arms.base.BaseFragment;
 import com.jess.arms.di.component.AppComponent;
 import com.payexpress.electric.R;
 import com.payexpress.electric.app.utils.KeyboardUtils;
@@ -28,7 +27,7 @@ import com.payexpress.electric.mvp.contract.CPCheckContract;
 import com.payexpress.electric.mvp.model.entity.payment.CPUserInfoRes;
 import com.payexpress.electric.mvp.model.entity.payment.SmartUserInfo;
 import com.payexpress.electric.mvp.presenter.CPCheckPresenter;
-import com.payexpress.electric.mvp.ui.activity.payment.PaymentActivity;
+import com.payexpress.electric.mvp.ui.activity.payment.BasePaymentFragment;
 import com.payexpress.electric.mvp.ui.adapter.KeyboardAdapter;
 import com.payexpress.electric.mvp.ui.adapter.OnItemClickListener;
 
@@ -40,7 +39,7 @@ import butterknife.OnClick;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class CPCheckUserFragment extends BaseFragment<CPCheckPresenter, PaymentActivity>
+public class CPCheckUserFragment extends BasePaymentFragment<CPCheckPresenter>
         implements CPCheckContract.View, OnItemClickListener {
     @BindView(R.id.keyboard)
     RecyclerView mRecyclerView;
@@ -55,15 +54,13 @@ public class CPCheckUserFragment extends BaseFragment<CPCheckPresenter, PaymentA
     @Inject
     StringBuilder sb;
 
-    @BindView(R.id.bottom_time)
-    TextView bottom_time;
     @BindView(R.id.tv_notice1)
     TextView tv_notice;
 
     private static final String ARG_PARAM = "param";
 
-    private int mParam;
-
+    private int mParam;//0:普通电费余额查询；1：普通电力缴费；2：购电记录查询；
+                       //3：智能无卡购电；4：电卡余额查询
     public static CPCheckUserFragment newInstance(int param) {
         CPCheckUserFragment fragment = new CPCheckUserFragment();
         Bundle args = new Bundle();
@@ -126,6 +123,9 @@ public class CPCheckUserFragment extends BaseFragment<CPCheckPresenter, PaymentA
             default:
                 break;
         }
+        if (sb.length() > 10) {
+            sb.delete(10, sb.length());
+        }
         mEditText.setText(sb.toString());
     }
 
@@ -146,11 +146,25 @@ public class CPCheckUserFragment extends BaseFragment<CPCheckPresenter, PaymentA
         switch (mParam) {
             case 0:
                 activity.start(CPCheckUserFragment.this,
-                        CPBalanceFragment.newInstance(data.getBalance()), "CPBalanceFragment");
+                        CPBalanceFragment.newInstance(data.getBalance(), false), "CPBalanceFragment");
                 break;
             case 1:
                 activity.start(CPCheckUserFragment.this,
                         CPUserInfoFragment.newInstance(data), "CPUserInfoFragment");
+                break;
+            case 3:
+                SmartUserInfo info = new SmartUserInfo();
+                info.setFlag(1);
+                info.setBalance(data.getBalance());
+                info.setUserAddress(data.getAddress());
+                info.setUserName(data.getGrid_user_name());
+                info.setUserNo(data.getGrid_user_code());
+                activity.start(CPCheckUserFragment.this,
+                        SPUserInfoFragment.newInstance(info), "SPUserInfoFragment");
+                break;
+            case 4:
+                activity.start(CPCheckUserFragment.this,
+                        CPBalanceFragment.newInstance(data.getBalance(), true), "CPBalanceFragment");
                 break;
             default:
                 break;
@@ -182,6 +196,7 @@ public class CPCheckUserFragment extends BaseFragment<CPCheckPresenter, PaymentA
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
         KeyboardUtils.disableShowInput(mEditText);
+        mEditText.requestFocus();
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override
@@ -221,43 +236,46 @@ public class CPCheckUserFragment extends BaseFragment<CPCheckPresenter, PaymentA
 
     @OnClick(R.id.btn_next)
     void click() {
+        String str = mEditText.getText().toString();
+        if (TextUtils.isEmpty(str) || str.length() < 10) {
+            Toast.makeText(activity, "请输入十位用户号", Toast.LENGTH_SHORT).show();
+            return;
+        }
         switch (mParam) {
             case 0:
-                startQuery();
+                startQuery(str);
                 break;
             case 1:
-                startQuery();
+                startQuery(str);
                 break;
             case 2:
-                String str = mEditText.getText().toString();
-                if (TextUtils.isEmpty(str) || str.length() < 10) {
-                    Toast.makeText(activity, "请输入十位用户号", Toast.LENGTH_SHORT).show();
-                } else {
                     activity.start(CPCheckUserFragment.this,
                             CPRecordFragment.newInstance(false, str), "CPRecordFragment");
-                }
                 break;
             case 3:
-                SmartUserInfo info = new SmartUserInfo();
-                info.setFlag(1);
-                activity.start(CPCheckUserFragment.this,
-                        SPUserInfoFragment.newInstance(info), "SPUserInfoFragment");
+                if (mPresenter != null) {
+                    activity.showDialog();
+                    mPresenter.noCardCheck(str);
+                }
+                break;
+            case 4:
+                if (mPresenter != null) {
+                    activity.showDialog();
+                    mPresenter.getBalance(str);
+                }
                 break;
             default:
                 break;
         }
     }
 
-    private void startQuery() {
-        String str = mEditText.getText().toString();
-        if (TextUtils.isEmpty(str) || str.length() < 10) {
-            Toast.makeText(activity, "请输入十位用户号", Toast.LENGTH_SHORT).show();
-        } else {
+    private void startQuery(String str) {
+
             if (mPresenter != null) {
                 activity.showDialog();
                 mPresenter.getUserInfo(str);
             }
-        }
+
     }
 
     private TextWatcher watch = new TextWatcher() {

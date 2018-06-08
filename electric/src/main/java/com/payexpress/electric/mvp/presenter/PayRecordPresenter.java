@@ -15,6 +15,7 @@ import org.ayo.view.status.DefaultStatusProvider;
 import org.ayo.view.status.StatusProvider;
 import org.ayo.view.status.StatusUIManager;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -40,6 +41,8 @@ public class PayRecordPresenter extends BasePresenter<PayRecordContract.PayRecor
     RecyclerView.Adapter mAdapter;
     @Inject
     StatusUIManager mUiManager;
+    @Inject
+    DecimalFormat format;
 
     private StringBuilder builder;
 
@@ -61,27 +64,31 @@ public class PayRecordPresenter extends BasePresenter<PayRecordContract.PayRecor
                     @Override
                     public void onNext(PayRecordRes res) {
                         if (res.isSuccess()) {
-                            for (RecordInfo info: res.getRows()) {
-                                builder = new StringBuilder();
-                                info.setTrans_date(builder
-                                        .append(info.getTrans_date().substring(0, 4))
-                                        .append("-")
-                                        .append(info.getTrans_date().substring(4, 6))
-                                        .append("-")
-                                        .append(info.getTrans_date().substring(6, 8))
-                                        .append(info.getTrans_date().substring(8, 17))
-                                        .toString());
-                                builder.delete(0, 17);
-                                info.setAmount(builder
-                                .append(info.getAmount())
-                                .append("元")
-                                .toString());
+                            if (res.getRows().size() > 0) {
+                                for (RecordInfo info : res.getRows()) {
+                                    builder = new StringBuilder();
+                                    info.setTrans_date(builder
+                                            .append(info.getTrans_date().substring(0, 4))
+                                            .append("-")
+                                            .append(info.getTrans_date().substring(4, 6))
+                                            .append("-")
+                                            .append(info.getTrans_date().substring(6, 8))
+                                            .append(info.getTrans_date().substring(8, 17))
+                                            .toString());
+                                    builder.delete(0, 19);
+                                    info.setAmount(builder
+                                            .append(format.format(Double.parseDouble(info.getAmount())))
+                                            .append("元")
+                                            .toString());
+                                }
+                                infos.addAll(res.getRows());
+                                mAdapter.notifyDataSetChanged();
                             }
-                            infos.addAll(res.getRows());
-                            mAdapter.notifyDataSetChanged();
                             mRootView.success(res);
                         } else {
-                            mRootView.fail(res.getRet_msg());
+                            if (mRootView != null ) {
+                                mRootView.fail(res.getRet_msg());
+                            }
                         }
                     }
                 });
@@ -103,5 +110,7 @@ public class PayRecordPresenter extends BasePresenter<PayRecordContract.PayRecor
         this.mErrorHandler = null;
         infos = null;
         mAdapter = null;
+        mUiManager = null;
+        builder = null;
     }
 }

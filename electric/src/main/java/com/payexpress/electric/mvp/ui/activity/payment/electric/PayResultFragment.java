@@ -5,10 +5,12 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.payexpress.electric.R;
@@ -33,6 +35,8 @@ public class PayResultFragment extends PaymentFragment implements View.OnClickLi
     private TextView pr_user_address;
     private TextView pr_pay_money;
     private Button btn_complete;
+    private ImageView mImageView;
+    private TextView payResult;
 
 
     public PayResultFragment() {
@@ -71,17 +75,43 @@ public class PayResultFragment extends PaymentFragment implements View.OnClickLi
         pr_user_address = view.findViewById(R.id.pr_user_address);
         pr_pay_money = view.findViewById(R.id.pr_pay_money);
         btn_complete = view.findViewById(R.id.btn_complete);
+        mImageView = view.findViewById(R.id.pr_image);
+        payResult = view.findViewById(R.id.tv_pay_result);
         btn_complete.setOnClickListener(this);
         pr_user_no.setText(mParam.getUser_no());
         pr_user_name.setText(mParam.getUser_name());
         pr_user_address.setText(mParam.getUser_address());
-        pr_pay_money.setText(mParam.getPay_amount());
+        pr_pay_money.setText(String.format("%s元", mParam.getPay_amount()));
+        if (mParam.getFlag() == 1) {
+            payResult.setText("购电成功，电量下发中");
+        }
+        if (!mParam.isSuccess()) {
+            mImageView.setImageResource(R.mipmap.img_fail);
+            payResult.setText("购电失败，请重新购电");
+            btn_complete.setText("重新购电");
+        }
+
+        if (!TextUtils.isEmpty(mParam.getWriteCard()) && "1111".equals(mParam.getWriteCard())) {
+            payResult.setText("写卡失败，请补写卡或联系客服");
+            btn_complete.setText("完成");
+        }
     }
 
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.btn_complete) {
-            activity.complete();
+            switch (mParam.getFlag()) {
+                case 0:
+                    activity.cComplete();
+                    break;
+                case 1:
+                case 2:
+                    activity.sComplete();
+                    break;
+                default:
+                    break;
+            }
+
         }
     }
 }

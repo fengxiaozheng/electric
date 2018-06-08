@@ -1,7 +1,13 @@
 package com.payexpress.electric.mvp.ui.activity.payment;
 
 import android.app.Activity;
+import android.os.CountDownTimer;
 import android.support.v4.app.Fragment;
+import android.widget.TextView;
+
+import com.payexpress.electric.R;
+
+import java.util.Objects;
 
 /**
  * Created by fengxiaozheng
@@ -11,6 +17,7 @@ import android.support.v4.app.Fragment;
 public class PaymentFragment extends Fragment {
 
     protected PaymentActivity activity;
+    private CountDownTimer timer;
 
     @Override
     public void onAttach(Activity activity) {
@@ -20,8 +27,63 @@ public class PaymentFragment extends Fragment {
 
     @Override
     public void onDestroy() {
-        super.onDestroy();
         activity = null;
+        if (timer != null) {
+            timer.cancel();
+            timer = null;
+        }
+        if (getActivity() instanceof PaymentActivity) {
+            if (((PaymentActivity) getActivity()).isDialogShow()){
+                ((PaymentActivity) getActivity()).dismissDialog();
+            }
+        }
+        super.onDestroy();
+    }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        timer = new CountDownTimer(300 * 1000, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                if (getView() != null) {
+                    if (getView().findViewById(R.id.bottom_time) != null) {
+                        if (millisUntilFinished / 1000 >= 1) {
+                            ((TextView) getView().findViewById(R.id.bottom_time)).setText(String.valueOf(millisUntilFinished / 1000));
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onFinish() {
+                if (getActivity() instanceof PaymentActivity) {
+                    if (Objects.equals(getTag(), "PayResultFragment")){
+                        ((PaymentActivity) getActivity()).backHome();
+                    }else {
+                        ((PaymentActivity) getActivity()).back();
+                    }
+                }
+            }
+        };
+        timer.start();
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (hidden) {
+            onPause();
+        } else {
+            onResume();
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (timer != null) {
+            timer.cancel();
+        }
     }
 }

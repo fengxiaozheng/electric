@@ -1,17 +1,16 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/user_info_height"
+    android:layout_height="@dimen/has_keyboard_body_height"
     android:layout_marginTop="@dimen/user_info_top"
-    android:layout_marginBottom="@dimen/user_info_bottom"
     android:gravity="center"
     android:orientation="horizontal"
-    tools:context=".mvp.ui.activity.payment.electric.CPCheckUserFragment">
+    tools:context=".mvp.ui.activity.payment.electric.RewriteInputFragment">
 
 
     <LinearLayout
         android:layout_width="@dimen/user_info_width"
-        android:layout_height="match_parent"
+        android:layout_height="@dimen/user_info_height"
         android:layout_marginLeft="@dimen/user_info_left"
         android:layout_marginRight="@dimen/user_info_right"
         android:background="@drawable/user_info"
@@ -27,7 +26,7 @@
                 android:layout_height="43dp"
                 android:src="@mipmap/password"/>
             <EditText
-                android:id="@+id/cpc_user"
+                android:id="@+id/rewrite_input"
                 android:layout_width="802dp"
                 android:layout_height="100dp"
                 android:paddingLeft="55dp"
@@ -35,8 +34,9 @@
                 android:maxLength="10"
                 android:background="@drawable/user_input"
                 android:textSize="@dimen/electric_item_text"
+                android:inputType="numberPassword"
                 android:textColor="@color/input_color"
-                android:hint="@string/str_053"/>
+                android:hint="@string/str_034"/>
         </LinearLayout>
         <Button
             android:id="@+id/btn_next"
@@ -52,4 +52,8 @@
 
     <include layout="@layout/keyboard"/>
 
-</LinearLayout>
+    <include layout="@layout/bottom_notice"/>
+
+    <include layout="@layout/bottom_time"/>
+
+</FrameLayout>

@@ -21,7 +21,6 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.widget.TextView;
 
 import com.jess.arms.base.delegate.AppLifecycles;
 import com.jess.arms.di.module.GlobalConfigModule;
@@ -30,9 +29,7 @@ import com.jess.arms.integration.ConfigModule;
 import com.jess.arms.integration.cache.IntelligentCache;
 import com.jess.arms.utils.ArmsUtils;
 import com.payexpress.electric.BuildConfig;
-import com.payexpress.electric.R;
 import com.payexpress.electric.mvp.model.api.Api;
-import com.payexpress.electric.mvp.ui.activity.payment.PaymentActivity;
 import com.squareup.leakcanary.RefWatcher;
 
 import java.util.List;
@@ -182,54 +179,14 @@ public final class GlobalConfiguration implements ConfigModule {
             }
 
             @Override
-            public void onFragmentStarted(FragmentManager fm, Fragment f) {
-                timer = new CountDownTimer(300 * 1000, 1000) {
-                    @Override
-                    public void onTick(long millisUntilFinished) {
-                        if (f.getView() != null) {
-                            if (f.getView().findViewById(R.id.bottom_time) != null) {
-                                if (millisUntilFinished / 1000 >= 1) {
-                                    ((TextView) f.getView().findViewById(R.id.bottom_time)).setText(String.valueOf(millisUntilFinished / 1000));
-                                }
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onFinish() {
-                        if (f.getActivity() instanceof PaymentActivity) {
-                            ((PaymentActivity) f.getActivity()).back();
-                        }
-                    }
-                }.start();
-            }
-
-            @Override
             public void onFragmentDestroyed(FragmentManager fm, Fragment f) {
                 ((RefWatcher) ArmsUtils
                         .obtainAppComponentFromContext(f.getActivity())
                         .extras()
                         .get(IntelligentCache.KEY_KEEP + RefWatcher.class.getName()))
                         .watch(f);
-
-                if (timer != null) {
-                    timer.cancel();
-                    timer = null;
-                }
-                if (f.getActivity() instanceof PaymentActivity) {
-                    if (((PaymentActivity) f.getActivity()).isDialogShow()){
-                        ((PaymentActivity) f.getActivity()).dismissDialog();
-                    }
-                }
             }
 
-            @Override
-            public void onFragmentPaused(FragmentManager fm, Fragment f) {
-                super.onFragmentPaused(fm, f);
-                if (timer != null) {
-                    timer.cancel();
-                }
-            }
         });
 
     //    lifecycles.add(new FragmentLifeCycleCtr());

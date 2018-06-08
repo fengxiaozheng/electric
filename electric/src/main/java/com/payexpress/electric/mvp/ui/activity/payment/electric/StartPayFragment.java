@@ -12,15 +12,15 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.jess.arms.base.BaseFragment;
 import com.jess.arms.di.component.AppComponent;
 import com.payexpress.electric.R;
+import com.payexpress.electric.app.utils.Psamcmd;
 import com.payexpress.electric.di.component.DaggerElectricPayComponent;
 import com.payexpress.electric.di.module.EleCtricPayModule;
 import com.payexpress.electric.mvp.contract.ElectricPayContract;
 import com.payexpress.electric.mvp.model.entity.payment.ElectricPayInfo;
 import com.payexpress.electric.mvp.presenter.ElectricPayPresenter;
-import com.payexpress.electric.mvp.ui.activity.payment.PaymentActivity;
+import com.payexpress.electric.mvp.ui.activity.payment.BasePaymentFragment;
 
 import butterknife.BindView;
 import cn.bingoogolapple.qrcode.core.QRCodeView;
@@ -34,7 +34,7 @@ import static android.content.Context.VIBRATOR_SERVICE;
  * Use the {@link StartPayFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class StartPayFragment extends BaseFragment<ElectricPayPresenter, PaymentActivity>
+public class StartPayFragment extends BasePaymentFragment<ElectricPayPresenter>
         implements ElectricPayContract.PayView, QRCodeView.Delegate {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -45,6 +45,9 @@ public class StartPayFragment extends BaseFragment<ElectricPayPresenter, Payment
 
     @BindView(R.id.zbarview)
     ZBarView mQRCodeView;
+    private MaterialDialog dialog;
+
+    private boolean isFirst = false;
 
 
 
@@ -89,6 +92,7 @@ public class StartPayFragment extends BaseFragment<ElectricPayPresenter, Payment
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
         mQRCodeView.setDelegate(this);
+        isFirst = true;
     }
 
     @Override
@@ -99,6 +103,7 @@ public class StartPayFragment extends BaseFragment<ElectricPayPresenter, Payment
     @Override
     public void success() {
         activity.dismissDialog();
+        mParam.setSuccess(true);
         activity.start(StartPayFragment.this,
                 PayResultFragment.newInstance(mParam), "PayResultFragment");
 
@@ -108,14 +113,19 @@ public class StartPayFragment extends BaseFragment<ElectricPayPresenter, Payment
     @Override
     public void fail(String msg) {
         activity.dismissDialog();
-        Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show();
+        mParam.setSuccess(false);
+        mParam.setWriteCard(msg);
+        activity.start(StartPayFragment.this,
+                PayResultFragment.newInstance(mParam), "PayResultFragment");
+
+
     }
 
     @Override
     public void checkPay(int flag, String transNo) {
         activity.dismissDialog();
 
-        MaterialDialog dialog = new MaterialDialog(activity);
+        dialog = new MaterialDialog(activity);
         View view = LayoutInflater.from(activity)
                 .inflate(R.layout.dialog_content,
                         null);
@@ -136,6 +146,30 @@ public class StartPayFragment extends BaseFragment<ElectricPayPresenter, Payment
                 }).show();
     }
 
+    @Override
+    public void payFail() {
+        activity.dismissDialog();
+
+        dialog = new MaterialDialog(activity);
+        View view = LayoutInflater.from(activity)
+                .inflate(R.layout.dialog_content,
+                        null);
+        dialog.setCanceledOnTouchOutside(false);
+        TextView user = view.findViewById(R.id.dg_user_no);
+        TextView s = view.findViewById(R.id.content_fail);
+        TextView a = view.findViewById(R.id.dg_amount);
+        s.setText("支付失败，请点击确认重新扫码支付");
+        user.setText(String.format("电力用户号：%s", mParam.getUser_no()));
+        a.setText(String.format("购电金额：%s", mParam.getPay_amount()));
+        dialog.setTitle("提示")
+                .setView(view)
+                .setPositiveButton("确认", v -> {
+                    dialog.dismiss();
+                    mQRCodeView.startSpot();
+                })
+                .show();
+    }
+
 
     @Override
     public void showMessage(@NonNull String message) {
@@ -149,10 +183,30 @@ public class StartPayFragment extends BaseFragment<ElectricPayPresenter, Payment
         vibrate();
         mQRCodeView.stopSpot();
         activity.showDialog();
-        if (mParam.getFlag() == 0) {
-            mPresenter.qrCodePay(0, mParam.getUser_no(), mParam.getPay_amount(), result);
+        switch (mParam.getFlag()) {
+            case 0:
+                startPay(0, result);
+                  break;
+            case 1:
+                startPay(1, result);
+                break;
+            case 2:
+                if (isFirst) {
+                    com.halio.Rfid.powerOff();
+                    com.halio.Rfid.closeCommPort();
+                    com.halio.Rfid.powerOn();
+                    com.halio.Rfid.openCommPort();
+                    Psamcmd.ResetGPIO(55);
+                    Psamcmd.ResetGPIO(94);
+                }
+                isFirst = false;
+                startPay(2, result);
+                default:
+                    break;
         }
+
     }
+
 
     @Override
     public void onScanQRCodeOpenCameraError() {
@@ -177,17 +231,28 @@ public class StartPayFragment extends BaseFragment<ElectricPayPresenter, Payment
         super.onStop();
     }
 
+
     @Override
     public void onDestroy() {
         if (mQRCodeView != null) {
             mQRCodeView.stopCamera();
         }
+        if (dialog != null) {
+            dialog.dismiss();
+        }
+        activity.dismissDialog();
         super.onDestroy();
     }
 
     private void vibrate() {
         Vibrator vibrator = (Vibrator) activity.getSystemService(VIBRATOR_SERVICE);
         vibrator.vibrate(200);
+    }
+
+    private void startPay(int flag, String result) {
+        if (mPresenter != null) {
+            mPresenter.qrCodePay(flag, mParam.getTelPhone(), mParam.getUser_no(), mParam.getPay_amount(), result);
+        }
     }
 
 }

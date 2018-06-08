@@ -10,11 +10,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import com.jess.arms.base.BaseFragment;
 import com.jess.arms.di.component.AppComponent;
 import com.payexpress.electric.R;
-import com.payexpress.electric.mvp.presenter.RewirteCardPresenter;
-import com.payexpress.electric.mvp.ui.activity.payment.PaymentActivity;
+import com.payexpress.electric.app.utils.Psamcmd;
+import com.payexpress.electric.di.component.DaggerRewriteCardComponent;
+import com.payexpress.electric.di.module.RewriteCardModule;
+import com.payexpress.electric.mvp.contract.RewriteCardContract;
+import com.payexpress.electric.mvp.presenter.RewriteCardPresenter;
+import com.payexpress.electric.mvp.ui.activity.payment.BasePaymentFragment;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -24,10 +27,15 @@ import butterknife.OnClick;
  * Use the {@link RewriteCardFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class RewriteCardFragment extends BaseFragment<RewirteCardPresenter, PaymentActivity> {
+public class RewriteCardFragment extends BasePaymentFragment<RewriteCardPresenter>
+        implements RewriteCardContract.View {
 
     @BindView(R.id.re_times)
     LinearLayout mLinearLayout;
+    @BindView(R.id.re_end)
+    LinearLayout mEnd;
+
+    private boolean isFirst = false;
 
 
     public RewriteCardFragment() {
@@ -43,7 +51,11 @@ public class RewriteCardFragment extends BaseFragment<RewirteCardPresenter, Paym
 
     @Override
     public void setupFragmentComponent(@NonNull AppComponent appComponent) {
-
+        DaggerRewriteCardComponent.builder()
+                .appComponent(appComponent)
+                .rewriteCardModule(new RewriteCardModule(this))
+                .build()
+                .inject(this);
     }
 
     @Override
@@ -53,7 +65,7 @@ public class RewriteCardFragment extends BaseFragment<RewirteCardPresenter, Paym
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-
+        isFirst = true;
     }
 
     @Override
@@ -63,7 +75,43 @@ public class RewriteCardFragment extends BaseFragment<RewirteCardPresenter, Paym
 
     @OnClick(R.id.re_times)
     void click() {
-        activity.start(RewriteCardFragment.this, new RewriteInputFragment(),
+        activity.start(RewriteCardFragment.this, RewriteInputFragment.newInstance(),
                 "RewriteInputFragment");
+    }
+
+    @OnClick(R.id.re_end)
+    void end() {
+        if (isFirst) {
+            com.halio.Rfid.powerOff();
+            com.halio.Rfid.closeCommPort();
+            com.halio.Rfid.powerOn();
+            com.halio.Rfid.openCommPort();
+            Psamcmd.ResetGPIO(55);
+            Psamcmd.ResetGPIO(94);
+        }
+        isFirst = false;
+        if (mPresenter != null) {
+            mPresenter.rewrite();
+        }
+    }
+
+    @Override
+    public void success() {
+        next(true);
+    }
+
+    @Override
+    public void fail(String msg) {
+        next(false);
+    }
+
+    @Override
+    public void showMessage(@NonNull String message) {
+
+    }
+
+    private void next(boolean result) {
+        activity.start(RewriteCardFragment.this,
+                RewriteResultFragment.newInstance(result), "RewriteResultFragment");
     }
 }

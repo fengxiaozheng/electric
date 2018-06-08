@@ -20,7 +20,6 @@ public class PaymentActivity extends AppCompatActivity implements View.OnClickLi
     private LoadingDailog loadingView;
     private LinearLayout backHome;
     private LinearLayout back;
-    private Fragment getCurrent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,16 +55,30 @@ public class PaymentActivity extends AppCompatActivity implements View.OnClickLi
 
     }
 
-    public void complete() {
-        mFragmentManager.popBackStackImmediate("ElectricFragment", FragmentManager.POP_BACK_STACK_INCLUSIVE);
+    public void cComplete() {
+        mFragmentManager.popBackStack("CommonPowerFragment", FragmentManager.POP_BACK_STACK_INCLUSIVE);
+    }
+
+    public void cFail() {
+        mFragmentManager.popBackStackImmediate("CommonPowerFragment", FragmentManager.POP_BACK_STACK_INCLUSIVE);
+
+    }
+
+    public void sComplete() {
+        mFragmentManager.popBackStack("SmartPowerFragment", FragmentManager.POP_BACK_STACK_INCLUSIVE);
+
+    }
+
+    public void sFail() {
+        mFragmentManager.popBackStackImmediate("SmartPowerFragment", FragmentManager.POP_BACK_STACK_INCLUSIVE);
     }
 
     public void start(Fragment current, Fragment next, String tag) {
         mFragmentManager = getSupportFragmentManager();
         mFragmentTransaction = mFragmentManager.beginTransaction();
+        mFragmentTransaction.setCustomAnimations(R.anim.v_fragment_enter,R.anim.v_fragment_pop_exit,
+                R.anim.v_fragment_pop_enter,  R.anim.v_fragment_exit);
         mFragmentTransaction.hide(current);
-//        getCurrent = current;
-//        current.onPause();
         mFragmentTransaction.add(R.id.e_frame, next, tag);
         mFragmentTransaction.addToBackStack(tag);
         mFragmentTransaction.commit();

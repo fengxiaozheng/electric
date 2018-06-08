@@ -41,7 +41,7 @@ public class GovAdapter extends RecyclerView.Adapter<GovAdapter.ViewHolder> {
         return titles.length;
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView mTextView;
         ImageView mImageView;
         private View view;
