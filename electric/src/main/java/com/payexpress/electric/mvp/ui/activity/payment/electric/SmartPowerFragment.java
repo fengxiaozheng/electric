@@ -13,12 +13,12 @@ import android.widget.LinearLayout;
 import com.jess.arms.di.component.AppComponent;
 import com.payexpress.electric.R;
 import com.payexpress.electric.app.utils.Psamcmd;
-import com.payexpress.electric.di.component.DaggerSmartPowerComponent;
-import com.payexpress.electric.di.module.SmartPowerModule;
-import com.payexpress.electric.mvp.contract.SmartPowerContract;
-import com.payexpress.electric.mvp.model.entity.payment.QuerySmartCardRes;
-import com.payexpress.electric.mvp.model.entity.payment.SmartUserInfo;
-import com.payexpress.electric.mvp.presenter.SmartPowerPresenter;
+import com.payexpress.electric.di.component.payment.DaggerSmartPowerComponent;
+import com.payexpress.electric.di.module.payment.SmartPowerModule;
+import com.payexpress.electric.mvp.contract.payment.SmartPowerContract;
+import com.payexpress.electric.mvp.model.entity.paymentEntity.QuerySmartCardRes;
+import com.payexpress.electric.mvp.model.entity.paymentEntity.SmartUserInfo;
+import com.payexpress.electric.mvp.presenter.payment.SmartPowerPresenter;
 import com.payexpress.electric.mvp.ui.activity.payment.BasePaymentFragment;
 
 import butterknife.BindView;

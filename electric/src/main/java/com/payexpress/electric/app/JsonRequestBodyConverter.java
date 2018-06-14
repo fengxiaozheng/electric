@@ -3,16 +3,8 @@ package com.payexpress.electric.app;
 
 import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;
-import com.payexpress.electric.mvp.model.entity.APIBodyData;
 
 import java.io.IOException;
-import java.security.InvalidAlgorithmParameterException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-
-import javax.crypto.BadPaddingException;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
 
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
@@ -35,28 +27,28 @@ public class JsonRequestBodyConverter<T> implements Converter<T, RequestBody> {
 
     @Override
     public RequestBody convert(T value) throws IOException {
-        APIBodyData data = new APIBodyData();
-        System.out.println("request中传递的json数据：" + value.toString());
-        try {
-            data.setData(AESCipher.aesEncryptString(value.toString(), AESCipher.KEY));
-        } catch (InvalidKeyException e) {
-            e.printStackTrace();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (NoSuchPaddingException e) {
-            e.printStackTrace();
-        } catch (InvalidAlgorithmParameterException e) {
-            e.printStackTrace();
-        } catch (IllegalBlockSizeException e) {
-            e.printStackTrace();
-        } catch (BadPaddingException e) {
-            e.printStackTrace();
-        } catch (NoSuchMethodError e) {
-            e.printStackTrace();
-        }
-
-        String postBody = gson.toJson(data);
-        System.out.println("request转化后的数据：" + postBody);
-        return RequestBody.create(MEDIA_TYPE, postBody);
+//        APIBodyData data = new APIBodyData();
+//        System.out.println("request中传递的json数据：" + value.toString());
+//        try {
+//            data.setData(AESCipher.aesEncryptString(value.toString(), AESCipher.KEY));
+//        } catch (InvalidKeyException e) {
+//            e.printStackTrace();
+//        } catch (NoSuchAlgorithmException e) {
+//            e.printStackTrace();
+//        } catch (NoSuchPaddingException e) {
+//            e.printStackTrace();
+//        } catch (InvalidAlgorithmParameterException e) {
+//            e.printStackTrace();
+//        } catch (IllegalBlockSizeException e) {
+//            e.printStackTrace();
+//        } catch (BadPaddingException e) {
+//            e.printStackTrace();
+//        } catch (NoSuchMethodError e) {
+//            e.printStackTrace();
+//        }
+//
+//        String postBody = gson.toJson(data);
+//        System.out.println("request转化后的数据：" + postBody);
+        return RequestBody.create(MEDIA_TYPE, (String) value);
     }
 }

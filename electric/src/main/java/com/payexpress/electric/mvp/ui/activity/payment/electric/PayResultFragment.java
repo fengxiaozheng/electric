@@ -14,7 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.payexpress.electric.R;
-import com.payexpress.electric.mvp.model.entity.payment.ElectricPayInfo;
+import com.payexpress.electric.mvp.model.entity.paymentEntity.ElectricPayInfo;
 import com.payexpress.electric.mvp.ui.activity.payment.PaymentFragment;
 
 /**

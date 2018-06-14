@@ -16,12 +16,49 @@
 package com.payexpress.electric.app;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.jess.arms.http.GlobalHttpHandler;
+import com.payexpress.electric.app.utils.StringUtils;
+import com.payexpress.electric.mvp.model.api.Api;
+import com.payexpress.electric.mvp.model.api.service.GovService;
+import com.payexpress.electric.mvp.model.entity.APIBodyData;
+import com.payexpress.electric.mvp.model.entity.ElectricUser;
+import com.payexpress.electric.mvp.model.entity.LoginRes;
 
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.util.Map;
+import java.util.concurrent.ExecutorService;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.observers.DefaultObserver;
+import io.reactivex.schedulers.Schedulers;
+import okhttp3.Call;
+import okhttp3.Callback;
 import okhttp3.Interceptor;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
+import okhttp3.ResponseBody;
+import okio.Buffer;
+import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * ================================================
@@ -34,9 +71,18 @@ import okhttp3.Response;
  */
 public class GlobalHttpHandlerImpl implements GlobalHttpHandler {
     private Context context;
+    private Gson gson;
+    private Response responseResult = null;
+    private ExecutorService executor;
+    private static final MediaType MEDIA_TYPE = MediaType.parse("application/json; charset=UTF-8");
+
+    private String[] apiData = {"4001", "4002", "4003", "4004", "4007",
+            "4008", "4009", "4011", "4020", "5001", "5007", "5009",
+            "5010", "5011"};
 
     public GlobalHttpHandlerImpl(Context context) {
         this.context = context;
+        gson = new Gson();
     }
 
     @Override
@@ -57,13 +103,167 @@ public class GlobalHttpHandlerImpl implements GlobalHttpHandler {
                     如果使用okhttp将新的请求,请求成功后,将返回的response  return出去即可
                     如果不需要返回新的结果,则直接把response参数返回出去 */
 
-        return response;
+
+        System.out.println("数据：返回" + response.request().url());
+
+        if (response.request().url().toString().contains("payexpress")) {
+            Gson gson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
+
+            Map<String, Object> resultMap = null;
+            try {
+                resultMap = gson.fromJson(response.body().string(), Map.class);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            String result = null;
+            System.out.println("未解密的服务器数据：" + resultMap);
+            try {
+                result = AESCipher.aesDecryptString(resultMap.get("data").toString(), AESCipher.KEY);
+            } catch (InvalidKeyException e) {
+                e.printStackTrace();
+            } catch (NoSuchAlgorithmException e) {
+                e.printStackTrace();
+            } catch (NoSuchPaddingException e) {
+                e.printStackTrace();
+            } catch (InvalidAlgorithmParameterException e) {
+                e.printStackTrace();
+            } catch (IllegalBlockSizeException e) {
+                e.printStackTrace();
+            } catch (BadPaddingException e) {
+                e.printStackTrace();
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+            System.out.println("解密的服务器数据：" + result);
+            ResponseBody body = ResponseBody.create(MEDIA_TYPE, result);
+            responseResult = response.newBuilder().body(body).build();
+
+        } else {
+            try {
+                String x = response.body().string();
+                JSONObject d = JSON.parseObject(x);
+                if (d.getString("code").equals("000006")) {
+
+
+                    String uuid = StringUtils.getUuid(context);
+                    StringBuilder sb = new StringBuilder();
+                    sb.append(uuid).append("-citizen");
+                    String psd = StringUtils.MD5(sb.toString());
+                    Retrofit retrofit = new Retrofit.Builder().
+                            baseUrl(Api.GOV_URL)
+                            .addConverterFactory(GsonConverterFactory.create())
+                            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                            .build();
+                    GovService service = retrofit.create(GovService.class);
+                    System.out.println("接口md5数据：" + psd);
+                    ElectricUser user = new ElectricUser();
+                    user.setUsername(uuid);
+                    user.setPassword(psd);
+                    Observable<LoginRes> observable = service.getLoginInfo(user);
+                    observable.subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(new DefaultObserver<LoginRes>() {
+                                @Override
+                                public void onNext(LoginRes res) {
+                                    if (res.isSuccess()) {
+                                        SharedPreferences prefs = context.getSharedPreferences("access_token.xml", 0);
+                                        prefs.edit().putString("access_token", res.getToken()).commit();
+                                        requestAgain(chain);
+                                        response.body().close();
+                                    }
+                                    System.out.println("数据1：" + JSON.toJSONString(res));
+
+                                }
+
+                                @Override
+                                public void onError(Throwable e) {
+                                    e.printStackTrace();
+                                }
+
+                                @Override
+                                public void onComplete() {
+
+                                }
+                            });
+
+                } else {
+                    ResponseBody body = ResponseBody.create(MEDIA_TYPE, x);
+                    responseResult = response.newBuilder().body(body).build();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        System.out.println("数据快了一步");
+        return responseResult;
     }
 
     // 这里可以在请求服务器之前可以拿到request,做一些操作比如给request统一添加token或者header以及参数加密等操作
     @Override
     public Request onHttpRequestBefore(Interceptor.Chain chain, Request request) {
                     /* 如果需要再请求服务器之前做一些操作,则重新返回一个做过操作的的request如增加header,不做操作则直接返回request参数*/
-        return request;
+        System.out.println("数据：" + request.url());
+
+        if (request.url().toString().contains("payexpress")) {
+            RequestBody oldBody = request.body();
+            Buffer buffer = new Buffer();
+            try {
+                oldBody.writeTo(buffer);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            String strOldBody = buffer.readUtf8();
+            JSONObject deal = JSON.parseObject(strOldBody);
+            deal.put("access_token", StringUtils.getToken(context));
+            String newData = JSON.toJSONString(deal);
+            System.out.println("request中传递的json数据：" + newData);
+            APIBodyData data = new APIBodyData();
+            try {
+                data.setData(AESCipher.aesEncryptString(newData, AESCipher.KEY));
+            } catch (InvalidKeyException e) {
+                e.printStackTrace();
+            } catch (NoSuchAlgorithmException e) {
+                e.printStackTrace();
+            } catch (NoSuchPaddingException e) {
+                e.printStackTrace();
+            } catch (InvalidAlgorithmParameterException e) {
+                e.printStackTrace();
+            } catch (IllegalBlockSizeException e) {
+                e.printStackTrace();
+            } catch (BadPaddingException e) {
+                e.printStackTrace();
+            } catch (NoSuchMethodError e) {
+                e.printStackTrace();
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+            String postBody = gson.toJson(data);
+            System.out.println("request转化后的数据：" + postBody);
+            RequestBody body = RequestBody.create(MEDIA_TYPE, postBody);
+            return request.newBuilder().method(request.method(), body).build();
+        } else {
+            return request.newBuilder()
+                    .header("X-Authorization", StringUtils.getToken(context)).build();
+        }
+    }
+
+    private void requestAgain(Interceptor.Chain chain) {
+        System.out.println("数据进来了嘛");
+        OkHttpClient okHttpClient = new OkHttpClient();
+        Request newRequst = chain.request().newBuilder()
+                .header("X-Authorization", StringUtils.getToken(context)).build();
+        Call call = okHttpClient.newCall(newRequst);
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                System.out.println("再次请求数据成功");
+                responseResult = response;
+            }
+        });
     }
 }

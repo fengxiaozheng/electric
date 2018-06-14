@@ -27,7 +27,6 @@ public class PaymentFragment extends Fragment {
 
     @Override
     public void onDestroy() {
-        activity = null;
         if (timer != null) {
             timer.cancel();
             timer = null;
@@ -37,6 +36,7 @@ public class PaymentFragment extends Fragment {
                 ((PaymentActivity) getActivity()).dismissDialog();
             }
         }
+        activity = null;
         super.onDestroy();
     }
 

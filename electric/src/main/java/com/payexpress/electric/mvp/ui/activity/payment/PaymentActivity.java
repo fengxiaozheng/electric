@@ -4,15 +4,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.LinearLayout;
 
 import com.payexpress.electric.R;
+import com.payexpress.electric.mvp.ui.activity.BaseActivity;
 import com.payexpress.electric.mvp.ui.activity.MainActivity;
 import com.payexpress.electric.mvp.ui.widget.LoadingDailog;
 
-public class PaymentActivity extends AppCompatActivity implements View.OnClickListener {
+public class PaymentActivity extends BaseActivity implements View.OnClickListener {
 
     private android.support.v4.app.FragmentManager mFragmentManager;
     private android.support.v4.app.FragmentTransaction mFragmentTransaction;
@@ -50,6 +50,7 @@ public class PaymentActivity extends AppCompatActivity implements View.OnClickLi
             finish();
         } else {
             mFragmentManager.popBackStack();
+
         //    getCurrent.onStart();
         }
 

@@ -1,60 +1,97 @@
 package com.payexpress.electric.mvp.ui.activity.gov;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.support.v4.app.Fragment;
 import android.view.View;
-import android.widget.Toast;
+import android.widget.LinearLayout;
 
 import com.payexpress.electric.R;
-import com.payexpress.electric.mvp.ui.adapter.GovAdapter;
-import com.payexpress.electric.mvp.ui.adapter.OnItemClickListener;
+import com.payexpress.electric.mvp.ui.activity.BaseActivity;
+import com.payexpress.electric.mvp.ui.activity.MainActivity;
+import com.payexpress.electric.mvp.ui.widget.LoadingDailog;
 
-public class GovActivity extends AppCompatActivity implements OnItemClickListener {
+public class GovActivity extends BaseActivity implements View.OnClickListener {
 
-    private RecyclerView mRecyclerView;
-    private RecyclerView.LayoutManager mLayoutManager;
-    private GovAdapter mAdapter;
+    private android.support.v4.app.FragmentManager mFragmentManager;
+    private android.support.v4.app.FragmentTransaction mFragmentTransaction;
+    private LoadingDailog.Builder  builder;
+    private LoadingDailog loadingView;
+    private LinearLayout backHome;
+    private LinearLayout back;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gov);
-        String[] titles = {getString(R.string.str_001), getString(R.string.str_002),
-                getString(R.string.str_003), getString(R.string.str_004),
-                getString(R.string.str_005), getString(R.string.str_006),
-                getString(R.string.str_007), getString(R.string.str_008)};
-        int[] imgs = {R.mipmap.ic_shebao, R.mipmap.ic_shuiwu, R.mipmap.ic_fangchan,
-                R.mipmap.ic_gongan, R.mipmap.ic_gongjijin, R.mipmap.ic_yiliao,
-                R.mipmap.ic_jiaoyu, R.mipmap.ic_zhengwuxinxi};
-        mRecyclerView = findViewById(R.id.gov_rv);
-        mLayoutManager = new GridLayoutManager(this, 4);
-        mRecyclerView.setHasFixedSize(true);
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        mAdapter = new GovAdapter(titles, imgs, this);
-        mRecyclerView.setAdapter(mAdapter);
+
+        mFragmentManager = getSupportFragmentManager();
+        mFragmentTransaction = mFragmentManager.beginTransaction();
+        mFragmentTransaction.add(R.id.e_frame, GovMainFragment.newInstance(), "GovMainFragment");
+        mFragmentTransaction.addToBackStack("GovMainFragment");
+        mFragmentTransaction.commit();
+        builder = new LoadingDailog.Builder(this);
+        loadingView = builder.setMessage("Loading...").create();
+        backHome = findViewById(R.id.backHome);
+        back = findViewById(R.id.back);
+        backHome.setOnClickListener(this);
+        back.setOnClickListener(this);
+
+    }
+
+    public boolean isFlagTrue() {
+        return flag;
+    }
+
+
+
+    public void backHome() {
+        startActivity(new Intent(this, MainActivity.class));
+        finish();
+    }
+
+    public void back() {
+        System.out.println("stack count=" + mFragmentManager.getBackStackEntryCount());
+        if (mFragmentManager.getBackStackEntryCount() <= 1) {
+            finish();
+        } else {
+            mFragmentManager.popBackStack();
+            //    getCurrent.onStart();
+        }
+
+    }
+
+    public void start(Fragment current, Fragment next, String tag) {
+        mFragmentManager = getSupportFragmentManager();
+        mFragmentTransaction = mFragmentManager.beginTransaction();
+        mFragmentTransaction.setCustomAnimations(R.anim.v_fragment_enter,R.anim.v_fragment_pop_exit,
+                R.anim.v_fragment_pop_enter,  R.anim.v_fragment_exit);
+        mFragmentTransaction.hide(current);
+        mFragmentTransaction.add(R.id.e_frame, next, tag);
+        mFragmentTransaction.addToBackStack(tag);
+        mFragmentTransaction.commit();
+    }
+
+    public void showDialog() {
+        loadingView.show();
+    }
+
+    public void dismissDialog() {
+        loadingView.dismiss();
+    }
+
+    public boolean isDialogShow(){
+        return loadingView.isShowing();
     }
 
     @Override
-    public void onItemClick(View view, int position) {
-        switch (position) {
-            case 0:
-                Toast.makeText(this, "xx", Toast.LENGTH_SHORT).show();
-                break;
-            default:
-                finish();
-                break;
+    public void onClick(View v) {
+        if (v.getId() == R.id.backHome) {
+            backHome();
+        } else if (v.getId() == R.id.back) {
+            back();
         }
     }
-
-    public void backHome(View view) {
-        finish();
-    }
-
-    public void back(View view) {
-        finish();
-    }
-
 }

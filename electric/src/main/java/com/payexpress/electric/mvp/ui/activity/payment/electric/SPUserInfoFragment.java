@@ -21,8 +21,8 @@ import android.widget.Toast;
 
 import com.payexpress.electric.R;
 import com.payexpress.electric.app.utils.KeyboardUtils;
-import com.payexpress.electric.mvp.model.entity.payment.ElectricPayInfo;
-import com.payexpress.electric.mvp.model.entity.payment.SmartUserInfo;
+import com.payexpress.electric.mvp.model.entity.paymentEntity.ElectricPayInfo;
+import com.payexpress.electric.mvp.model.entity.paymentEntity.SmartUserInfo;
 import com.payexpress.electric.mvp.ui.activity.payment.PaymentFragment;
 import com.payexpress.electric.mvp.ui.adapter.KeyboardAdapter;
 import com.payexpress.electric.mvp.ui.adapter.OnItemClickListener;

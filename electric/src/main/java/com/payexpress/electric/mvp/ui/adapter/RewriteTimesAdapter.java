@@ -9,7 +9,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.payexpress.electric.R;
-import com.payexpress.electric.mvp.model.entity.payment.RewriteTimesInfo;
+import com.payexpress.electric.mvp.model.entity.paymentEntity.RewriteTimesInfo;
 
 import java.util.List;
 

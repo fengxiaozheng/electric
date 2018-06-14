@@ -5,7 +5,7 @@ import android.view.View;
 import com.jess.arms.base.BaseHolder;
 import com.jess.arms.base.DefaultAdapter;
 import com.payexpress.electric.R;
-import com.payexpress.electric.mvp.model.entity.payment.RecordInfo;
+import com.payexpress.electric.mvp.model.entity.paymentEntity.RecordInfo;
 import com.payexpress.electric.mvp.ui.holder.PayRecordItemHolder;
 
 import java.util.List;

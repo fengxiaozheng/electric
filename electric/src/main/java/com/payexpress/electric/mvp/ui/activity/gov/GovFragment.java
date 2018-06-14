@@ -1,36 +1,79 @@
 package com.payexpress.electric.mvp.ui.activity.gov;
 
-import android.os.Bundle;
+import android.app.Activity;
+import android.os.CountDownTimer;
 import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.payexpress.electric.R;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link GovFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link GovFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class GovFragment extends Fragment {
 
+    protected GovActivity activity;
+    private CountDownTimer timer;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        this.activity = (GovActivity) activity;
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_gov, container, false);
+    public void onDestroy() {
+        activity = null;
+        if (timer != null) {
+            timer.cancel();
+            timer = null;
+        }
+        if (getActivity() instanceof GovActivity) {
+            if (((GovActivity) getActivity()).isDialogShow()){
+                ((GovActivity) getActivity()).dismissDialog();
+            }
+        }
+        super.onDestroy();
     }
 
-  
+    @Override
+    public void onResume() {
+        super.onResume();
+        timer = new CountDownTimer(300 * 1000, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                if (getView() != null) {
+                    if (getView().findViewById(R.id.bottom_time) != null) {
+                        if (millisUntilFinished / 1000 >= 1) {
+                            ((TextView) getView().findViewById(R.id.bottom_time)).setText(String.valueOf(millisUntilFinished / 1000));
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onFinish() {
+                if (getActivity() instanceof GovActivity) {
+                        ((GovActivity) getActivity()).back();
+                }
+            }
+        };
+        timer.start();
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (hidden) {
+            onPause();
+        } else {
+            onResume();
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (timer != null) {
+            timer.cancel();
+        }
+    }
 }

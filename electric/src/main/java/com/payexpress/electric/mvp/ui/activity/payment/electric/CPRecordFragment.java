@@ -17,11 +17,11 @@ import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.utils.ArmsUtils;
 import com.mingle.widget.LoadingView;
 import com.payexpress.electric.R;
-import com.payexpress.electric.di.component.DaggerPayRecordComponent;
-import com.payexpress.electric.di.module.PayRecordModule;
-import com.payexpress.electric.mvp.contract.PayRecordContract;
-import com.payexpress.electric.mvp.model.entity.payment.PayRecordRes;
-import com.payexpress.electric.mvp.presenter.PayRecordPresenter;
+import com.payexpress.electric.di.component.payment.DaggerPayRecordComponent;
+import com.payexpress.electric.di.module.payment.PayRecordModule;
+import com.payexpress.electric.mvp.contract.payment.PayRecordContract;
+import com.payexpress.electric.mvp.model.entity.paymentEntity.PayRecordRes;
+import com.payexpress.electric.mvp.presenter.payment.PayRecordPresenter;
 import com.payexpress.electric.mvp.ui.activity.payment.BasePaymentFragment;
 
 import org.ayo.view.status.DefaultStatus;

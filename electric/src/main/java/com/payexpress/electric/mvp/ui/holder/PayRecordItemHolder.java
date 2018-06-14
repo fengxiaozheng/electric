@@ -5,7 +5,7 @@ import android.widget.TextView;
 
 import com.jess.arms.base.BaseHolder;
 import com.payexpress.electric.R;
-import com.payexpress.electric.mvp.model.entity.payment.RecordInfo;
+import com.payexpress.electric.mvp.model.entity.paymentEntity.RecordInfo;
 
 import butterknife.BindView;
 import io.reactivex.Observable;

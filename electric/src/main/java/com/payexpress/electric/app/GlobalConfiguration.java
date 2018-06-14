@@ -18,7 +18,6 @@ package com.payexpress.electric.app;
 import android.app.Application;
 import android.content.Context;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 
@@ -54,13 +53,11 @@ import me.jessyan.retrofiturlmanager.RetrofitUrlManager;
 public final class GlobalConfiguration implements ConfigModule {
 //    public static String sDomain = Api.APP_DOMAIN;
 
-    private CountDownTimer timer;
     @Override
     public void applyOptions(Context context, GlobalConfigModule.Builder builder) {
         if (!BuildConfig.LOG_DEBUG) { //Release 时,让框架不再打印 Http 请求和响应的信息
             builder.printHttpLogLevel(RequestInterceptor.Level.NONE);
         }
-
         builder.baseurl(Api.BASE_URL)
                 //强烈建议自己自定义图片加载逻辑,因为默认提供的 GlideImageLoaderStrategy 并不能满足复杂的需求
                 //请参考 https://github.com/JessYanCoding/MVPArms/wiki#3.4

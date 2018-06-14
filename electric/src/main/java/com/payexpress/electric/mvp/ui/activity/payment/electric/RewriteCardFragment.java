@@ -13,10 +13,10 @@ import android.widget.LinearLayout;
 import com.jess.arms.di.component.AppComponent;
 import com.payexpress.electric.R;
 import com.payexpress.electric.app.utils.Psamcmd;
-import com.payexpress.electric.di.component.DaggerRewriteCardComponent;
-import com.payexpress.electric.di.module.RewriteCardModule;
-import com.payexpress.electric.mvp.contract.RewriteCardContract;
-import com.payexpress.electric.mvp.presenter.RewriteCardPresenter;
+import com.payexpress.electric.di.component.payment.DaggerRewriteCardComponent;
+import com.payexpress.electric.di.module.payment.RewriteCardModule;
+import com.payexpress.electric.mvp.contract.payment.RewriteCardContract;
+import com.payexpress.electric.mvp.presenter.payment.RewriteCardPresenter;
 import com.payexpress.electric.mvp.ui.activity.payment.BasePaymentFragment;
 
 import butterknife.BindView;

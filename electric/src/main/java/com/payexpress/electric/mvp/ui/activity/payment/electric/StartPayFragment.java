@@ -15,11 +15,11 @@ import android.widget.Toast;
 import com.jess.arms.di.component.AppComponent;
 import com.payexpress.electric.R;
 import com.payexpress.electric.app.utils.Psamcmd;
-import com.payexpress.electric.di.component.DaggerElectricPayComponent;
-import com.payexpress.electric.di.module.EleCtricPayModule;
-import com.payexpress.electric.mvp.contract.ElectricPayContract;
-import com.payexpress.electric.mvp.model.entity.payment.ElectricPayInfo;
-import com.payexpress.electric.mvp.presenter.ElectricPayPresenter;
+import com.payexpress.electric.di.component.payment.DaggerElectricPayComponent;
+import com.payexpress.electric.di.module.payment.EleCtricPayModule;
+import com.payexpress.electric.mvp.contract.payment.ElectricPayContract;
+import com.payexpress.electric.mvp.model.entity.paymentEntity.ElectricPayInfo;
+import com.payexpress.electric.mvp.presenter.payment.ElectricPayPresenter;
 import com.payexpress.electric.mvp.ui.activity.payment.BasePaymentFragment;
 
 import butterknife.BindView;

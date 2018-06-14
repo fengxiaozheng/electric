@@ -16,12 +16,12 @@ import com.jess.arms.utils.ArmsUtils;
 import com.mingle.widget.LoadingView;
 import com.payexpress.electric.R;
 import com.payexpress.electric.app.utils.Psamcmd;
-import com.payexpress.electric.di.component.DaggerRewriteTimesComponent;
-import com.payexpress.electric.di.module.RewriteTimesModule;
-import com.payexpress.electric.mvp.contract.RewriteTimesContract;
-import com.payexpress.electric.mvp.model.entity.payment.RewriteCardListRes;
-import com.payexpress.electric.mvp.model.entity.payment.RewriteTimesAllParams;
-import com.payexpress.electric.mvp.presenter.RewriteTimesPresenter;
+import com.payexpress.electric.di.component.payment.DaggerRewriteTimesComponent;
+import com.payexpress.electric.di.module.payment.RewriteTimesModule;
+import com.payexpress.electric.mvp.contract.payment.RewriteTimesContract;
+import com.payexpress.electric.mvp.model.entity.paymentEntity.RewriteCardListRes;
+import com.payexpress.electric.mvp.model.entity.paymentEntity.RewriteTimesAllParams;
+import com.payexpress.electric.mvp.presenter.payment.RewriteTimesPresenter;
 import com.payexpress.electric.mvp.ui.activity.payment.BasePaymentFragment;
 import com.payexpress.electric.mvp.ui.adapter.RewriteTimesAdapter;
 
