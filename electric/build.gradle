@@ -69,7 +69,6 @@ dependencies {
     implementation rootProject.ext.dependencies["lifecyclemodel"]
     implementation rootProject.ext.dependencies["zbar"]
     implementation rootProject.ext.dependencies["retrofit-converter-gson"]
-    implementation rootProject.ext.dependencies["retrofit-adapter-rxjava2"]
 
     //view
     annotationProcessor(rootProject.ext.dependencies["butterknife-compiler"]) {

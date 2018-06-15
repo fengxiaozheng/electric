@@ -5,7 +5,7 @@ import com.jess.arms.integration.IRepositoryManager;
 import com.jess.arms.mvp.BaseModel;
 import com.payexpress.electric.mvp.contract.gov.GovMainContract;
 import com.payexpress.electric.mvp.model.api.service.GovService;
-import com.payexpress.electric.mvp.model.entity.govEntity.BaseGovResponse;
+import com.payexpress.electric.mvp.model.entity.govEntity.GovMainRes;
 
 import javax.inject.Inject;
 
@@ -23,9 +23,10 @@ public class GovMainModel extends BaseModel implements GovMainContract.Model {
         super(repositoryManager);
     }
 
+
     @Override
-    public Observable<BaseGovResponse> getTermArea() {
+    public Observable<GovMainRes> getGovMainFragmentItem() {
         return mRepositoryManager.obtainRetrofitService(GovService.class)
-                .getTermArea();
+                .getGovMainItem();
     }
 }

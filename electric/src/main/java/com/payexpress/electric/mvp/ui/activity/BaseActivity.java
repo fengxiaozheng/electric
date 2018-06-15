@@ -12,12 +12,10 @@ import com.payexpress.electric.mvp.model.api.service.GovService;
 import com.payexpress.electric.mvp.model.entity.ElectricUser;
 import com.payexpress.electric.mvp.model.entity.LoginRes;
 
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.observers.DefaultObserver;
-import io.reactivex.schedulers.Schedulers;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
@@ -50,37 +48,28 @@ public class BaseActivity extends AppCompatActivity {
         sb.append(uuid).append("-citizen");
         String psd = StringUtils.MD5(sb.toString());
         Retrofit retrofit = new Retrofit.Builder().
-                baseUrl(Api.GOV_URL)
+                baseUrl(Api.LOGIN_URL)
                 .addConverterFactory(GsonConverterFactory.create())
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build();
         GovService service = retrofit.create(GovService.class);
         System.out.println("md5数据："+psd);
         ElectricUser user = new ElectricUser();
         user.setUsername(uuid);
         user.setPassword(psd);
-        Observable<LoginRes> observable = service.getLoginInfo(user);
-        observable.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(new DefaultObserver<LoginRes>() {
+        Call<LoginRes> observable = service.getLoginInfo(user);
+        observable.enqueue(new Callback<LoginRes>() {
             @Override
-            public void onNext(LoginRes response) {
-                if (response.isSuccess()) {
-                    prefs.edit().putString(PREFS_DEVICE_ID, response.getToken()).commit();
+            public void onResponse(Call<LoginRes> call, Response<LoginRes> response) {
+                if (response.body().isSuccess()) {
+                    prefs.edit().putString(PREFS_DEVICE_ID, response.body().getToken()).commit();
                     flag = true;
                 }
-                System.out.println("数据1："+ JSON.toJSONString(response));
-
+                System.out.println("数据1："+ JSON.toJSONString(response.body()));
             }
 
             @Override
-            public void onError(Throwable e) {
-                e.printStackTrace();
-            }
-
-            @Override
-            public void onComplete() {
-
+            public void onFailure(Call<LoginRes> call, Throwable t) {
+                System.out.println("数据错误："+JSON.toJSONString(t));
             }
         });
     }

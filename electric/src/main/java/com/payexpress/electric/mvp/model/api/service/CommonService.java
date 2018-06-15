@@ -25,11 +25,13 @@ import com.payexpress.electric.mvp.model.entity.paymentEntity.PayRecordRes;
 import com.payexpress.electric.mvp.model.entity.paymentEntity.QuerySmartCardRes;
 import com.payexpress.electric.mvp.model.entity.paymentEntity.RewriteCardListRes;
 import com.payexpress.electric.mvp.model.entity.paymentEntity.RewriteCardRes;
+import com.payexpress.electric.mvp.model.entity.paymentEntity.RewriteInputRes;
 import com.payexpress.electric.mvp.model.entity.paymentEntity.RewriteTimesRes;
 import com.payexpress.electric.mvp.model.entity.paymentEntity.SmartCardBuyRes;
 
 import io.reactivex.Observable;
 import retrofit2.http.Body;
+import retrofit2.http.GET;
 import retrofit2.http.POST;
 
 /**
@@ -84,4 +86,7 @@ public interface CommonService {
 
     @POST("payexpress/proxy5011.json")
     Observable<RewriteTimesRes> rewriteCardTimes(@Body String req);
+
+    @GET("citizen-restful/config")
+    Observable<RewriteInputRes> getTermPassword();
 }

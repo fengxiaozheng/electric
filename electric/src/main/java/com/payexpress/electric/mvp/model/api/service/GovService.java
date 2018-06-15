@@ -2,9 +2,10 @@ package com.payexpress.electric.mvp.model.api.service;
 
 import com.payexpress.electric.mvp.model.entity.ElectricUser;
 import com.payexpress.electric.mvp.model.entity.LoginRes;
-import com.payexpress.electric.mvp.model.entity.govEntity.BaseGovResponse;
+import com.payexpress.electric.mvp.model.entity.govEntity.GovMainRes;
 
 import io.reactivex.Observable;
+import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
@@ -17,8 +18,8 @@ import retrofit2.http.POST;
 public interface GovService {
 
     @POST("login")
-    Observable<LoginRes> getLoginInfo(@Body ElectricUser user);
+    Call<LoginRes> getLoginInfo(@Body ElectricUser user);
 
-    @GET("citizen-restful/config")
-    Observable<BaseGovResponse> getTermArea();
+    @GET("citizen-restful/func")
+    Observable<GovMainRes> getGovMainItem();
 }

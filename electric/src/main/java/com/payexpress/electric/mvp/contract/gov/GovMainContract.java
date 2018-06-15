@@ -4,7 +4,9 @@ import android.app.Activity;
 
 import com.jess.arms.mvp.IModel;
 import com.jess.arms.mvp.IView;
-import com.payexpress.electric.mvp.model.entity.govEntity.BaseGovResponse;
+import com.mingle.widget.LoadingView;
+import com.payexpress.electric.mvp.model.entity.govEntity.GovMainRes;
+import com.payexpress.electric.mvp.ui.adapter.MainFragmentClickListener;
 
 import io.reactivex.Observable;
 
@@ -16,11 +18,12 @@ import io.reactivex.Observable;
 public interface GovMainContract {
 
     interface View extends IView {
-        void fail();
+        MainFragmentClickListener getListener();
+        LoadingView getLoadingView();
         Activity getActivity();
     }
 
     interface Model extends IModel {
-        Observable<BaseGovResponse> getTermArea();
+        Observable<GovMainRes> getGovMainFragmentItem();
     }
 }

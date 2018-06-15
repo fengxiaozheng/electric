@@ -42,12 +42,7 @@ import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.observers.DefaultObserver;
-import io.reactivex.schedulers.Schedulers;
 import okhttp3.Call;
-import okhttp3.Callback;
 import okhttp3.Interceptor;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -57,7 +52,6 @@ import okhttp3.Response;
 import okhttp3.ResponseBody;
 import okio.Buffer;
 import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
@@ -150,41 +144,20 @@ public class GlobalHttpHandlerImpl implements GlobalHttpHandler {
                     sb.append(uuid).append("-citizen");
                     String psd = StringUtils.MD5(sb.toString());
                     Retrofit retrofit = new Retrofit.Builder().
-                            baseUrl(Api.GOV_URL)
+                            baseUrl(Api.LOGIN_URL)
                             .addConverterFactory(GsonConverterFactory.create())
-                            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                             .build();
                     GovService service = retrofit.create(GovService.class);
                     System.out.println("接口md5数据：" + psd);
                     ElectricUser user = new ElectricUser();
                     user.setUsername(uuid);
                     user.setPassword(psd);
-                    Observable<LoginRes> observable = service.getLoginInfo(user);
-                    observable.subscribeOn(Schedulers.io())
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe(new DefaultObserver<LoginRes>() {
-                                @Override
-                                public void onNext(LoginRes res) {
-                                    if (res.isSuccess()) {
-                                        SharedPreferences prefs = context.getSharedPreferences("access_token.xml", 0);
-                                        prefs.edit().putString("access_token", res.getToken()).commit();
+                    retrofit2.Call<LoginRes> observable = service.getLoginInfo(user);
+                    retrofit2.Response<LoginRes> m = observable.execute();
+                    System.out.println("同步token数据："+m.body().getToken());
+                    SharedPreferences prefs = context.getSharedPreferences("access_token.xml", 0);
+                                        prefs.edit().putString("access_token", m.body().getToken()).commit();
                                         requestAgain(chain);
-                                        response.body().close();
-                                    }
-                                    System.out.println("数据1：" + JSON.toJSONString(res));
-
-                                }
-
-                                @Override
-                                public void onError(Throwable e) {
-                                    e.printStackTrace();
-                                }
-
-                                @Override
-                                public void onComplete() {
-
-                                }
-                            });
 
                 } else {
                     ResponseBody body = ResponseBody.create(MEDIA_TYPE, x);
@@ -194,7 +167,7 @@ public class GlobalHttpHandlerImpl implements GlobalHttpHandler {
                 e.printStackTrace();
             }
         }
-        System.out.println("数据快了一步");
+
         return responseResult;
     }
 
@@ -202,8 +175,6 @@ public class GlobalHttpHandlerImpl implements GlobalHttpHandler {
     @Override
     public Request onHttpRequestBefore(Interceptor.Chain chain, Request request) {
                     /* 如果需要再请求服务器之前做一些操作,则重新返回一个做过操作的的request如增加header,不做操作则直接返回request参数*/
-        System.out.println("数据：" + request.url());
-
         if (request.url().toString().contains("payexpress")) {
             RequestBody oldBody = request.body();
             Buffer buffer = new Buffer();
@@ -248,22 +219,14 @@ public class GlobalHttpHandlerImpl implements GlobalHttpHandler {
     }
 
     private void requestAgain(Interceptor.Chain chain) {
-        System.out.println("数据进来了嘛");
         OkHttpClient okHttpClient = new OkHttpClient();
         Request newRequst = chain.request().newBuilder()
                 .header("X-Authorization", StringUtils.getToken(context)).build();
         Call call = okHttpClient.newCall(newRequst);
-        call.enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                System.out.println("再次请求数据成功");
-                responseResult = response;
-            }
-        });
+        try {
+            responseResult = call.execute();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
