@@ -4,10 +4,12 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.jess.arms.di.component.AppComponent;
 import com.mingle.widget.LoadingView;
@@ -91,7 +93,7 @@ public class GovMainFragment extends BaseGovFragment<GovMainPresenter> implement
         timer = new CountDownTimer(30 * 1000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
-                System.out.println("数据：" + millisUntilFinished/1000);
+                System.out.println("数据：" + millisUntilFinished / 1000);
                 if (activity.isFlagTrue()) {
                     if (mPresenter != null) {
                         mPresenter.getTermArea();
@@ -115,8 +117,6 @@ public class GovMainFragment extends BaseGovFragment<GovMainPresenter> implement
     }
 
 
-
-
     @Override
     public void showMessage(@NonNull String message) {
 
@@ -134,7 +134,18 @@ public class GovMainFragment extends BaseGovFragment<GovMainPresenter> implement
 
     @Override
     public void onItemClick(View view, MainFragmentItemInfo info) {
-        activity.start(this, GovWebFragment.newInstance("1","1"),
-                "GovWebFragment");
+        if ("01".equals(info.getStatus())) {
+            Toast.makeText(activity, "该功能尚未开通，敬请期待", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if ("01".equals(info.getFuncType())) {
+            activity.start(this, GovWebFragment.newInstance(info.getUrl()),
+                    "GovWebFragment");
+        } else {
+            Fragment cls;
+            cls = Fragment.instantiate(activity, info.getUrl());
+            activity.start(this, cls, info.getUrl());
+        }
+
     }
 }

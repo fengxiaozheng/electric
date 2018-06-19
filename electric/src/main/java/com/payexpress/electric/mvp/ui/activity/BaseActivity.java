@@ -26,11 +26,12 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class BaseActivity extends AppCompatActivity {
     private SharedPreferences prefs;
     private String PREFS_DEVICE_ID = "access_token";
-    protected boolean flag = false;//维true时方可进行网络请求，确保拿到token值
+    protected boolean flag;//为true时方可进行网络请求，确保拿到token值
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        flag = false;
         String PREFS_FILE = "access_token.xml";
         prefs = getSharedPreferences(PREFS_FILE, 0);
         String id = prefs.getString(PREFS_DEVICE_ID, (String) null);
