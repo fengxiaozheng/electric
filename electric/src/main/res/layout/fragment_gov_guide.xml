@@ -1,0 +1,19 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/gov_info_zn_item"
+    tools:context="com.payexpress.electric.mvp.ui.activity.gov.GovGuideFragment">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/gov_recycler"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </android.support.v7.widget.RecyclerView>
+
+    <com.mingle.widget.LoadingView
+        android:id="@+id/loadingView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </com.mingle.widget.LoadingView>
+
+</FrameLayout>

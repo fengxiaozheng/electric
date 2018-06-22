@@ -27,4 +27,6 @@
     <dimen name="result_dialog_height">606dp</dimen>
     <dimen name="result_dialog_text">28sp</dimen>
     <dimen name="has_keyboard_body_height">860dp</dimen>
+    <dimen name="gov_info_zn_item">853dp</dimen>
+    <dimen name="guide_detail_content">32sp</dimen>
 </resources>

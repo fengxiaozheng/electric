@@ -139,7 +139,7 @@ public class GovMainFragment extends BaseGovFragment<GovMainPresenter> implement
             return;
         }
         if ("01".equals(info.getFuncType())) {
-            activity.start(this, GovWebFragment.newInstance(info.getUrl()),
+            activity.start(this, GovWebFragment.newInstance(true, info.getUrl()),
                     "GovWebFragment");
         } else {
             Fragment cls;
@@ -147,5 +147,11 @@ public class GovMainFragment extends BaseGovFragment<GovMainPresenter> implement
             activity.start(this, cls, info.getUrl());
         }
 
+    }
+
+    @Override
+    public void onDestroy() {
+        timer.cancel();
+        super.onDestroy();
     }
 }

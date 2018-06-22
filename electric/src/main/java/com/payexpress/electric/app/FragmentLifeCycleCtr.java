@@ -60,6 +60,7 @@ public class FragmentLifeCycleCtr extends FragmentLifecycle {
                 ((PaymentActivity) f.getActivity()).dismissDialog();
             }
         }
+
     }
 
     @Override

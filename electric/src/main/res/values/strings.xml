@@ -5,6 +5,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="complete">完成</string>
     <string name="confirm">确定</string>
+    <string name="back">返回</string>
     <string name="trade_time">交易时间</string>
     <string name="trade_no">交易流水号</string>
     <string name="notice">温馨提示：</string>
@@ -69,4 +70,16 @@
     <string name="str_054">无需插卡</string>
     <string name="str_055">请将电卡“芯片”向上，插入卡槽</string>
     <string name="str_056">购电失败</string>
+    <string name="str_057">办事指南</string>
+    <string name="str_058">事务中心</string>
+    <string name="str_059">业务办理</string>
+    <string name="str_060">一、事项名称：</string>
+    <string name="str_061">二、事项类别：</string>
+    <string name="str_062">七、办理时限：</string>
+    <string name="str_063">三、办理流程：</string>
+    <string name="str_064">四、前置条件：</string>
+    <string name="str_065">五、政策内容：</string>
+    <string name="str_066">六、申请资料：</string>
+    <string name="str_067">仅跑一次</string>
+    <string name="str_068">请输入身份证号码</string>
 </resources>

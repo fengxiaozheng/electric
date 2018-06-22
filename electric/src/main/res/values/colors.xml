@@ -14,4 +14,5 @@
     <color name="user_info_line_color">#ffdddddd</color>
     <color name="balance_color">#10B520</color>
     <color name="result_dialog_text_color">#999999</color>
+    <color name="guide_detail_content_color">#666666</color>
 </resources>

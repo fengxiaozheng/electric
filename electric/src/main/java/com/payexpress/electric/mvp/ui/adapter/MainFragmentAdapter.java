@@ -37,7 +37,9 @@ public class MainFragmentAdapter extends RecyclerView.Adapter<MainFragmentAdapte
 
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
-
+        if ("01".equals(data.get(position).getStatus())) {
+            holder.mIView.setVisibility(View.VISIBLE);
+        }
         holder.mImageView.setImageResource(getResource(data.get(position).getFuncIcon()));
         holder.mTextView.setText(data.get(position).getFuncName());
         holder.view.setOnClickListener(v -> {
@@ -53,6 +55,7 @@ public class MainFragmentAdapter extends RecyclerView.Adapter<MainFragmentAdapte
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView mTextView;
         ImageView mImageView;
+        View mIView;
         private View view;
 
         public ViewHolder(View view) {
@@ -60,6 +63,7 @@ public class MainFragmentAdapter extends RecyclerView.Adapter<MainFragmentAdapte
             this.view = view;
             mTextView = (TextView) view.findViewById(R.id.gov_item_tv);
             mImageView = (ImageView) view.findViewById(R.id.gov_item_iv);
+            mIView = view.findViewById(R.id.isNo);
         }
 
     }

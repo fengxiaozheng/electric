@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.LinearLayout;
 
 import com.payexpress.electric.R;
@@ -20,7 +21,7 @@ public class GovActivity extends BaseActivity implements View.OnClickListener {
     private LoadingDailog loadingView;
     private LinearLayout backHome;
     private LinearLayout back;
-
+    private Fragment currentFrg;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -54,13 +55,33 @@ public class GovActivity extends BaseActivity implements View.OnClickListener {
 
     public void back() {
         System.out.println("stack count=" + mFragmentManager.getBackStackEntryCount());
+        System.out.println("      tag:"+currentFrg.getTag());
+        if (currentFrg.getTag() != null) {
+            if (currentFrg.getTag().equals("GovWebFragment")
+                    && currentFrg.getView().findViewById(R.id.gov_web) != null) {
+                WebView webView = currentFrg.getView().findViewById(R.id.gov_web);
+                System.out.println("      "+ webView.getUrl());
+                if (webView.getUrl().contains("government/info#/detail")) {
+                    webView.goBack();
+                }else {
+                    back2();
+                }
+            }else {
+                back2();
+            }
+        }else {
+            back2();
+        }
+
+    }
+
+    private void back2() {
         if (mFragmentManager.getBackStackEntryCount() <= 1) {
             finish();
         } else {
             mFragmentManager.popBackStack();
             //    getCurrent.onStart();
         }
-
     }
 
     public void start(Fragment current, Fragment next, String tag) {
@@ -72,6 +93,7 @@ public class GovActivity extends BaseActivity implements View.OnClickListener {
         mFragmentTransaction.add(R.id.e_frame, next, tag);
         mFragmentTransaction.addToBackStack(tag);
         mFragmentTransaction.commit();
+        currentFrg = next;
     }
 
     public void showDialog() {

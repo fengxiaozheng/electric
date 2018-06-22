@@ -1,13 +1,91 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.payexpress.electric.mvp.ui.activity.gov.GovInfoItemFragment">
+    android:layout_height="@dimen/body_height"
+    android:layout_marginTop="@dimen/body_top"
+    android:gravity="center"
+    android:orientation="horizontal"
+    android:layout_marginBottom="@dimen/body_bottom">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
 
-</FrameLayout>
+    <LinearLayout
+        android:id="@+id/g_zn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical">
+        <ImageView
+            android:layout_width="270dp"
+            android:layout_height="270dp"
+            android:src="@mipmap/ic_zhinengdianbiao"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/str_057"
+            android:textColor="@color/white"
+            android:layout_marginTop="@dimen/electric_item_text_margin"
+            android:textSize="@dimen/electric_item_text"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/g_yc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginLeft="200dp"
+        android:orientation="vertical">
+        <ImageView
+            android:layout_width="270dp"
+            android:layout_height="270dp"
+            android:src="@mipmap/ic_putongdianbiao"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/str_067"
+            android:textColor="@color/white"
+            android:layout_marginTop="@dimen/electric_item_text_margin"
+            android:textSize="@dimen/electric_item_text"/>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/g_zx"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginLeft="200dp"
+        android:layout_marginRight="200dp"
+        android:orientation="vertical">
+        <ImageView
+            android:layout_width="270dp"
+            android:layout_height="270dp"
+            android:src="@mipmap/ic_putongdianbiao"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/str_058"
+            android:textColor="@color/white"
+            android:layout_marginTop="@dimen/electric_item_text_margin"
+            android:textSize="@dimen/electric_item_text"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/g_bl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical">
+        <ImageView
+            android:layout_width="270dp"
+            android:layout_height="270dp"
+            android:src="@mipmap/ic_diankabuxie"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/str_059"
+            android:textColor="@color/white"
+            android:layout_marginTop="@dimen/electric_item_text_margin"
+            android:textSize="@dimen/electric_item_text"/>
+    </LinearLayout>
+
+</LinearLayout>

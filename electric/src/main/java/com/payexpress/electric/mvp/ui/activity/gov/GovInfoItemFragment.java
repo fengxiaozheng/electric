@@ -2,10 +2,13 @@ package com.payexpress.electric.mvp.ui.activity.gov;
 
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.payexpress.electric.R;
 
@@ -14,7 +17,7 @@ import com.payexpress.electric.R;
  * Use the {@link GovInfoItemFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class GovInfoItemFragment extends Fragment {
+public class GovInfoItemFragment extends GovFragment implements View.OnClickListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -23,6 +26,11 @@ public class GovInfoItemFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    private LinearLayout g_zn;
+    private LinearLayout g_zx;
+    private LinearLayout g_bl;
+    private LinearLayout g_yc;
 
 
     public GovInfoItemFragment() {
@@ -63,4 +71,36 @@ public class GovInfoItemFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_gov_info_item, container, false);
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        g_zn = view.findViewById(R.id.g_zn);
+        g_zx = view.findViewById(R.id.g_zx);
+        g_bl = view.findViewById(R.id.g_bl);
+        g_yc = view.findViewById(R.id.g_yc);
+        g_zn.setOnClickListener(this);
+        g_zx.setOnClickListener(this);
+        g_bl.setOnClickListener(this);
+        g_yc.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.g_zn:
+                activity.start(this, GovGuideFragment.newInstance("0"), "GovGuideFragment");
+                break;
+            case R.id.g_zx:
+                activity.start(this, new GovLocationFragment(), "GovLocationFragment");
+                break;
+            case R.id.g_bl:
+                activity.start(this, new GovBusinessFragment(), "GovBusinessFragment");
+                break;
+            case R.id.g_yc:
+                activity.start(this, GovGuideFragment.newInstance("1"), "GovGuideFragment");
+                break;
+                default:
+                    break;
+        }
+    }
 }

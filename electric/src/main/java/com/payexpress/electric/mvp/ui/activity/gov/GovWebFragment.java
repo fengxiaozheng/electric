@@ -15,6 +15,7 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.FrameLayout;
 
 import com.payexpress.electric.R;
 
@@ -27,9 +28,11 @@ public class GovWebFragment extends GovFragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM = "param";
+    private static final String ARG_PARAM1 = "param1";
 
     // TODO: Rename and change types of parameters
     private String mParam;
+    private boolean isMain;
 
     private WebView mWebView;
     private WebSettings mWebSettings;
@@ -39,19 +42,13 @@ public class GovWebFragment extends GovFragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment GovWebFragment.
-     */
+
     // TODO: Rename and change types and number of parameters
-    public static GovWebFragment newInstance(String param) {
+    public static GovWebFragment newInstance(boolean isGovMain, String param) {
         GovWebFragment fragment = new GovWebFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM, param);
+        args.putBoolean(ARG_PARAM1, isGovMain);
         fragment.setArguments(args);
         return fragment;
     }
@@ -61,6 +58,7 @@ public class GovWebFragment extends GovFragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             mParam = getArguments().getString(ARG_PARAM);
+            isMain = getArguments().getBoolean(ARG_PARAM1);
         }
     }
 
@@ -76,6 +74,16 @@ public class GovWebFragment extends GovFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mWebView = view.findViewById(R.id.gov_web);
+        FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) mWebView.getLayoutParams();
+        if (isMain) {
+            lp.height = 1080;
+            lp.topMargin = -140;
+            lp.bottomMargin = -140;
+        }else {
+            lp.height = 820;
+            lp.topMargin = 10;
+        }
+        mWebView.setLayoutParams(lp);
         mWebSettings = mWebView.getSettings();
         mWebView.loadUrl(mParam);
         mWebSettings.setJavaScriptEnabled(true);

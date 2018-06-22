@@ -1,0 +1,94 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/has_bottom_body_height"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginTop="@dimen/body_top"
+    tools:context="com.payexpress.electric.mvp.ui.activity.gov.GovGuideListFragment">
+
+    <LinearLayout
+        android:layout_width="1814dp"
+        android:layout_height="770dp"
+        android:layout_marginTop="40dp"
+        android:paddingTop="40dp"
+        android:orientation="vertical"
+        android:background="@drawable/pay_record"
+        android:layout_gravity="center_horizontal">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="510dp">
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/gl_recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="510dp">
+            </android.support.v7.widget.RecyclerView>
+        </FrameLayout>
+        
+        <LinearLayout
+            android:id="@+id/page_control"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:gravity="center"
+            android:layout_marginTop="120dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/page_num"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/user_info_right_color"
+                android:layout_marginRight="30dp"
+                android:textSize="42sp"/>
+            <Button
+                android:id="@+id/page_start"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:layout_marginRight="30dp"
+                android:text="@string/str_048"
+                android:background="@drawable/btn_record"
+                android:textSize="42sp"/>
+            <Button
+                android:id="@+id/page_last"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:layout_marginRight="30dp"
+                android:text="@string/str_049"
+                android:background="@drawable/btn_record"
+                android:textSize="42sp"/>
+            <Button
+                android:id="@+id/page_next"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:layout_marginRight="30dp"
+                android:text="@string/str_050"
+                android:background="@drawable/btn_record"
+                android:textSize="42sp"/>
+            <Button
+                android:id="@+id/page_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:text="@string/back"
+                android:background="@drawable/btn_record"
+                android:textSize="42sp"/>
+        </LinearLayout>
+        
+    </LinearLayout>
+
+    <com.mingle.widget.LoadingView
+        android:id="@+id/loadingView"
+        android:layout_width="1814dp"
+        android:layout_height="770dp"
+        android:layout_marginTop="40dp"
+        android:paddingTop="20dp"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/pay_record"
+        app:loadingText="加载中..."/>
+    
+    <include layout="@layout/bottom_time"/>
+
+</FrameLayout>

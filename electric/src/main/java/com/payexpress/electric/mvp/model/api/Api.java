@@ -31,5 +31,5 @@ public interface Api {
 //    String ACCESS_TOKEN = "ZFTUSER_82A2E47E3A035D209D4118797DDFB016";
     String RequestSuccess = "0000";
     String OtherRequestSuccess = "000000";
-    String LOGIN_URL = "http://118.122.120.25:10000/citizen-restful/";
+    String LOGIN_URL = BASE_URL + "citizen-restful/";
 }
