@@ -48,7 +48,6 @@ public class RewriteCardFragment extends BasePaymentFragment<RewriteCardPresente
     }
 
 
-
     @Override
     public void setupFragmentComponent(@NonNull AppComponent appComponent) {
         DaggerRewriteCardComponent.builder()
@@ -75,7 +74,7 @@ public class RewriteCardFragment extends BasePaymentFragment<RewriteCardPresente
 
     @OnClick(R.id.re_times)
     void click() {
-        activity.start(RewriteCardFragment.this, RewriteInputFragment.newInstance(),
+        start(RewriteCardFragment.this, RewriteInputFragment.newInstance(),
                 "RewriteInputFragment");
     }
 
@@ -111,7 +110,7 @@ public class RewriteCardFragment extends BasePaymentFragment<RewriteCardPresente
     }
 
     private void next(boolean result) {
-        activity.start(RewriteCardFragment.this,
+        start(RewriteCardFragment.this,
                 RewriteResultFragment.newInstance(result), "RewriteResultFragment");
     }
 }

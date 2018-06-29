@@ -3,6 +3,7 @@ package com.payexpress.electric.mvp.presenter.gov;
 import com.jess.arms.di.scope.FragmentScope;
 import com.jess.arms.mvp.BasePresenter;
 import com.jess.arms.utils.RxLifecycleUtils;
+import com.payexpress.electric.R;
 import com.payexpress.electric.mvp.contract.gov.GovGuideDetailContract.Model;
 import com.payexpress.electric.mvp.contract.gov.GovGuideDetailContract.View;
 import com.payexpress.electric.mvp.model.entity.govEntity.GovGuideDetailRes;
@@ -38,10 +39,20 @@ public class GovGuideDetailPresenter extends BasePresenter<Model, View> {
                 .subscribe(new ErrorHandleSubscriber<GovGuideDetailRes>(mErrorHandler) {
                     @Override
                     public void onNext(GovGuideDetailRes govGuideDetailRes) {
-                        if (govGuideDetailRes.isSuccess()) {
-                            mRootView.success(govGuideDetailRes);
-                        } else {
-                            mRootView.fail(govGuideDetailRes.getMessage());
+                        if (mRootView != null) {
+                            if (govGuideDetailRes.isSuccess()) {
+                                mRootView.success(govGuideDetailRes);
+                            } else {
+                                mRootView.fail(govGuideDetailRes.getMessage());
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        super.onError(t);
+                        if (mRootView != null) {
+                            mRootView.fail(mRootView.getActivity().getString(R.string.server_error));
                         }
                     }
                 });

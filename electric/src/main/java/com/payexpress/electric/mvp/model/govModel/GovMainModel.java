@@ -4,12 +4,15 @@ import com.jess.arms.di.scope.FragmentScope;
 import com.jess.arms.integration.IRepositoryManager;
 import com.jess.arms.mvp.BaseModel;
 import com.payexpress.electric.mvp.contract.gov.GovMainContract;
+import com.payexpress.electric.mvp.model.api.cache.CommonCache;
 import com.payexpress.electric.mvp.model.api.service.GovService;
 import com.payexpress.electric.mvp.model.entity.govEntity.GovMainRes;
 
 import javax.inject.Inject;
 
 import io.reactivex.Observable;
+import io.rx_cache2.DynamicKey;
+import io.rx_cache2.EvictDynamicKey;
 
 /**
  * Created by fengxiaozheng
@@ -26,7 +29,14 @@ public class GovMainModel extends BaseModel implements GovMainContract.Model {
 
     @Override
     public Observable<GovMainRes> getGovMainFragmentItem() {
-        return mRepositoryManager.obtainRetrofitService(GovService.class)
-                .getGovMainItem();
+        return Observable.just(mRepositoryManager
+                .obtainRetrofitService(GovService.class)
+                .getGovMainItem())
+                .flatMap(govMainResObservable -> mRepositoryManager.obtainCacheService(CommonCache.class)
+                        .getGovMainFragmentInfo(govMainResObservable,
+                                new DynamicKey("GovMainFragment"),
+                                new EvictDynamicKey(false))
+                        .map(govMainResReply -> govMainResReply.getData()));
+
     }
 }

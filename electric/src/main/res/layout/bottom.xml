@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
-        android:onClick="backHome"
+
         android:layout_marginLeft="33dp"
         android:orientation="horizontal">
         
@@ -34,7 +34,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="79dp"
-        android:onClick="back"
+
         android:gravity="center_vertical"
         android:orientation="horizontal">
 

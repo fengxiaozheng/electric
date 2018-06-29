@@ -37,7 +37,7 @@ import butterknife.BindView;
  * create an instance of this fragment.
  */
 public class CPRecordFragment extends BasePaymentFragment<PayRecordPresenter>
-        implements PayRecordContract.PayRecordView, View.OnClickListener{
+        implements PayRecordContract.PayRecordView, View.OnClickListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM = "param";
@@ -63,7 +63,6 @@ public class CPRecordFragment extends BasePaymentFragment<PayRecordPresenter>
     RecyclerView.Adapter mAdapter;
     @Inject
     StatusUIManager mUiManager;
-
 
 
     public CPRecordFragment() {
@@ -156,7 +155,7 @@ public class CPRecordFragment extends BasePaymentFragment<PayRecordPresenter>
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.btn_to_pay) {
-            activity.sComplete();
+            sComplete();
         }
     }
 }

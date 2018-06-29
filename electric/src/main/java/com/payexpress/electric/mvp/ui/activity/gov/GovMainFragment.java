@@ -1,7 +1,6 @@
 package com.payexpress.electric.mvp.ui.activity.gov;
 
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -22,7 +21,6 @@ import com.payexpress.electric.mvp.presenter.gov.GovMainPresenter;
 import com.payexpress.electric.mvp.ui.adapter.MainFragmentAdapter;
 import com.payexpress.electric.mvp.ui.adapter.MainFragmentClickListener;
 
-import org.ayo.view.status.DefaultStatus;
 import org.ayo.view.status.StatusUIManager;
 
 import javax.inject.Inject;
@@ -43,7 +41,6 @@ public class GovMainFragment extends BaseGovFragment<GovMainPresenter> implement
     MainFragmentAdapter mAdapter;
     @Inject
     StatusUIManager mUiManager;
-    private CountDownTimer timer;
 
     public GovMainFragment() {
         // Required empty public constructor
@@ -53,13 +50,6 @@ public class GovMainFragment extends BaseGovFragment<GovMainPresenter> implement
 
         return new GovMainFragment();
     }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-    }
-
 
     @Override
     public void setupFragmentComponent(@NonNull AppComponent appComponent) {
@@ -77,38 +67,13 @@ public class GovMainFragment extends BaseGovFragment<GovMainPresenter> implement
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        String[] titles = {getString(R.string.str_001), getString(R.string.str_002),
-                getString(R.string.str_003), getString(R.string.str_004),
-                getString(R.string.str_005), getString(R.string.str_006),
-                getString(R.string.str_007), getString(R.string.str_008)};
-        int[] imgs = {R.mipmap.ic_shebao, R.mipmap.ic_shuiwu, R.mipmap.ic_fangchan,
-                R.mipmap.ic_gongan, R.mipmap.ic_gongjijin, R.mipmap.ic_yiliao,
-                R.mipmap.ic_jiaoyu, R.mipmap.ic_zhengwuxinxi};
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
         if (mPresenter != null) {
             mPresenter.initStateUI(mRecyclerView);
+            mPresenter.getTermArea();
         }
-        timer = new CountDownTimer(30 * 1000, 1000) {
-            @Override
-            public void onTick(long millisUntilFinished) {
-                System.out.println("数据：" + millisUntilFinished / 1000);
-                if (activity.isFlagTrue()) {
-                    if (mPresenter != null) {
-                        mPresenter.getTermArea();
-                    }
-                    cancel();
-                }
-            }
-
-            @Override
-            public void onFinish() {
-                System.out.println("数据：结束");
-                mLoadingView.setVisibility(View.GONE);
-                mUiManager.show(DefaultStatus.STATUS_SERVER_ERROR);
-            }
-        }.start();
     }
 
     @Override
@@ -139,19 +104,13 @@ public class GovMainFragment extends BaseGovFragment<GovMainPresenter> implement
             return;
         }
         if ("01".equals(info.getFuncType())) {
-            activity.start(this, GovWebFragment.newInstance(true, info.getUrl()),
+            start(this, GovWebFragment.newInstance(true, info.getUrl()),
                     "GovWebFragment");
         } else {
             Fragment cls;
             cls = Fragment.instantiate(activity, info.getUrl());
-            activity.start(this, cls, info.getUrl());
+            start(this, cls, info.getUrl());
         }
 
-    }
-
-    @Override
-    public void onDestroy() {
-        timer.cancel();
-        super.onDestroy();
     }
 }

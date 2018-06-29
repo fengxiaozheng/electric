@@ -3,6 +3,7 @@ package com.payexpress.electric.mvp.presenter.payment;
 import com.jess.arms.di.scope.ActivityScope;
 import com.jess.arms.mvp.BasePresenter;
 import com.jess.arms.utils.RxLifecycleUtils;
+import com.payexpress.electric.R;
 import com.payexpress.electric.mvp.contract.payment.CPCheckContract;
 import com.payexpress.electric.mvp.model.entity.paymentEntity.CPUserInfoRes;
 import com.payexpress.electric.mvp.model.entity.paymentEntity.CardBalanceRes;
@@ -42,14 +43,24 @@ public class CPCheckPresenter extends BasePresenter<CPCheckContract.Model, CPChe
                 .observeOn(AndroidSchedulers.mainThread())
                 .compose(RxLifecycleUtils.bindToLifecycle(mRootView))
                 .subscribe(new ErrorHandleSubscriber<CPUserInfoRes>(mErrorHandler) {
-                    @Override
-                    public void onNext(CPUserInfoRes Response) {
-                        if (Response.isSuccess()) {
-                            mRootView.success(Response);
-                        } else {
-                            mRootView.fail(Response.getRet_msg());
+                        @Override
+                        public void onNext(CPUserInfoRes Response) {
+                            if (mRootView != null) {
+                                if (Response.isSuccess()) {
+                                    mRootView.success(Response);
+                                } else {
+                                    mRootView.fail(Response.getRet_msg());
+                                }
+                            }
                         }
-                    }
+
+                        @Override
+                        public void onError(Throwable t) {
+                            super.onError(t);
+                            if (mRootView != null) {
+                                mRootView.fail(mRootView.getActivity().getString(R.string.server_error));
+                            }
+                        }
                 });
 
     }
@@ -67,10 +78,20 @@ public class CPCheckPresenter extends BasePresenter<CPCheckContract.Model, CPChe
                 .subscribe(new ErrorHandleSubscriber<NoCardCheckRes>(mErrorHandler) {
                     @Override
                     public void onNext(NoCardCheckRes noCardCheckRes) {
-                        if (noCardCheckRes.isSuccess()) {
-                            getBalance(userNo);
-                        } else {
-                            mRootView.fail(noCardCheckRes.getRet_msg());
+                        if (mRootView != null) {
+                            if (noCardCheckRes.isSuccess()) {
+                                getBalance(userNo);
+                            } else {
+                                mRootView.fail(noCardCheckRes.getRet_msg());
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        super.onError(t);
+                        if (mRootView != null) {
+                            mRootView.fail(mRootView.getActivity().getString(R.string.server_error));
                         }
                     }
                 });
@@ -90,15 +111,25 @@ public class CPCheckPresenter extends BasePresenter<CPCheckContract.Model, CPChe
                 .subscribe(new ErrorHandleSubscriber<CardBalanceRes>(mErrorHandler) {
                     @Override
                     public void onNext(CardBalanceRes cardBalanceRes) {
-                        if (cardBalanceRes.isSuccess()) {
-                            CPUserInfoRes data = new CPUserInfoRes();
-                            data.setAddress(cardBalanceRes.getAddress());
-                            data.setBalance(cardBalanceRes.getBalance());
-                            data.setGrid_user_code(cardBalanceRes.getGrid_user_code());
-                            data.setGrid_user_name(cardBalanceRes.getGrid_user_name());
-                            mRootView.success(data);
-                        } else {
-                            mRootView.fail(cardBalanceRes.getRet_msg());
+                        if (mRootView != null) {
+                            if (cardBalanceRes.isSuccess()) {
+                                CPUserInfoRes data = new CPUserInfoRes();
+                                data.setAddress(cardBalanceRes.getAddress());
+                                data.setBalance(cardBalanceRes.getBalance());
+                                data.setGrid_user_code(cardBalanceRes.getGrid_user_code());
+                                data.setGrid_user_name(cardBalanceRes.getGrid_user_name());
+                                mRootView.success(data);
+                            } else {
+                                mRootView.fail(cardBalanceRes.getRet_msg());
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        super.onError(t);
+                        if (mRootView != null) {
+                            mRootView.fail(mRootView.getActivity().getString(R.string.server_error));
                         }
                     }
                 });

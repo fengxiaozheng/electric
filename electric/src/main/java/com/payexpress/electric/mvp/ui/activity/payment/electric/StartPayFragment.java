@@ -104,10 +104,8 @@ public class StartPayFragment extends BasePaymentFragment<ElectricPayPresenter>
     public void success() {
         activity.dismissDialog();
         mParam.setSuccess(true);
-        activity.start(StartPayFragment.this,
+        start(StartPayFragment.this,
                 PayResultFragment.newInstance(mParam), "PayResultFragment");
-
-
     }
 
     @Override
@@ -115,10 +113,8 @@ public class StartPayFragment extends BasePaymentFragment<ElectricPayPresenter>
         activity.dismissDialog();
         mParam.setSuccess(false);
         mParam.setWriteCard(msg);
-        activity.start(StartPayFragment.this,
+        start(StartPayFragment.this,
                 PayResultFragment.newInstance(mParam), "PayResultFragment");
-
-
     }
 
     @Override

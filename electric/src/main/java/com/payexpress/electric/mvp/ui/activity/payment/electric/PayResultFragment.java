@@ -102,11 +102,11 @@ public class PayResultFragment extends PaymentFragment implements View.OnClickLi
         if (v.getId() == R.id.btn_complete) {
             switch (mParam.getFlag()) {
                 case 0:
-                    activity.cComplete();
+                    cComplete();
                     break;
                 case 1:
                 case 2:
-                    activity.sComplete();
+                    sComplete();
                     break;
                 default:
                     break;

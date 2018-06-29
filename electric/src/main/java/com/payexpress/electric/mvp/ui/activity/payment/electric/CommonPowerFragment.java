@@ -55,7 +55,7 @@ public class CommonPowerFragment extends PaymentFragment implements View.OnClick
                 next(1);
                 break;
             case R.id.c_balance:
-               next(0);
+                next(0);
                 break;
             case R.id.c_check:
                 next(2);
@@ -66,7 +66,7 @@ public class CommonPowerFragment extends PaymentFragment implements View.OnClick
     }
 
     private void next(int flag) {
-        activity.start(CommonPowerFragment.this, CPCheckUserFragment.newInstance(flag),
+        start(CommonPowerFragment.this, CPCheckUserFragment.newInstance(flag),
                 "CPCheckUserFragment");
     }
 }

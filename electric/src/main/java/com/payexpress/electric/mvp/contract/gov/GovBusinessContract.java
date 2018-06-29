@@ -4,8 +4,11 @@ import android.app.Activity;
 
 import com.jess.arms.mvp.IModel;
 import com.jess.arms.mvp.IView;
-import com.payexpress.electric.mvp.model.entity.govEntity.BaseGovResponse;
+import com.payexpress.electric.mvp.model.entity.govEntity.GovBusinessInfo;
+import com.payexpress.electric.mvp.model.entity.govEntity.GovBusinessRes;
 import com.payexpress.electric.mvp.ui.adapter.OnItemClickListener;
+
+import java.util.List;
 
 import io.reactivex.Observable;
 
@@ -19,9 +22,11 @@ public interface GovBusinessContract {
     interface View extends IView {
         Activity getActivity();
         OnItemClickListener getListener();
+        void success(List<GovBusinessInfo> data);
+        void fail(String msg);
     }
 
     interface Model extends IModel {
-        Observable<BaseGovResponse> getGovBusiness(String keyWord);
+        Observable<GovBusinessRes> getGovBusiness(String keyWord);
     }
 }

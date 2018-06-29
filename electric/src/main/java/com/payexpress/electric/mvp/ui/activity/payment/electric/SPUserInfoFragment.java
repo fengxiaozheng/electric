@@ -221,7 +221,7 @@ public class SPUserInfoFragment extends PaymentFragment implements
                 default:
                     break;
             }
-          if (amountBuilder.length() > 8) {
+            if (amountBuilder.length() > 8) {
                 amountBuilder.delete(8, amountBuilder.length());
             }
             mAmount.setText(amountBuilder.toString());
@@ -253,7 +253,7 @@ public class SPUserInfoFragment extends PaymentFragment implements
         info.setUser_name(mParam.getUserName());
         info.setUser_no(mParam.getUserNo());
         info.setTelPhone(phone);
-        activity.start(SPUserInfoFragment.this, StartPayFragment.newInstance(info),
+        start(SPUserInfoFragment.this, StartPayFragment.newInstance(info),
                 "StartPayFragment");
     }
 
@@ -272,7 +272,7 @@ public class SPUserInfoFragment extends PaymentFragment implements
         public void afterTextChanged(Editable editable) {
             if (mTelphone.isFocused()) {
                 mTelphone.setSelection(mTelphone.getText().length());
-            }else {
+            } else {
                 mAmount.setSelection(mAmount.getText().length());
             }
         }

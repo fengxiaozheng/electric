@@ -113,7 +113,18 @@ public class StringUtils {
     public static void setToken(Context context, String token) {
         String PREFS_FILE = "access_token.xml";
         SharedPreferences prefs = context.getSharedPreferences(PREFS_FILE, 0);
-        prefs.edit().putString("access_token", token);
+        prefs.edit().putString("access_token", token).commit();
     }
 
+    public static String getConfig(Context context, String key) {
+        String PREFS_FILE = "config.xml";
+        SharedPreferences prefs = context.getSharedPreferences(PREFS_FILE, 0);
+        return prefs.getString(key, (String) null);
+    }
+
+    public static void setConfig(Context context, String key, String value) {
+        String PREFS_FILE = "config.xml";
+        SharedPreferences prefs = context.getSharedPreferences(PREFS_FILE, 0);
+        prefs.edit().putString(key, value).commit();
+    }
 }

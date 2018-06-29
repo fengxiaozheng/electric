@@ -16,7 +16,6 @@
 package com.payexpress.electric.app;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -42,6 +41,7 @@ import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 
+import me.jessyan.retrofiturlmanager.RetrofitUrlManager;
 import okhttp3.Call;
 import okhttp3.Interceptor;
 import okhttp3.MediaType;
@@ -155,8 +155,7 @@ public class GlobalHttpHandlerImpl implements GlobalHttpHandler {
                     retrofit2.Call<LoginRes> observable = service.getLoginInfo(user);
                     retrofit2.Response<LoginRes> m = observable.execute();
                     System.out.println("同步token数据："+m.body().getToken());
-                    SharedPreferences prefs = context.getSharedPreferences("access_token.xml", 0);
-                                        prefs.edit().putString("access_token", m.body().getToken()).commit();
+                    StringUtils.setToken(context, m.body().getToken());
                                         requestAgain(chain);
 
                 } else {
@@ -176,6 +175,7 @@ public class GlobalHttpHandlerImpl implements GlobalHttpHandler {
     public Request onHttpRequestBefore(Interceptor.Chain chain, Request request) {
                     /* 如果需要再请求服务器之前做一些操作,则重新返回一个做过操作的的request如增加header,不做操作则直接返回request参数*/
         if (request.url().toString().contains("payexpress")) {
+            RetrofitUrlManager.getInstance().setGlobalDomain(Api.ELECTRIC_BASE_URL);
             RequestBody oldBody = request.body();
             Buffer buffer = new Buffer();
             try {
@@ -185,7 +185,9 @@ public class GlobalHttpHandlerImpl implements GlobalHttpHandler {
             }
             String strOldBody = buffer.readUtf8();
             JSONObject deal = JSON.parseObject(strOldBody);
-            deal.put("access_token", StringUtils.getToken(context));
+            deal.put("access_token", Api.ELECTRIC_ACCESS_TOKEN);
+            deal.put(Api.termNo, StringUtils.getConfig(context, Api.termNo));
+            deal.put(Api.mchtNo, StringUtils.getConfig(context, Api.mchtNo));
             String newData = JSON.toJSONString(deal);
             System.out.println("request中传递的json数据：" + newData);
             APIBodyData data = new APIBodyData();
@@ -213,6 +215,7 @@ public class GlobalHttpHandlerImpl implements GlobalHttpHandler {
             RequestBody body = RequestBody.create(MEDIA_TYPE, postBody);
             return request.newBuilder().method(request.method(), body).build();
         } else {
+            RetrofitUrlManager.getInstance().setGlobalDomain(Api.BASE_URL);
             return request.newBuilder()
                     .header("X-Authorization", StringUtils.getToken(context)).build();
         }

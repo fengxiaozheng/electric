@@ -4,11 +4,8 @@ import android.app.Activity;
 
 import com.jess.arms.mvp.IModel;
 import com.jess.arms.mvp.IView;
-import com.payexpress.electric.mvp.model.entity.paymentEntity.RewriteInputRes;
 import com.payexpress.electric.mvp.model.entity.paymentEntity.RewriteTimesAllParams;
 import com.payexpress.electric.mvp.ui.adapter.OnItemClickListener;
-
-import io.reactivex.Observable;
 
 /**
  * Created by fengxiaozheng
@@ -26,6 +23,5 @@ public interface RewriteInputContract {
     }
 
     interface Model extends IModel {
-        Observable<RewriteInputRes> getTermPassword();
     }
 }

@@ -25,11 +25,14 @@ package com.payexpress.electric.mvp.model.api;
  * ================================================
  */
 public interface Api {
- //   String BASE_URL = "http://182.140.224.136:7080/";
-    String ACCESS_TOKEN = "ZFTUSER_5BCAACF499D30D1E3B16AFA719797012";
+    String ELECTRIC_BASE_URL = "http://182.140.224.136:7080/";
+    String ELECTRIC_ACCESS_TOKEN = "ZFTUSER_5BCAACF499D30D1E3B16AFA719797012";//测试
     String BASE_URL = "http://118.122.120.25:10000/";
-//    String ACCESS_TOKEN = "ZFTUSER_82A2E47E3A035D209D4118797DDFB016";
+  //  String ELECTRIC_ACCESS_TOKEN = "ZFTUSER_82A2E47E3A035D209D4118797DDFB016";//本地
     String RequestSuccess = "0000";
     String OtherRequestSuccess = "000000";
     String LOGIN_URL = BASE_URL + "citizen-restful/";
+    String termPsd = "termPsd";
+    String mchtNo = "merchant_no";
+    String termNo = "terminal_no";
 }

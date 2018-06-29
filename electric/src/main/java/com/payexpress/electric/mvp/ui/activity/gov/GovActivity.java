@@ -1,27 +1,18 @@
 package com.payexpress.electric.mvp.ui.activity.gov;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.view.View;
-import android.webkit.WebView;
-import android.widget.LinearLayout;
 
 import com.payexpress.electric.R;
 import com.payexpress.electric.mvp.ui.activity.BaseActivity;
-import com.payexpress.electric.mvp.ui.activity.MainActivity;
 import com.payexpress.electric.mvp.ui.widget.LoadingDailog;
 
-public class GovActivity extends BaseActivity implements View.OnClickListener {
+public class GovActivity extends BaseActivity {
 
     private android.support.v4.app.FragmentManager mFragmentManager;
     private android.support.v4.app.FragmentTransaction mFragmentTransaction;
     private LoadingDailog.Builder  builder;
     private LoadingDailog loadingView;
-    private LinearLayout backHome;
-    private LinearLayout back;
-    private Fragment currentFrg;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -35,65 +26,7 @@ public class GovActivity extends BaseActivity implements View.OnClickListener {
         mFragmentTransaction.commit();
         builder = new LoadingDailog.Builder(this);
         loadingView = builder.setMessage("Loading...").create();
-        backHome = findViewById(R.id.backHome);
-        back = findViewById(R.id.back);
-        backHome.setOnClickListener(this);
-        back.setOnClickListener(this);
-
-    }
-
-    public boolean isFlagTrue() {
-        return flag;
-    }
-
-
-
-    public void backHome() {
-        startActivity(new Intent(this, MainActivity.class));
-        finish();
-    }
-
-    public void back() {
-        System.out.println("stack count=" + mFragmentManager.getBackStackEntryCount());
-        System.out.println("      tag:"+currentFrg.getTag());
-        if (currentFrg.getTag() != null) {
-            if (currentFrg.getTag().equals("GovWebFragment")
-                    && currentFrg.getView().findViewById(R.id.gov_web) != null) {
-                WebView webView = currentFrg.getView().findViewById(R.id.gov_web);
-                System.out.println("      "+ webView.getUrl());
-                if (webView.getUrl().contains("government/info#/detail")) {
-                    webView.goBack();
-                }else {
-                    back2();
-                }
-            }else {
-                back2();
-            }
-        }else {
-            back2();
-        }
-
-    }
-
-    private void back2() {
-        if (mFragmentManager.getBackStackEntryCount() <= 1) {
-            finish();
-        } else {
-            mFragmentManager.popBackStack();
-            //    getCurrent.onStart();
-        }
-    }
-
-    public void start(Fragment current, Fragment next, String tag) {
-        mFragmentManager = getSupportFragmentManager();
-        mFragmentTransaction = mFragmentManager.beginTransaction();
-        mFragmentTransaction.setCustomAnimations(R.anim.v_fragment_enter,R.anim.v_fragment_pop_exit,
-                R.anim.v_fragment_pop_enter,  R.anim.v_fragment_exit);
-        mFragmentTransaction.hide(current);
-        mFragmentTransaction.add(R.id.e_frame, next, tag);
-        mFragmentTransaction.addToBackStack(tag);
-        mFragmentTransaction.commit();
-        currentFrg = next;
+        initDate();
     }
 
     public void showDialog() {
@@ -108,12 +41,4 @@ public class GovActivity extends BaseActivity implements View.OnClickListener {
         return loadingView.isShowing();
     }
 
-    @Override
-    public void onClick(View v) {
-        if (v.getId() == R.id.backHome) {
-            backHome();
-        } else if (v.getId() == R.id.back) {
-            back();
-        }
-    }
 }

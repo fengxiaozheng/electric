@@ -6,6 +6,7 @@
     <string name="complete">完成</string>
     <string name="confirm">确定</string>
     <string name="back">返回</string>
+    <string name="server_error">连接服务器失败</string>
     <string name="trade_time">交易时间</string>
     <string name="trade_no">交易流水号</string>
     <string name="notice">温馨提示：</string>
@@ -14,6 +15,7 @@
     <string name="notice3">1、因行业限制，单笔缴费金额最高2万元；若缴费金额高于2万元，请分多笔缴费</string>
     <string name="notice4">1、户号由十位数字组成，是用电主体唯一标识</string>
     <string name="notice5">1、此功能仅限查询，显示最近5笔缴费记录</string>
+    <string name="notice6">1、主管密码为本机器密码</string>
     <string name="str_001">社保</string>
     <string name="str_002">税务</string>
     <string name="str_003">房产</string>
@@ -82,4 +84,8 @@
     <string name="str_066">六、申请资料：</string>
     <string name="str_067">仅跑一次</string>
     <string name="str_068">请输入身份证号码</string>
+    <string name="str_069">一、机构名称：</string>
+    <string name="str_070">二、业务状态：</string>
+    <string name="str_071">三、创建时间：</string>
+    <string name="str_072">四、详细</string>
 </resources>

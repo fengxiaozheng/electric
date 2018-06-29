@@ -113,10 +113,10 @@ public class GovGuideFragment extends BaseGovFragment<GovGuidePresenter>
     @Override
     public void onItemClick(View view, GovGuideInfo info) {
         if ("1".equals(mParam)) {
-            activity.start(this, GovGuideListFragment.newInstance(true, info.getId()),
+            start(this, GovGuideListFragment.newInstance(true, info.getId()),
                     "GovGuideListFragment");
         } else {
-            activity.start(this, GovGuideListFragment.newInstance(false, info.getId()),
+            start(this, GovGuideListFragment.newInstance(false, info.getId()),
                     "GovGuideListFragment");
         }
     }

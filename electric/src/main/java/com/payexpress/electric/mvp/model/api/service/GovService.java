@@ -2,7 +2,8 @@ package com.payexpress.electric.mvp.model.api.service;
 
 import com.payexpress.electric.mvp.model.entity.ElectricUser;
 import com.payexpress.electric.mvp.model.entity.LoginRes;
-import com.payexpress.electric.mvp.model.entity.govEntity.BaseGovResponse;
+import com.payexpress.electric.mvp.model.entity.govEntity.GovBusinessDetailRes;
+import com.payexpress.electric.mvp.model.entity.govEntity.GovBusinessRes;
 import com.payexpress.electric.mvp.model.entity.govEntity.GovGuideDetailRes;
 import com.payexpress.electric.mvp.model.entity.govEntity.GovGuideListRes;
 import com.payexpress.electric.mvp.model.entity.govEntity.GovGuideRes;
@@ -52,5 +53,8 @@ public interface GovService {
     Observable<GovLocationRes> getGovLocation();
 
     @GET("citizen-restful/government/business")
-    Observable<BaseGovResponse> getGovBusiness(@Query("keyword") String keyWord);
+    Observable<GovBusinessRes> getGovBusiness(@Query("keyword") String keyWord);
+
+    @GET("citizen-restful/government/business/{id}")
+    Observable<GovBusinessDetailRes> getGovBusinessDetail(@Path("id") String id);
 }

@@ -22,9 +22,11 @@ import com.jess.arms.di.component.AppComponent;
 import com.payexpress.electric.R;
 import com.payexpress.electric.app.utils.KeyboardUtils;
 import com.payexpress.electric.app.utils.Psamcmd;
+import com.payexpress.electric.app.utils.StringUtils;
 import com.payexpress.electric.di.component.payment.DaggerRewriteInputComponent;
 import com.payexpress.electric.di.module.payment.RewriteInputModule;
 import com.payexpress.electric.mvp.contract.payment.RewriteInputContract;
+import com.payexpress.electric.mvp.model.api.Api;
 import com.payexpress.electric.mvp.model.entity.paymentEntity.RewriteTimesAllParams;
 import com.payexpress.electric.mvp.presenter.payment.RewriteInputPresenter;
 import com.payexpress.electric.mvp.ui.activity.payment.BasePaymentFragment;
@@ -42,7 +44,7 @@ import butterknife.OnClick;
  * create an instance of this fragment.
  */
 public class RewriteInputFragment extends BasePaymentFragment<RewriteInputPresenter>
-        implements RewriteInputContract.View, OnItemClickListener{
+        implements RewriteInputContract.View, OnItemClickListener {
 
     @BindView(R.id.btn_next)
     Button mButton;
@@ -108,7 +110,7 @@ public class RewriteInputFragment extends BasePaymentFragment<RewriteInputPresen
 
         mRecyclerView.setAdapter(mAdapter);
 
-        tv_notice.setText(getString(R.string.notice4));
+        tv_notice.setText(getString(R.string.notice6));
 
         mEditText.addTextChangedListener(watch);
     }
@@ -120,8 +122,13 @@ public class RewriteInputFragment extends BasePaymentFragment<RewriteInputPresen
 
     @OnClick(R.id.btn_next)
     void click() {
-        if (TextUtils.isEmpty(mEditText.getText().toString())){
+        String str = mEditText.getText().toString();
+        if (TextUtils.isEmpty(str)) {
             Toast.makeText(activity, "请输入密码", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (!str.equals(StringUtils.getConfig(activity, Api.termPsd))) {
+            Toast.makeText(activity, "密码错误，请重新输入", Toast.LENGTH_SHORT).show();
             return;
         }
         if (isFirst) {
@@ -187,7 +194,7 @@ public class RewriteInputFragment extends BasePaymentFragment<RewriteInputPresen
 
     @Override
     public void success(RewriteTimesAllParams data) {
-        activity.start(RewriteInputFragment.this, RewriteTimesFragment.newInstance(data),
+        start(RewriteInputFragment.this, RewriteTimesFragment.newInstance(data),
                 "RewriteTimesFragment");
     }
 

@@ -32,7 +32,6 @@ public class ElectricFragment extends PaymentFragment implements View.OnClickLis
     }
 
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -55,15 +54,15 @@ public class ElectricFragment extends PaymentFragment implements View.OnClickLis
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.e_smart:
-                activity.start(ElectricFragment.this, SmartPowerFragment.newInstance(),
+                start(ElectricFragment.this, SmartPowerFragment.newInstance(),
                         "SmartPowerFragment");
                 break;
             case R.id.e_common:
-                activity.start(ElectricFragment.this, CommonPowerFragment.newInstance(),
+                start(ElectricFragment.this, CommonPowerFragment.newInstance(),
                         "CommonPowerFragment");
                 break;
             case R.id.e_bx:
-                activity.start(ElectricFragment.this, RewriteCardFragment.newInstance(),
+                start(ElectricFragment.this, RewriteCardFragment.newInstance(),
                         "RewriteCardFragment");
             default:
                 break;

@@ -5,25 +5,46 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import com.jess.arms.di.component.AppComponent;
+import com.mingle.widget.LoadingView;
 import com.payexpress.electric.R;
-import com.payexpress.electric.mvp.ui.activity.payment.electric.ElectricFragment;
-import com.payexpress.electric.mvp.ui.adapter.GovAdapter;
-import com.payexpress.electric.mvp.ui.adapter.OnItemClickListener;
+import com.payexpress.electric.di.component.payment.DaggerPaymentMainComponent;
+import com.payexpress.electric.di.module.payment.PaymentMainModule;
+import com.payexpress.electric.mvp.contract.payment.PaymentMainContract;
+import com.payexpress.electric.mvp.model.entity.MainFragmentItemInfo;
+import com.payexpress.electric.mvp.presenter.payment.PaymentMainPresenter;
+import com.payexpress.electric.mvp.ui.activity.gov.GovWebFragment;
+import com.payexpress.electric.mvp.ui.adapter.MainFragmentAdapter;
+import com.payexpress.electric.mvp.ui.adapter.MainFragmentClickListener;
+
+import org.ayo.view.status.StatusUIManager;
+
+import javax.inject.Inject;
+
+import butterknife.BindView;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class PaymentMainFragment extends PaymentFragment implements OnItemClickListener {
+public class PaymentMainFragment extends BasePaymentFragment<PaymentMainPresenter>
+        implements MainFragmentClickListener, PaymentMainContract.View {
 
-    private RecyclerView mRecyclerView;
-    private RecyclerView.LayoutManager mLayoutManager;
-    private GovAdapter mAdapter;
+    @BindView(R.id.gov_rv)
+    RecyclerView mRecyclerView;
+    @BindView(R.id.loadingView)
+    LoadingView mLoadingView;
+    @Inject
+    RecyclerView.LayoutManager mLayoutManager;
+    @Inject
+    MainFragmentAdapter mAdapter;
+    @Inject
+    StatusUIManager mUiManager;
 
     public PaymentMainFragment() {
         // Required empty public constructor
@@ -33,41 +54,65 @@ public class PaymentMainFragment extends PaymentFragment implements OnItemClickL
         return new PaymentMainFragment();
     }
 
+    @Override
+    public void setupFragmentComponent(@NonNull AppComponent appComponent) {
+        DaggerPaymentMainComponent.builder()
+                .appComponent(appComponent)
+                .paymentMainModule(new PaymentMainModule(this))
+                .build()
+                .inject(this);
+    }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+    public View initView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_py_ment_main, container, false);
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        String[] titles = {getString(R.string.str_014), getString(R.string.str_015),
-                getString(R.string.str_016), getString(R.string.str_017),
-                getString(R.string.str_018), getString(R.string.str_019),
-                getString(R.string.str_020), getString(R.string.str_021)};
-        int[] imgs = {R.mipmap.ic_shuifei, R.mipmap.ic_dianfei, R.mipmap.ic_ranqifei,
-                R.mipmap.ic_tongxun, R.mipmap.ic_jiaojing, R.mipmap.ic_guangdian,
-                R.mipmap.ic_jiayouka, R.mipmap.ic_baoxian};
-        mRecyclerView = view.findViewById(R.id.gov_rv);
-        mLayoutManager = new GridLayoutManager(getActivity(), 4);
+    public void initData(@Nullable Bundle savedInstanceState) {
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(mLayoutManager);
-        mAdapter = new GovAdapter(titles, imgs, this);
         mRecyclerView.setAdapter(mAdapter);
+        if (mPresenter != null) {
+            mPresenter.initStateUI(mRecyclerView);
+            mPresenter.getPaymentMainItem();
+        }
     }
 
     @Override
-    public void onItemClick(View view, int position) {
-        switch (position) {
-            case R.mipmap.ic_dianfei:
-               activity.start(PaymentMainFragment.this, ElectricFragment.newInstance(),
-                       "ElectricFragment");
-                break;
-            default:
-                break;
+    public void setData(@Nullable Object data) {
+
+    }
+
+    @Override
+    public void onItemClick(View view, MainFragmentItemInfo info) {
+        if ("01".equals(info.getStatus())) {
+            Toast.makeText(activity, "该功能尚未开通，敬请期待", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if ("01".equals(info.getFuncType())) {
+            start(this, GovWebFragment.newInstance(true, info.getUrl()),
+                    "GovWebFragment");
+        } else {
+            Fragment cls;
+            cls = Fragment.instantiate(activity, info.getUrl());
+            start(this, cls, info.getUrl());
         }
     }
+
+    @Override
+    public MainFragmentClickListener getListener() {
+        return this;
+    }
+
+    @Override
+    public LoadingView getLoadingView() {
+        return mLoadingView;
+    }
+
+    @Override
+    public void showMessage(@NonNull String message) {
+
+    }
+
 }

@@ -28,7 +28,7 @@ import butterknife.OnClick;
  * A simple {@link Fragment} subclass.
  */
 public class SmartPowerFragment extends BasePaymentFragment<SmartPowerPresenter>
-                            implements SmartPowerContract.View{
+        implements SmartPowerContract.View {
 
     @BindView(R.id.s_hasCard)
     LinearLayout s_hasCard;
@@ -91,19 +91,19 @@ public class SmartPowerFragment extends BasePaymentFragment<SmartPowerPresenter>
 
     @OnClick(R.id.s_noCard)
     void noCard() {
-        activity.start(SmartPowerFragment.this, CPCheckUserFragment.newInstance(3),
+        start(SmartPowerFragment.this, CPCheckUserFragment.newInstance(3),
                 "CPCheckUserFragment");
     }
 
     @OnClick(R.id.s_check)
     void check() {
-        activity.start(SmartPowerFragment.this, CPCheckUserFragment.newInstance(2),
+        start(SmartPowerFragment.this, CPCheckUserFragment.newInstance(2),
                 "CPCheckUserFragment");
     }
 
     @OnClick(R.id.s_query_balance)
     void query() {
-        activity.start(SmartPowerFragment.this, CPCheckUserFragment.newInstance(4),
+        start(SmartPowerFragment.this, CPCheckUserFragment.newInstance(4),
                 "CPCheckUserFragment");
     }
 
@@ -114,13 +114,13 @@ public class SmartPowerFragment extends BasePaymentFragment<SmartPowerPresenter>
         info.setUserNo(res.getG7());
         info.setUserName(res.getG8());
         info.setUserAddress(res.getG9());
-        activity.start(SmartPowerFragment.this, SPUserInfoFragment.newInstance(info),
+        start(SmartPowerFragment.this, SPUserInfoFragment.newInstance(info),
                 "SPUserInfoFragment");
     }
 
     @Override
     public void fail(String msg) {
-        activity.start(SmartPowerFragment.this,
+        start(SmartPowerFragment.this,
                 ReadCardErrorFragment.newInstance(msg), "ReadCardErrorFragment");
     }
 

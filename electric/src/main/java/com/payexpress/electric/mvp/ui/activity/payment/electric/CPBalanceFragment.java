@@ -67,10 +67,10 @@ public class CPBalanceFragment extends PaymentFragment implements View.OnClickLi
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.cp_query_ok) {
-            if (mParam2){
-                activity.sComplete();
-            }else {
-                activity.cComplete();
+            if (mParam2) {
+                sComplete();
+            } else {
+                cComplete();
             }
         }
     }

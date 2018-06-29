@@ -6,6 +6,7 @@ import android.os.Message;
 import com.jess.arms.di.scope.FragmentScope;
 import com.jess.arms.mvp.BasePresenter;
 import com.jess.arms.utils.RxLifecycleUtils;
+import com.payexpress.electric.R;
 import com.payexpress.electric.app.utils.IRfidParam;
 import com.payexpress.electric.app.utils.Psamcmd;
 import com.payexpress.electric.app.utils.StringUtils;
@@ -115,11 +116,21 @@ public class RewriteCardPresenter extends BasePresenter<RewriteCardContract.Mode
                 .subscribe(new ErrorHandleSubscriber<RewriteCardRes>(mErrorHandler) {
                     @Override
                     public void onNext(RewriteCardRes rewriteCardRes) {
-                        if (rewriteCardRes.isSuccess()) {
-                            rewriteCard2(rewriteCardRes);
-                        } else {
-                            dialog.dismiss();
-                            mRootView.fail("1111");
+                        if (mRootView != null) {
+                            if (rewriteCardRes.isSuccess()) {
+                                rewriteCard2(rewriteCardRes);
+                            } else {
+                                dialog.dismiss();
+                                mRootView.fail("1111");
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        super.onError(t);
+                        if (mRootView != null) {
+                            mRootView.fail(mRootView.getActivity().getString(R.string.server_error));
                         }
                     }
                 });

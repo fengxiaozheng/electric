@@ -60,7 +60,8 @@ public class CPCheckUserFragment extends BasePaymentFragment<CPCheckPresenter>
     private static final String ARG_PARAM = "param";
 
     private int mParam;//0:普通电费余额查询；1：普通电力缴费；2：购电记录查询；
-                       //3：智能无卡购电；4：电卡余额查询
+
+    //3：智能无卡购电；4：电卡余额查询
     public static CPCheckUserFragment newInstance(int param) {
         CPCheckUserFragment fragment = new CPCheckUserFragment();
         Bundle args = new Bundle();
@@ -145,11 +146,11 @@ public class CPCheckUserFragment extends BasePaymentFragment<CPCheckPresenter>
         activity.dismissDialog();
         switch (mParam) {
             case 0:
-                activity.start(CPCheckUserFragment.this,
+                start(CPCheckUserFragment.this,
                         CPBalanceFragment.newInstance(data.getBalance(), false), "CPBalanceFragment");
                 break;
             case 1:
-                activity.start(CPCheckUserFragment.this,
+                start(CPCheckUserFragment.this,
                         CPUserInfoFragment.newInstance(data), "CPUserInfoFragment");
                 break;
             case 3:
@@ -159,11 +160,11 @@ public class CPCheckUserFragment extends BasePaymentFragment<CPCheckPresenter>
                 info.setUserAddress(data.getAddress());
                 info.setUserName(data.getGrid_user_name());
                 info.setUserNo(data.getGrid_user_code());
-                activity.start(CPCheckUserFragment.this,
+                start(CPCheckUserFragment.this,
                         SPUserInfoFragment.newInstance(info), "SPUserInfoFragment");
                 break;
             case 4:
-                activity.start(CPCheckUserFragment.this,
+                start(CPCheckUserFragment.this,
                         CPBalanceFragment.newInstance(data.getBalance(), true), "CPBalanceFragment");
                 break;
             default:
@@ -249,11 +250,12 @@ public class CPCheckUserFragment extends BasePaymentFragment<CPCheckPresenter>
                 startQuery(str);
                 break;
             case 2:
-                    activity.start(CPCheckUserFragment.this,
-                            CPRecordFragment.newInstance(false, str), "CPRecordFragment");
+                start(CPCheckUserFragment.this,
+                        CPRecordFragment.newInstance(false, str), "CPRecordFragment");
                 break;
             case 3:
                 if (mPresenter != null) {
+                    activity.setDialogMessage("查询中...");
                     activity.showDialog();
                     mPresenter.noCardCheck(str);
                 }
@@ -271,10 +273,10 @@ public class CPCheckUserFragment extends BasePaymentFragment<CPCheckPresenter>
 
     private void startQuery(String str) {
 
-            if (mPresenter != null) {
-                activity.showDialog();
-                mPresenter.getUserInfo(str);
-            }
+        if (mPresenter != null) {
+            activity.showDialog();
+            mPresenter.getUserInfo(str);
+        }
 
     }
 

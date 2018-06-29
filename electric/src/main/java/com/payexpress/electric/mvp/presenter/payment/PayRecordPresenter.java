@@ -5,6 +5,7 @@ import android.view.View;
 
 import com.jess.arms.mvp.BasePresenter;
 import com.jess.arms.utils.RxLifecycleUtils;
+import com.payexpress.electric.R;
 import com.payexpress.electric.mvp.contract.payment.PayRecordContract;
 import com.payexpress.electric.mvp.model.entity.paymentEntity.PayRecordRes;
 import com.payexpress.electric.mvp.model.entity.paymentEntity.RecordInfo;
@@ -63,31 +64,33 @@ public class PayRecordPresenter extends BasePresenter<PayRecordContract.PayRecor
                 .subscribe(new ErrorHandleSubscriber<PayRecordRes>(mErrorHandler) {
                     @Override
                     public void onNext(PayRecordRes res) {
-                        if (res.isSuccess()) {
-                            if (res.getRows().size() > 0) {
-                                for (RecordInfo info : res.getRows()) {
-                                    builder = new StringBuilder();
-                                    info.setTrans_date(builder
-                                            .append(info.getTrans_date().substring(0, 4))
-                                            .append("-")
-                                            .append(info.getTrans_date().substring(4, 6))
-                                            .append("-")
-                                            .append(info.getTrans_date().substring(6, 8))
-                                            .append(info.getTrans_date().substring(8, 17))
-                                            .toString());
-                                    builder.delete(0, 19);
-                                    info.setAmount(builder
-                                            .append(format.format(Double.parseDouble(info.getAmount())))
-                                            .append("元")
-                                            .toString());
+                        if (mRootView != null) {
+                            if (res.isSuccess()) {
+                                if (res.getRows().size() > 0) {
+                                    for (RecordInfo info : res.getRows()) {
+                                        builder = new StringBuilder();
+                                        info.setTrans_date(builder
+                                                .append(info.getTrans_date().substring(0, 4))
+                                                .append("-")
+                                                .append(info.getTrans_date().substring(4, 6))
+                                                .append("-")
+                                                .append(info.getTrans_date().substring(6, 8))
+                                                .append(info.getTrans_date().substring(8, 17))
+                                                .toString());
+                                        builder.delete(0, 19);
+                                        info.setAmount(builder
+                                                .append(format.format(Double.parseDouble(info.getAmount())))
+                                                .append("元")
+                                                .toString());
+                                    }
+                                    infos.addAll(res.getRows());
+                                    mAdapter.notifyDataSetChanged();
                                 }
-                                infos.addAll(res.getRows());
-                                mAdapter.notifyDataSetChanged();
-                            }
-                            mRootView.success(res);
-                        } else {
-                            if (mRootView != null ) {
-                                mRootView.fail(res.getRet_msg());
+                                mRootView.success(res);
+                            } else {
+                                if (mRootView != null) {
+                                    mRootView.fail(res.getRet_msg());
+                                }
                             }
                         }
                     }
@@ -95,8 +98,8 @@ public class PayRecordPresenter extends BasePresenter<PayRecordContract.PayRecor
                     @Override
                     public void onError(Throwable t) {
                         super.onError(t);
-                        if (mRootView != null ) {
-                            mRootView.fail("网络错误");
+                        if (mRootView != null) {
+                            mRootView.fail(mRootView.getActivity().getString(R.string.server_error));
                         }
                     }
                 });

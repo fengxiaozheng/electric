@@ -5,7 +5,7 @@ import com.jess.arms.di.scope.FragmentScope;
 import com.jess.arms.integration.IRepositoryManager;
 import com.jess.arms.mvp.BaseModel;
 import com.payexpress.electric.mvp.contract.payment.ElectricPayContract;
-import com.payexpress.electric.mvp.model.api.service.CommonService;
+import com.payexpress.electric.mvp.model.api.service.PaymentService;
 import com.payexpress.electric.mvp.model.entity.paymentEntity.BaseResponse;
 import com.payexpress.electric.mvp.model.entity.paymentEntity.CheckPayRes;
 import com.payexpress.electric.mvp.model.entity.paymentEntity.CodePayReq;
@@ -36,43 +36,43 @@ public class CodePayModel extends BaseModel implements ElectricPayContract.PayMo
 
     @Override
     public Observable<CodePayRes> doPay(CodePayReq req) {
-        return mRepositoryManager.obtainRetrofitService(CommonService.class)
+        return mRepositoryManager.obtainRetrofitService(PaymentService.class)
                 .doPay(JSON.toJSONString(req));
     }
 
     @Override
     public Observable<CheckPayRes> checkPayStatus(TransNoReq req) {
-        return mRepositoryManager.obtainRetrofitService(CommonService.class)
+        return mRepositoryManager.obtainRetrofitService(PaymentService.class)
                 .checkPayStatus(JSON.toJSONString(req));
     }
 
     @Override
     public Observable<BaseResponse> commonElectricBuy(TransNoReq req) {
-        return mRepositoryManager.obtainRetrofitService(CommonService.class)
+        return mRepositoryManager.obtainRetrofitService(PaymentService.class)
                 .commonElectricBuy(JSON.toJSONString(req));
     }
 
     @Override
     public Observable<BaseResponse> noCardElectricBuy(NoCardBuyReq req) {
-        return mRepositoryManager.obtainRetrofitService(CommonService.class)
+        return mRepositoryManager.obtainRetrofitService(PaymentService.class)
                 .noCardElectricBuy(JSON.toJSONString(req));
     }
 
     @Override
     public Observable<SmartCardBuyRes> hsaCardElectricBuy(SmartCardBuyReq req) {
-        return mRepositoryManager.obtainRetrofitService(CommonService.class)
+        return mRepositoryManager.obtainRetrofitService(PaymentService.class)
                 .smartCardBuy(JSON.toJSONString(req));
     }
 
     @Override
     public Observable<BaseResponse> hasCardBuyCheck(SmartCardBuyCheckReq req) {
-        return mRepositoryManager.obtainRetrofitService(CommonService.class)
+        return mRepositoryManager.obtainRetrofitService(PaymentService.class)
                 .smartCardBuyCheck(JSON.toJSONString(req));
     }
 
     @Override
     public Observable<RewriteCardRes> rewriteCard(RewriteCardReq req) {
-        return mRepositoryManager.obtainRetrofitService(CommonService.class)
+        return mRepositoryManager.obtainRetrofitService(PaymentService.class)
                 .rewriteCard(JSON.toJSONString(req));
     }
 }

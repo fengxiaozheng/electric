@@ -78,6 +78,6 @@ public class RewriteResultFragment extends PaymentFragment {
             mResult.setText("末笔补写失败");
             mTell.setText("请重新插卡，进行再次补写！");
         }
-        mButton.setOnClickListener(v -> activity.back());
+        mButton.setOnClickListener(v -> back());
     }
 }

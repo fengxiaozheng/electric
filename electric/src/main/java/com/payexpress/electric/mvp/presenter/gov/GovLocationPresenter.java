@@ -47,10 +47,20 @@ public class GovLocationPresenter extends BasePresenter<Model, View> {
                 .subscribe(new ErrorHandleSubscriber<GovLocationRes>(mErrorHandler) {
                     @Override
                     public void onNext(GovLocationRes govLocationRes) {
-                        if (govLocationRes.isSuccess()) {
-                            mRootView.success(govLocationRes);
-                        } else {
-                            mRootView.fail(govLocationRes.getMessage());
+                        if (mRootView != null) {
+                            if (govLocationRes.isSuccess()) {
+                                mRootView.success(govLocationRes);
+                            } else {
+                                mRootView.fail(govLocationRes.getMessage());
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        super.onError(t);
+                        if (mRootView != null) {
+                            mRootView.fail(mRootView.getActivity().getString(R.string.server_error));
                         }
                     }
                 });

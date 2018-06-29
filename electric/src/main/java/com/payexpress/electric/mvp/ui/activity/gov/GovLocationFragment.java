@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.amap.api.maps.AMap;
 import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.MapView;
+import com.amap.api.maps.MapsInitializer;
 import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.Marker;
 import com.jess.arms.di.component.AppComponent;
@@ -54,6 +55,12 @@ public class GovLocationFragment extends BaseGovFragment<GovLocationPresenter>
     @Override
     public void showMessage(@NonNull String message) {
 
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        MapsInitializer.sdcardDir = "/sdcard/offlinemap";
     }
 
     @Override

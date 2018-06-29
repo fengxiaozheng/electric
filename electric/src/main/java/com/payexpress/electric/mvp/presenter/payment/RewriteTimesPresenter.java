@@ -8,6 +8,7 @@ import com.alibaba.fastjson.JSON;
 import com.jess.arms.di.scope.FragmentScope;
 import com.jess.arms.mvp.BasePresenter;
 import com.jess.arms.utils.RxLifecycleUtils;
+import com.payexpress.electric.R;
 import com.payexpress.electric.app.utils.IRfidParam;
 import com.payexpress.electric.app.utils.Psamcmd;
 import com.payexpress.electric.app.utils.StringUtils;
@@ -143,37 +144,47 @@ public class RewriteTimesPresenter extends BasePresenter<Model, View> {
                 .subscribe(new ErrorHandleSubscriber<RewriteCardListRes>(mErrorHandler) {
                     @Override
                     public void onNext(RewriteCardListRes res) {
-                        if (res.isSuccess()) {
-                            if (res.getRows().size() > 0) {
-                                for (RewriteTimesInfo info : res.getRows()) {
-                                    builder = new StringBuilder();
-                                    sb = new StringBuilder();
-                                    info.setPay_date(builder
-                                            .append(info.getPay_date().substring(0, 4))
-                                            .append("-")
-                                            .append(info.getPay_date().substring(4, 6))
-                                            .append("-")
-                                            .append(info.getPay_date().substring(6, 8))
-                                            .append(info.getPay_date().substring(8, 17))
-                                            .toString());
-                                    builder.delete(0, 19);
-                                    info.setPay_amount(builder
-                                            .append(format.format(Double.parseDouble(info.getPay_amount())))
-                                            .append("元")
-                                            .toString());
-                                    info.setWritable_amount(sb
-                                    .append(format.format(Double.parseDouble(info.getWritable_amount())))
-                                    .append("元")
-                                    .toString());
+                        if (mRootView != null) {
+                            if (res.isSuccess()) {
+                                if (res.getRows().size() > 0) {
+                                    for (RewriteTimesInfo info : res.getRows()) {
+                                        builder = new StringBuilder();
+                                        sb = new StringBuilder();
+                                        info.setPay_date(builder
+                                                .append(info.getPay_date().substring(0, 4))
+                                                .append("-")
+                                                .append(info.getPay_date().substring(4, 6))
+                                                .append("-")
+                                                .append(info.getPay_date().substring(6, 8))
+                                                .append(info.getPay_date().substring(8, 17))
+                                                .toString());
+                                        builder.delete(0, 19);
+                                        info.setPay_amount(builder
+                                                .append(format.format(Double.parseDouble(info.getPay_amount())))
+                                                .append("元")
+                                                .toString());
+                                        info.setWritable_amount(sb
+                                                .append(format.format(Double.parseDouble(info.getWritable_amount())))
+                                                .append("元")
+                                                .toString());
+                                    }
+                                    infos.addAll(res.getRows());
+                                    mAdapter.notifyDataSetChanged();
                                 }
-                                infos.addAll(res.getRows());
-                                mAdapter.notifyDataSetChanged();
+                                mRootView.success(res);
+                            } else {
+                                if (mRootView != null) {
+                                    mRootView.fail(res.getRet_msg());
+                                }
                             }
-                            mRootView.success(res);
-                        } else {
-                            if (mRootView != null ) {
-                                mRootView.fail(res.getRet_msg());
-                            }
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        super.onError(t);
+                        if (mRootView != null) {
+                            mRootView.fail(mRootView.getActivity().getString(R.string.server_error));
                         }
                     }
                 });
@@ -209,11 +220,21 @@ public class RewriteTimesPresenter extends BasePresenter<Model, View> {
                 .subscribe(new ErrorHandleSubscriber<RewriteTimesRes>(mErrorHandler) {
                     @Override
                     public void onNext(RewriteTimesRes rewriteCardRes) {
-                        if (rewriteCardRes.isSuccess()) {
-                            writeToCard(rewriteCardRes);
-                        } else {
-                            dialog.dismiss();
-                            Toast.makeText(mRootView.getActivity(), rewriteCardRes.getRet_msg(), Toast.LENGTH_SHORT).show();
+                        if (mRootView != null) {
+                            if (rewriteCardRes.isSuccess()) {
+                                writeToCard(rewriteCardRes);
+                            } else {
+                                dialog.dismiss();
+                                Toast.makeText(mRootView.getActivity(), rewriteCardRes.getRet_msg(), Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        super.onError(t);
+                        if (mRootView != null) {
+                            mRootView.fail(mRootView.getActivity().getString(R.string.server_error));
                         }
                     }
                 });

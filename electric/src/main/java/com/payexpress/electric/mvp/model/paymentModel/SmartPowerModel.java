@@ -5,7 +5,7 @@ import com.jess.arms.di.scope.FragmentScope;
 import com.jess.arms.integration.IRepositoryManager;
 import com.jess.arms.mvp.BaseModel;
 import com.payexpress.electric.mvp.contract.payment.SmartPowerContract;
-import com.payexpress.electric.mvp.model.api.service.CommonService;
+import com.payexpress.electric.mvp.model.api.service.PaymentService;
 import com.payexpress.electric.mvp.model.entity.paymentEntity.QuerySmartCardReq;
 import com.payexpress.electric.mvp.model.entity.paymentEntity.QuerySmartCardRes;
 
@@ -27,7 +27,7 @@ public class SmartPowerModel extends BaseModel implements SmartPowerContract.Mod
 
     @Override
     public Observable<QuerySmartCardRes> querySmartCardInfo(QuerySmartCardReq req) {
-        return mRepositoryManager.obtainRetrofitService(CommonService.class)
+        return mRepositoryManager.obtainRetrofitService(PaymentService.class)
                 .querySmartCardInfo(JSON.toJSONString(req));
     }
 }

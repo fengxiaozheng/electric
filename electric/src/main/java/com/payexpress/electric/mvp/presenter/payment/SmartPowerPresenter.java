@@ -6,6 +6,7 @@ import android.os.Message;
 import com.jess.arms.di.scope.FragmentScope;
 import com.jess.arms.mvp.BasePresenter;
 import com.jess.arms.utils.RxLifecycleUtils;
+import com.payexpress.electric.R;
 import com.payexpress.electric.app.utils.IRfidParam;
 import com.payexpress.electric.app.utils.Psamcmd;
 import com.payexpress.electric.app.utils.StringUtils;
@@ -103,11 +104,21 @@ public class SmartPowerPresenter extends BasePresenter<SmartPowerContract.Model,
                 .subscribe(new ErrorHandleSubscriber<QuerySmartCardRes>(mErrorHandler) {
                     @Override
                     public void onNext(QuerySmartCardRes querySmartCardRes) {
-                        dialog.dismiss();
-                        if (querySmartCardRes.isSuccess()) {
-                            mRootView.success(querySmartCardRes);
-                        } else {
-                            mRootView.fail(querySmartCardRes.getRet_msg());
+                        if (mRootView != null) {
+                            dialog.dismiss();
+                            if (querySmartCardRes.isSuccess()) {
+                                mRootView.success(querySmartCardRes);
+                            } else {
+                                mRootView.fail(querySmartCardRes.getRet_msg());
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        super.onError(t);
+                        if (mRootView != null) {
+                            mRootView.fail(mRootView.getActivity().getString(R.string.server_error));
                         }
                     }
                 });

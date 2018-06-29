@@ -88,19 +88,19 @@ public class GovInfoItemFragment extends GovFragment implements View.OnClickList
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.g_zn:
-                activity.start(this, GovGuideFragment.newInstance("0"), "GovGuideFragment");
+                start(this, GovGuideFragment.newInstance("0"), "GovGuideFragment");
                 break;
             case R.id.g_zx:
-                activity.start(this, new GovLocationFragment(), "GovLocationFragment");
+                start(this, new GovLocationFragment(), "GovLocationFragment");
                 break;
             case R.id.g_bl:
-                activity.start(this, new GovBusinessFragment(), "GovBusinessFragment");
+                start(this, new GovBusinessFragment(), "GovBusinessFragment");
                 break;
             case R.id.g_yc:
-                activity.start(this, GovGuideFragment.newInstance("1"), "GovGuideFragment");
+                start(this, GovGuideFragment.newInstance("1"), "GovGuideFragment");
                 break;
-                default:
-                    break;
+            default:
+                break;
         }
     }
 }

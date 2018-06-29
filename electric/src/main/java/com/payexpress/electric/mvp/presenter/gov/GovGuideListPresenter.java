@@ -62,26 +62,37 @@ public class GovGuideListPresenter extends BasePresenter<Model, View> {
         options.put("pageSize", 5);
         mModel.getGovGuideList(options)
                 .subscribeOn(Schedulers.io())
-                .subscribeOn(AndroidSchedulers.mainThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .compose(RxLifecycleUtils.bindToLifecycle(mRootView))//使用 Rxlifecycle,使 Disposable 和 Activity 一起销毁
                 .subscribe(new ErrorHandleSubscriber<GovGuideListRes>(mErrorHandler) {
                     @Override
                     public void onNext(GovGuideListRes res) {
-                        if (res.isSuccess()) {
-                            if (res.getTotal() >0) {
-                                data.clear();
-                                data.addAll(res.getData());
-                                mAdapter.notifyDataSetChanged();
-                                mRootView.success(res.getTotal(), isFirst);
-                            } else {
-                                if (isFirst) {
-                                    mUiManager.show(DefaultStatus.STATUS_EMPTY);
+                        if (mRootView != null) {
+                            if (res.isSuccess()) {
+                                if (res.getTotal() > 0) {
+                                    if (data != null) {
+                                        data.clear();
+                                        data.addAll(res.getData());
+                                        mAdapter.notifyDataSetChanged();
+                                        mRootView.success(res.getTotal(), isFirst);
+                                    }
+                                } else {
+                                    if (isFirst) {
+                                        mUiManager.show(DefaultStatus.STATUS_EMPTY);
+                                    }
+                                    mRootView.fail(0, isFirst);
                                 }
-                                mRootView.fail(0, isFirst);
+                            } else {
+                                mUiManager.show(DefaultStatus.STATUS_EMPTY);
+                                mRootView.fail(1, isFirst);
                             }
-                        } else {
-                            mUiManager.show(DefaultStatus.STATUS_EMPTY);
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        super.onError(t);
+                        if (mRootView != null) {
                             mRootView.fail(1, isFirst);
                         }
                     }
@@ -101,16 +112,28 @@ public class GovGuideListPresenter extends BasePresenter<Model, View> {
                 .subscribe(new ErrorHandleSubscriber<GovGuideListRes>(mErrorHandler) {
                     @Override
                     public void onNext(GovGuideListRes res) {
-                        if (res.isSuccess()) {
-                            if (res.getTotal() >0) {
-                                data.clear();
-                                data.addAll(res.getData());
-                                mAdapter.notifyDataSetChanged();
-                            }
-                            mRootView.moreSuccess(res.getData());
+                        if (mRootView != null) {
+                            if (res.isSuccess()) {
+                                if (res.getTotal() > 0) {
+                                    if (data != null) {
+                                        data.clear();
+                                        data.addAll(res.getData());
+                                        mAdapter.notifyDataSetChanged();
+                                    }
+                                }
+                                mRootView.moreSuccess(res.getData());
 
-                        } else {
-                            mUiManager.show(DefaultStatus.STATUS_EMPTY);
+                            } else {
+                                mUiManager.show(DefaultStatus.STATUS_EMPTY);
+                                mRootView.moreFail();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        super.onError(t);
+                        if (mRootView != null) {
                             mRootView.moreFail();
                         }
                     }
@@ -139,22 +162,33 @@ public class GovGuideListPresenter extends BasePresenter<Model, View> {
                 .subscribe(new ErrorHandleSubscriber<GovGuideListRes>(mErrorHandler) {
                     @Override
                     public void onNext(GovGuideListRes res) {
-                        if (res.isSuccess()) {
-                            if (res.getTotal() >0) {
-                                data.clear();
-                                data.addAll(res.getData());
-                                mAdapter.notifyDataSetChanged();
-                                mRootView.success(res.getTotal(), isFirst);
-                            } else {
-                                if (isFirst) {
-                                    mUiManager.show(DefaultStatus.STATUS_EMPTY);
+                        if (mRootView != null) {
+                            if (res.isSuccess()) {
+                                if (res.getTotal() > 0) {
+                                    if (data != null) {
+                                        data.clear();
+                                        data.addAll(res.getData());
+                                        mAdapter.notifyDataSetChanged();
+                                        mRootView.success(res.getTotal(), isFirst);
+                                    }
+                                } else {
+                                    if (isFirst) {
+                                        mUiManager.show(DefaultStatus.STATUS_EMPTY);
+                                    }
+                                    mRootView.fail(0, isFirst);
                                 }
-                                mRootView.fail(0, isFirst);
+                            } else {
+                                mUiManager.show(DefaultStatus.STATUS_EMPTY);
+                                mRootView.fail(1, isFirst);
                             }
-                        } else {
-                            mUiManager.show(DefaultStatus.STATUS_EMPTY);
-                            mRootView.fail(1, isFirst);
                         }
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        super.onError(t);
+                        if (mRootView != null) {
+                            mRootView.fail(1, isFirst);}
                     }
                 });
     }
@@ -172,16 +206,28 @@ public class GovGuideListPresenter extends BasePresenter<Model, View> {
                 .subscribe(new ErrorHandleSubscriber<GovGuideListRes>(mErrorHandler) {
                     @Override
                     public void onNext(GovGuideListRes res) {
-                        if (res.isSuccess()) {
-                            if (res.getTotal() >0) {
-                                data.clear();
-                                data.addAll(res.getData());
-                                mAdapter.notifyDataSetChanged();
-                            }
-                            mRootView.moreSuccess(res.getData());
+                        if (mRootView != null) {
+                            if (res.isSuccess()) {
+                                if (res.getTotal() > 0) {
+                                    if (data != null) {
+                                        data.clear();
+                                        data.addAll(res.getData());
+                                        mAdapter.notifyDataSetChanged();
+                                    }
+                                }
+                                mRootView.moreSuccess(res.getData());
 
-                        } else {
-                            mUiManager.show(DefaultStatus.STATUS_EMPTY);
+                            } else {
+                                mUiManager.show(DefaultStatus.STATUS_EMPTY);
+                                mRootView.moreFail();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        super.onError(t);
+                        if (mRootView != null) {
                             mRootView.moreFail();
                         }
                     }

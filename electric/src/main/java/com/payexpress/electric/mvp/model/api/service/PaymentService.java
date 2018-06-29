@@ -22,6 +22,7 @@ import com.payexpress.electric.mvp.model.entity.paymentEntity.CheckPayRes;
 import com.payexpress.electric.mvp.model.entity.paymentEntity.CodePayRes;
 import com.payexpress.electric.mvp.model.entity.paymentEntity.NoCardCheckRes;
 import com.payexpress.electric.mvp.model.entity.paymentEntity.PayRecordRes;
+import com.payexpress.electric.mvp.model.entity.paymentEntity.PaymentMainRes;
 import com.payexpress.electric.mvp.model.entity.paymentEntity.QuerySmartCardRes;
 import com.payexpress.electric.mvp.model.entity.paymentEntity.RewriteCardListRes;
 import com.payexpress.electric.mvp.model.entity.paymentEntity.RewriteCardRes;
@@ -43,7 +44,7 @@ import retrofit2.http.POST;
  * <a href="https://github.com/JessYanCoding">Follow me</a>
  * ================================================
  */
-public interface CommonService {
+public interface PaymentService {
 
     @POST("payexpress/proxy5001.json")
     Observable<CPUserInfoRes> getCommonUserInfo(@Body String req);
@@ -89,4 +90,7 @@ public interface CommonService {
 
     @GET("citizen-restful/config")
     Observable<RewriteInputRes> getTermPassword();
+
+    @GET("citizen-restful/func")
+    Observable<PaymentMainRes> getPaymentMainItem();
 }

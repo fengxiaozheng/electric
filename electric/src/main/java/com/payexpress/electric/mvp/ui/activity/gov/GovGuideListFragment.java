@@ -69,8 +69,7 @@ public class GovGuideListFragment extends BaseGovFragment<GovGuideListPresenter>
     RecyclerView.LayoutManager mLayoutManager;
     @Inject
     GovGuideListAdapter mAdapter;
-    private int start = 1;
-    private int dataSize;
+
     private int pageIndex = 1;
     private int pageSum;
 
@@ -99,7 +98,6 @@ public class GovGuideListFragment extends BaseGovFragment<GovGuideListPresenter>
 
     @Override
     public void success(int size, boolean isFirst) {
-        dataSize = size;
         pageSum = (int) Math.ceil((double) size / 5);
         mPageStart.setEnabled(false);
         mPageLast.setEnabled(false);
@@ -189,9 +187,9 @@ public class GovGuideListFragment extends BaseGovFragment<GovGuideListPresenter>
         if (mPresenter != null) {
             mPresenter.initStateUI(mRecyclerView);
             if (isOnce) {
-                mPresenter.getOnceData(mParam, start, true);
+                mPresenter.getOnceData(mParam, pageIndex, true);
             }else {
-                mPresenter.getListData(mParam, start, true);
+                mPresenter.getListData(mParam, pageIndex, true);
             }
         }
     }
@@ -204,11 +202,11 @@ public class GovGuideListFragment extends BaseGovFragment<GovGuideListPresenter>
     @Override
     public void onItemClick(View view, GovGuideListInfo info) {
         if (isOnce) {
-            activity.start(this,
+            start(this,
                     GovWebFragment.newInstance(false, Api.BASE_URL + "static/"+info.getHtmlName()),
                     "GovWebFragment");
         }else {
-            activity.start(this, GovGuideDetailFragment.newInstance(info.getId()),
+            start(this, GovGuideDetailFragment.newInstance(info.getId()),
                     "GovGuideDetailFragment");
         }
     }
@@ -217,7 +215,6 @@ public class GovGuideListFragment extends BaseGovFragment<GovGuideListPresenter>
     void pageStart() {
         if (mPresenter != null) {
             activity.showDialog();
-            start = 1;
             pageIndex = 1;
             mPageNum.setText(String.format("第1页/共%s页", pageSum));
             if (isOnce) {
@@ -231,16 +228,15 @@ public class GovGuideListFragment extends BaseGovFragment<GovGuideListPresenter>
     @SuppressLint("DefaultLocale")
     @OnClick(R.id.page_last)
     void pageLast() {
-        start = start - 5;
-        System.out.println("        start:"+start);
+        pageIndex --;
+        System.out.println("        start:"+pageIndex);
         if (mPresenter != null) {
             activity.showDialog();
-            pageIndex --;
             mPageNum.setText(String.format("第%d页/共%s页", pageIndex, pageSum));
             if (isOnce) {
-                mPresenter.getOnceMoreData(mParam, start);
+                mPresenter.getOnceMoreData(mParam, pageIndex);
             }else {
-                mPresenter.getMoreData(mParam, start);
+                mPresenter.getMoreData(mParam, pageIndex);
             }
         }
     }
@@ -248,23 +244,22 @@ public class GovGuideListFragment extends BaseGovFragment<GovGuideListPresenter>
     @SuppressLint("DefaultLocale")
     @OnClick(R.id.page_next)
     void pageNext() {
-        start = start + 5;
-        System.out.println("       start:"+start);
+        pageIndex ++;
+        System.out.println("       start:"+pageIndex);
         if (mPresenter != null) {
             activity.showDialog();
-            pageIndex ++;
             mPageNum.setText(String.format("第%d页/共%s页", pageIndex, pageSum));
             if (isOnce) {
-                mPresenter.getOnceMoreData(mParam, start);
+                mPresenter.getOnceMoreData(mParam, pageIndex);
             }else {
-                mPresenter.getMoreData(mParam, start);
+                mPresenter.getMoreData(mParam, pageIndex);
             }
         }
     }
 
     @OnClick(R.id.page_back)
     void pageBack() {
-        activity.back();
+        back();
     }
 
     @Override

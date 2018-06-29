@@ -10,7 +10,6 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -18,6 +17,8 @@ import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
 
 import com.payexpress.electric.R;
+
+import java.lang.ref.WeakReference;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -89,21 +90,7 @@ public class GovWebFragment extends GovFragment {
         mWebSettings.setJavaScriptEnabled(true);
         mWebSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
         mWebSettings.setLoadsImagesAutomatically(true);
-        mWebView.setWebViewClient(new WebViewClient(){
-            @Override
-            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    view.loadUrl(request.getUrl().toString());
-                }
-                return true;
-            }
-        });
-        mWebView.setWebChromeClient(new WebChromeClient() {
-            @Override
-            public void onProgressChanged(WebView view, int newProgress) {
-                System.out.println("加载数据进度："+newProgress);
-            }
-        });
+        mWebView.setWebViewClient(new MyWebViewClient(this));
     }
 
     //销毁Webview
@@ -114,9 +101,32 @@ public class GovWebFragment extends GovFragment {
             mWebView.clearHistory();
 
             ((ViewGroup) mWebView.getParent()).removeView(mWebView);
+            mWebView.stopLoading();
+            // 退出时调用此方法，移除绑定的服务，否则某些特定系统会报错
+            mWebView.getSettings().setJavaScriptEnabled(false);
+            mWebView.removeAllViews();
             mWebView.destroy();
             mWebView = null;
         }
         super.onDestroy();
+    }
+
+    private class MyWebViewClient extends WebViewClient {
+        private WeakReference<Fragment> reference;
+
+        public MyWebViewClient(Fragment fragment) {
+            reference = new WeakReference<>(fragment);
+        }
+
+        @Override
+        public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+            Fragment f = reference.get();
+            if (f != null) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    view.loadUrl(request.getUrl().toString());
+                }
+            }
+            return true;
+        }
     }
 }

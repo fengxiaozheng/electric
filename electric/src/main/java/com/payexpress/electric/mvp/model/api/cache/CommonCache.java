@@ -16,6 +16,8 @@
 package com.payexpress.electric.mvp.model.api.cache;
 
 import com.payexpress.electric.mvp.model.entity.User;
+import com.payexpress.electric.mvp.model.entity.govEntity.GovMainRes;
+import com.payexpress.electric.mvp.model.entity.paymentEntity.PaymentMainRes;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -40,4 +42,14 @@ public interface CommonCache {
 
     @LifeCache(duration = 2, timeUnit = TimeUnit.MINUTES)
     Observable<Reply<List<User>>> getUsers(Observable<List<User>> users, DynamicKey idLastUserQueried, EvictProvider evictProvider);
+
+    @LifeCache(duration = 1, timeUnit = TimeUnit.DAYS)
+    Observable<Reply<GovMainRes>> getGovMainFragmentInfo(Observable<GovMainRes> res,
+                                                         DynamicKey mainFrgInfo,
+                                                         EvictProvider evictProvider);
+
+    @LifeCache(duration = 1, timeUnit = TimeUnit.DAYS)
+    Observable<Reply<PaymentMainRes>> getPaymentMainFragmentInfo(Observable<PaymentMainRes> res,
+                                                             DynamicKey mainFrgInfo,
+                                                             EvictProvider evictProvider);
 }

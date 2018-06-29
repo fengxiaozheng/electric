@@ -1,25 +1,25 @@
 package com.payexpress.electric.mvp.ui.activity.payment;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.view.View;
-import android.widget.LinearLayout;
+import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
+import android.view.MotionEvent;
+import android.widget.Toast;
 
 import com.payexpress.electric.R;
+import com.payexpress.electric.app.utils.StringUtils;
+import com.payexpress.electric.mvp.model.api.Api;
 import com.payexpress.electric.mvp.ui.activity.BaseActivity;
-import com.payexpress.electric.mvp.ui.activity.MainActivity;
 import com.payexpress.electric.mvp.ui.widget.LoadingDailog;
 
-public class PaymentActivity extends BaseActivity implements View.OnClickListener {
+public class PaymentActivity extends BaseActivity {
 
     private android.support.v4.app.FragmentManager mFragmentManager;
     private android.support.v4.app.FragmentTransaction mFragmentTransaction;
     private LoadingDailog.Builder  builder;
     private LoadingDailog loadingView;
-    private LinearLayout backHome;
-    private LinearLayout back;
+    private int up = 0;
+    private int down = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,57 +32,7 @@ public class PaymentActivity extends BaseActivity implements View.OnClickListene
         mFragmentTransaction.commit();
         builder = new LoadingDailog.Builder(this);
         loadingView = builder.setMessage("Loading...").create();
-        backHome = findViewById(R.id.backHome);
-        back = findViewById(R.id.back);
-        backHome.setOnClickListener(this);
-        back.setOnClickListener(this);
-    }
-
-
-    public void backHome() {
-        startActivity(new Intent(this, MainActivity.class));
-        finish();
-    }
-
-    public void back() {
-        System.out.println("stack count=" + mFragmentManager.getBackStackEntryCount());
-        if (mFragmentManager.getBackStackEntryCount() <= 1) {
-            finish();
-        } else {
-            mFragmentManager.popBackStack();
-
-        //    getCurrent.onStart();
-        }
-
-    }
-
-    public void cComplete() {
-        mFragmentManager.popBackStack("CommonPowerFragment", FragmentManager.POP_BACK_STACK_INCLUSIVE);
-    }
-
-    public void cFail() {
-        mFragmentManager.popBackStackImmediate("CommonPowerFragment", FragmentManager.POP_BACK_STACK_INCLUSIVE);
-
-    }
-
-    public void sComplete() {
-        mFragmentManager.popBackStack("SmartPowerFragment", FragmentManager.POP_BACK_STACK_INCLUSIVE);
-
-    }
-
-    public void sFail() {
-        mFragmentManager.popBackStackImmediate("SmartPowerFragment", FragmentManager.POP_BACK_STACK_INCLUSIVE);
-    }
-
-    public void start(Fragment current, Fragment next, String tag) {
-        mFragmentManager = getSupportFragmentManager();
-        mFragmentTransaction = mFragmentManager.beginTransaction();
-        mFragmentTransaction.setCustomAnimations(R.anim.v_fragment_enter,R.anim.v_fragment_pop_exit,
-                R.anim.v_fragment_pop_enter,  R.anim.v_fragment_exit);
-        mFragmentTransaction.hide(current);
-        mFragmentTransaction.add(R.id.e_frame, next, tag);
-        mFragmentTransaction.addToBackStack(tag);
-        mFragmentTransaction.commit();
+        initDate();
     }
 
     public void showDialog() {
@@ -97,12 +47,57 @@ public class PaymentActivity extends BaseActivity implements View.OnClickListene
         return loadingView.isShowing();
     }
 
-    @Override
-    public void onClick(View v) {
-        if (v.getId() == R.id.backHome) {
-            backHome();
-        } else if (v.getId() == R.id.back) {
-            back();
+    public void setDialogMessage(String msg) {
+        builder.setMessage(msg);
+    }
+
+        @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                System.out.println("          "+event.getX()+","+event.getY());
+                System.out.println("           上"+up);
+                if (up >= 10) {
+                    if (event.getX() >1820 && event.getX() > 990) {
+                        down++;
+                    } else {
+                        down = 0;
+                        up = 0;
+                    }
+                    System.out.println("           下"+down);
+                    if (down == 10) {
+                        show();
+                        System.out.println("           成功");
+                    } else {
+                        System.out.println("           失败");
+                    }
+                }else {
+                    if (event.getX() < 120 && event.getX() < 120) {
+                        up++;
+                    } else {
+                        up = 0;
+                    }
+                }
+
+
+                break;
+            default:
+                break;
         }
+        return true;
+    }
+
+    private void show() {
+        if (TextUtils.isEmpty(StringUtils.getConfig(this, Api.termPsd))) {
+            Toast.makeText(this, "请重试", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("机器信息");
+        builder.setMessage("商户号："+StringUtils.getConfig(this, Api.mchtNo)
+                +"\n"+"终端号："+StringUtils.getConfig(this, Api.termNo)
+                +"\n"+"密码："+StringUtils.getConfig(this, Api.termPsd));
+        builder.setPositiveButton("确定", null);
+        builder.create().show();
     }
 }

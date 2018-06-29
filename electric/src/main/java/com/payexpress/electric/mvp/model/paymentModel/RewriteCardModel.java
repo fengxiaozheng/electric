@@ -5,7 +5,7 @@ import com.jess.arms.di.scope.FragmentScope;
 import com.jess.arms.integration.IRepositoryManager;
 import com.jess.arms.mvp.BaseModel;
 import com.payexpress.electric.mvp.contract.payment.RewriteCardContract;
-import com.payexpress.electric.mvp.model.api.service.CommonService;
+import com.payexpress.electric.mvp.model.api.service.PaymentService;
 import com.payexpress.electric.mvp.model.entity.paymentEntity.RewriteCardReq;
 import com.payexpress.electric.mvp.model.entity.paymentEntity.RewriteCardRes;
 
@@ -27,7 +27,7 @@ public class RewriteCardModel extends BaseModel implements RewriteCardContract.M
 
     @Override
     public Observable<RewriteCardRes> rewriteCard(RewriteCardReq req) {
-        return mRepositoryManager.obtainRetrofitService(CommonService.class)
+        return mRepositoryManager.obtainRetrofitService(PaymentService.class)
                 .rewriteCard(JSON.toJSONString(req));
     }
 }

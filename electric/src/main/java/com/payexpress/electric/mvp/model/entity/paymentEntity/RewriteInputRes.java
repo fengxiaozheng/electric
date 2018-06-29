@@ -9,9 +9,19 @@ import com.payexpress.electric.mvp.model.entity.govEntity.BaseGovResponse;
 
 public class RewriteInputRes extends BaseGovResponse {
 
-    private String gridPassword;
+    private String writeCardPassword;
+    private String merchantNo;
+    private String terminalNo;
 
-    public String getGridPassword() {
-        return gridPassword;
+    public String getWriteCardPassword() {
+        return writeCardPassword;
+    }
+
+    public String getMerchantNo() {
+        return merchantNo;
+    }
+
+    public String getTerminalNo() {
+        return terminalNo;
     }
 }

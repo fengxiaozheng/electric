@@ -37,7 +37,6 @@ public class CPUserInfoFragment extends PaymentFragment implements
     private CPUserInfoRes mParam;
 
 
-
     private RecyclerView mRecyclerView;
     private GridLayoutManager mLayoutManager;
     private KeyboardAdapter mAdapter;
@@ -183,16 +182,16 @@ public class CPUserInfoFragment extends PaymentFragment implements
     public void onClick(View v) {
         if (v.getId() == R.id.cp_next) {
             String amount = mEditText.getText().toString();
-            if (TextUtils.isEmpty(amount)){
+            if (TextUtils.isEmpty(amount)) {
                 Toast.makeText(activity, "请输入金额", Toast.LENGTH_SHORT).show();
-            }else {
+            } else {
                 ElectricPayInfo info = new ElectricPayInfo();
                 info.setFlag(0);
                 info.setUser_no(mParam.getGrid_user_code());
                 info.setUser_name(mParam.getGrid_user_name());
                 info.setUser_address(mParam.getAddress());
                 info.setPay_amount(format.format(Double.parseDouble(amount)));
-                activity.start(CPUserInfoFragment.this,
+                start(CPUserInfoFragment.this,
                         StartPayFragment.newInstance(info), "StartPayFragment");
             }
         }

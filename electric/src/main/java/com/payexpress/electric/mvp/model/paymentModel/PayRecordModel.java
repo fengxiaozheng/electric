@@ -5,7 +5,7 @@ import com.jess.arms.di.scope.FragmentScope;
 import com.jess.arms.integration.IRepositoryManager;
 import com.jess.arms.mvp.BaseModel;
 import com.payexpress.electric.mvp.contract.payment.PayRecordContract;
-import com.payexpress.electric.mvp.model.api.service.CommonService;
+import com.payexpress.electric.mvp.model.api.service.PaymentService;
 import com.payexpress.electric.mvp.model.entity.paymentEntity.PayRecordRes;
 import com.payexpress.electric.mvp.model.entity.paymentEntity.UserNoReq;
 
@@ -27,7 +27,7 @@ public class PayRecordModel extends BaseModel implements PayRecordContract.PayRe
 
     @Override
     public Observable<PayRecordRes> getPayRecord(UserNoReq req) {
-        return mRepositoryManager.obtainRetrofitService(CommonService.class)
+        return mRepositoryManager.obtainRetrofitService(PaymentService.class)
                 .payRecord(JSON.toJSONString(req));
     }
 }

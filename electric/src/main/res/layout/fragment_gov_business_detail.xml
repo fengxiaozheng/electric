@@ -1,0 +1,113 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/has_bottom_body_height"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginTop="@dimen/body_top"
+    tools:context="com.payexpress.electric.mvp.ui.activity.gov.GovGuideDetailFragment">
+
+    <ScrollView
+        android:layout_width="1814dp"
+        android:layout_height="770dp"
+        android:layout_marginTop="40dp"
+        android:paddingStart="40dp"
+        android:paddingEnd="40dp"
+        android:background="@drawable/pay_record"
+        android:layout_gravity="center_horizontal">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/detail_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:textSize="36sp"
+                android:layout_marginTop="40dp"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="40dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/guide_detail_content"
+                    android:text="@string/str_069"/>
+                <TextView
+                    android:id="@+id/detail_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/guide_detail_content"
+                    android:textColor="@color/guide_detail_content_color"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="40dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/guide_detail_content"
+                    android:text="@string/str_070"/>
+                <TextView
+                    android:id="@+id/detail_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/guide_detail_content"
+                    android:textColor="@color/guide_detail_content_color"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="40dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/guide_detail_content"
+                    android:text="@string/str_071"/>
+                <TextView
+                    android:id="@+id/detail_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/guide_detail_content"
+                    android:textColor="@color/guide_detail_content_color"/>
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:textSize="@dimen/guide_detail_content"
+                android:text="@string/str_072"/>
+            <TextView
+                android:id="@+id/detail_dl"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:lineSpacingMultiplier="1.5"
+                android:textSize="@dimen/guide_detail_content"/>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <com.mingle.widget.LoadingView
+        android:id="@+id/loadingView"
+        android:layout_width="1814dp"
+        android:layout_height="770dp"
+        android:layout_marginTop="40dp"
+        android:paddingTop="20dp"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/pay_record"
+        app:loadingText="加载中..."/>
+
+    <include layout="@layout/bottom_time"/>
+
+</FrameLayout>

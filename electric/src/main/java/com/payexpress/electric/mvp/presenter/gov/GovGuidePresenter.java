@@ -45,15 +45,25 @@ public class GovGuidePresenter extends BasePresenter<Model, View> {
                 .subscribe(new ErrorHandleSubscriber<GovGuideRes>(mErrorHandler) {
                     @Override
                     public void onNext(GovGuideRes govGuideRes) {
-                        if (govGuideRes.isSuccess()) {
-                            if (govGuideRes.getData().size() > 0) {
-                                infos.addAll(govGuideRes.getData());
-                                mAdapter.notifyDataSetChanged();
-                                mRootView.success();
+                        if (mRootView != null) {
+                            if (govGuideRes.isSuccess()) {
+                                if (govGuideRes.getData().size() > 0) {
+                                    infos.addAll(govGuideRes.getData());
+                                    mAdapter.notifyDataSetChanged();
+                                    mRootView.success();
+                                } else {
+                                    mRootView.fail();
+                                }
                             } else {
                                 mRootView.fail();
                             }
-                        }else {
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        super.onError(t);
+                        if (mRootView != null) {
                             mRootView.fail();
                         }
                     }

@@ -22,10 +22,12 @@ import com.payexpress.electric.app.utils.KeyboardUtils;
 import com.payexpress.electric.di.component.gov.DaggerGovBusinessComponent;
 import com.payexpress.electric.di.module.gov.GovBusinessModule;
 import com.payexpress.electric.mvp.contract.gov.GovBusinessContract;
+import com.payexpress.electric.mvp.model.entity.govEntity.GovBusinessInfo;
 import com.payexpress.electric.mvp.presenter.gov.GovBusinessPresenter;
 import com.payexpress.electric.mvp.ui.adapter.KeyboardAdapter;
 import com.payexpress.electric.mvp.ui.adapter.OnItemClickListener;
 
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -60,6 +62,19 @@ public class GovBusinessFragment extends BaseGovFragment<GovBusinessPresenter>
     @Override
     public OnItemClickListener getListener() {
         return this;
+    }
+
+    @Override
+    public void success(List<GovBusinessInfo> data) {
+        activity.dismissDialog();
+        start(this, GovBusinessListFragment.newInstance(data),
+                "GovBusinessListFragment");
+    }
+
+    @Override
+    public void fail(String msg) {
+        activity.dismissDialog();
+        Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -107,7 +122,10 @@ public class GovBusinessFragment extends BaseGovFragment<GovBusinessPresenter>
             Toast.makeText(activity, "请输入正确的身份证号", Toast.LENGTH_SHORT).show();
             return;
         }
-        Toast.makeText(activity, str, Toast.LENGTH_SHORT).show();
+        if (mPresenter != null) {
+            activity.showDialog();
+            mPresenter.getBusinessContent(str);
+        }
     }
 
     @Override

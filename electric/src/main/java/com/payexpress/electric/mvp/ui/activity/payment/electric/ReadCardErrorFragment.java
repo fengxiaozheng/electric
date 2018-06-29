@@ -66,6 +66,6 @@ public class ReadCardErrorFragment extends PaymentFragment {
         mTextView = view.findViewById(R.id.fail_reason);
         mButton = view.findViewById(R.id.btn_confirm);
         mTextView.setText(mParam);
-        mButton.setOnClickListener(v -> activity.sComplete());
+        mButton.setOnClickListener(v -> sComplete());
     }
 }

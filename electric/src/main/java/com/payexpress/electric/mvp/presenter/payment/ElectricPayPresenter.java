@@ -6,6 +6,7 @@ import android.os.Message;
 import com.jess.arms.di.scope.FragmentScope;
 import com.jess.arms.mvp.BasePresenter;
 import com.jess.arms.utils.RxLifecycleUtils;
+import com.payexpress.electric.R;
 import com.payexpress.electric.app.utils.IRfidParam;
 import com.payexpress.electric.app.utils.Psamcmd;
 import com.payexpress.electric.app.utils.StringUtils;
@@ -120,30 +121,40 @@ public class ElectricPayPresenter extends BasePresenter<ElectricPayContract.PayM
                 .subscribe(new ErrorHandleSubscriber<CodePayRes>(mErrorHandler) {
                     @Override
                     public void onNext(CodePayRes codePayRes) {
-                        if (codePayRes.isSuccess()) {
-                            if ("00".equals(codePayRes.getPay_status())) {
-                                if (flag == 0) {
-                                            TransNoReq req1 = new TransNoReq();
-                                            req1.setTrans_no(codePayRes.getTrans_no());
-                                            commonElectricBuy(req1);
-                                } else if (flag == 1) {
-                                    isNotCardElectricBuy(codePayRes.getTrans_no());
-                                } else {
-                                    isCardElectricBuy(codePayRes.getTrans_no());
-                                }
-                            }else if ("01".equals(codePayRes.getPay_status())){
-                                mRootView.payFail();
-                            } else {
-                                new Timer().schedule(new TimerTask() {
-                                    @Override
-                                    public void run() {
-                                        checkPayStatus(false, flag, codePayRes.getTrans_no());
-                                        this.cancel();
+                        if (mRootView != null) {
+                            if (codePayRes.isSuccess()) {
+                                if ("00".equals(codePayRes.getPay_status())) {
+                                    if (flag == 0) {
+                                        TransNoReq req1 = new TransNoReq();
+                                        req1.setTrans_no(codePayRes.getTrans_no());
+                                        commonElectricBuy(req1);
+                                    } else if (flag == 1) {
+                                        isNotCardElectricBuy(codePayRes.getTrans_no());
+                                    } else {
+                                        isCardElectricBuy(codePayRes.getTrans_no());
                                     }
-                                }, 10* 1000);
+                                } else if ("01".equals(codePayRes.getPay_status())) {
+                                    mRootView.payFail();
+                                } else {
+                                    new Timer().schedule(new TimerTask() {
+                                        @Override
+                                        public void run() {
+                                            checkPayStatus(false, flag, codePayRes.getTrans_no());
+                                            this.cancel();
+                                        }
+                                    }, 10 * 1000);
+                                }
+                            } else {
+                                mRootView.payFail();
                             }
-                        } else {
-                            mRootView.payFail();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        super.onError(t);
+                        if (mRootView != null) {
+                            mRootView.fail(mRootView.getActivity().getString(R.string.server_error));
                         }
                     }
                 });
@@ -164,54 +175,64 @@ public class ElectricPayPresenter extends BasePresenter<ElectricPayContract.PayM
                 .subscribe(new ErrorHandleSubscriber<CheckPayRes>(mErrorHandler) {
                     @Override
                     public void onNext(CheckPayRes checkPayRes) {
-                        if (checkPayRes.isSuccess()) {
-                            if ("00".equals(checkPayRes.getPay_status())) {
-                                times = 3;
-                                if (flag == 0) {
-                                    commonElectricBuy(req);
-                                } else if (flag == 1) {
-                                    isNotCardElectricBuy(transNo);
+                        if (mRootView != null) {
+                            if (checkPayRes.isSuccess()) {
+                                if ("00".equals(checkPayRes.getPay_status())) {
+                                    times = 3;
+                                    if (flag == 0) {
+                                        commonElectricBuy(req);
+                                    } else if (flag == 1) {
+                                        isNotCardElectricBuy(transNo);
+                                    } else {
+                                        isCardElectricBuy(transNo);
+                                    }
                                 } else {
-                                    isCardElectricBuy(transNo);
+                                    times--;
+                                    if (times > 0) {
+                                        new Timer().schedule(new TimerTask() {
+                                            @Override
+                                            public void run() {
+                                                getData(over, flag, req, transNo);
+                                                this.cancel();
+                                            }
+                                        }, 5 * 1000);
+
+                                    } else {
+                                        times = 3;
+                                        if ("02".equals(checkPayRes.getPay_status())) {
+                                            if (over) {
+                                                mRootView.payFail();
+                                            } else {
+                                                mRootView.checkPay(flag, transNo);
+                                            }
+                                        } else {
+                                            mRootView.payFail();
+                                        }
+                                    }
                                 }
                             } else {
                                 times--;
-                                if (times >0) {
+                                if (times > 0) {
                                     new Timer().schedule(new TimerTask() {
                                         @Override
                                         public void run() {
                                             getData(over, flag, req, transNo);
                                             this.cancel();
                                         }
-                                    }, 5* 1000);
-
+                                    }, 5 * 1000);
                                 } else {
                                     times = 3;
-                                    if ("02".equals(checkPayRes.getPay_status())){
-                                        if (over) {
-                                            mRootView.payFail();
-                                        }else {
-                                            mRootView.checkPay(flag, transNo);
-                                        }
-                                    } else {
-                                        mRootView.payFail();
-                                    }
+                                    mRootView.payFail();
                                 }
                             }
-                        }else {
-                            times--;
-                            if (times >0) {
-                                new Timer().schedule(new TimerTask() {
-                                    @Override
-                                    public void run() {
-                                        getData(over, flag, req, transNo);
-                                        this.cancel();
-                                    }
-                                }, 5* 1000);
-                            } else {
-                                times = 3;
-                                mRootView.payFail();
-                            }
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        super.onError(t);
+                        if (mRootView != null) {
+                            mRootView.fail(mRootView.getActivity().getString(R.string.server_error));
                         }
                     }
                 });
@@ -226,10 +247,20 @@ public class ElectricPayPresenter extends BasePresenter<ElectricPayContract.PayM
                 .subscribe(new ErrorHandleSubscriber<BaseResponse>(mErrorHandler) {
                     @Override
                     public void onNext(BaseResponse baseResponse) {
-                        if (baseResponse.isSuccess()) {
-                            mRootView.success();
-                        } else {
-                            mRootView.fail(baseResponse.getRet_msg());
+                        if (mRootView != null) {
+                            if (baseResponse.isSuccess()) {
+                                mRootView.success();
+                            } else {
+                                mRootView.fail(baseResponse.getRet_msg());
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        super.onError(t);
+                        if (mRootView != null) {
+                            mRootView.fail(mRootView.getActivity().getString(R.string.server_error));
                         }
                     }
                 });
@@ -261,10 +292,20 @@ public class ElectricPayPresenter extends BasePresenter<ElectricPayContract.PayM
                 .subscribe(new ErrorHandleSubscriber<SmartCardBuyRes>(mErrorHandler) {
                     @Override
                     public void onNext(SmartCardBuyRes smartCardBuyRes) {
-                        if (smartCardBuyRes.isSuccess()) {
-                            smartCardBuyWriteCard(smartCardBuyRes);
-                        } else {
-                            mRootView.fail(smartCardBuyRes.getRet_msg());
+                        if (mRootView != null) {
+                            if (smartCardBuyRes.isSuccess()) {
+                                smartCardBuyWriteCard(smartCardBuyRes);
+                            } else {
+                                mRootView.fail(smartCardBuyRes.getRet_msg());
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        super.onError(t);
+                        if (mRootView != null) {
+                            mRootView.fail(mRootView.getActivity().getString(R.string.server_error));
                         }
                     }
                 });
@@ -324,10 +365,20 @@ public class ElectricPayPresenter extends BasePresenter<ElectricPayContract.PayM
                 .subscribe(new ErrorHandleSubscriber<RewriteCardRes>(mErrorHandler) {
                     @Override
                     public void onNext(RewriteCardRes rewriteCardRes) {
-                        if (rewriteCardRes.isSuccess()) {
-                            rewriteCard2(rewriteCardRes);
-                        } else {
-                            mRootView.fail("1111");
+                        if (mRootView != null) {
+                            if (rewriteCardRes.isSuccess()) {
+                                rewriteCard2(rewriteCardRes);
+                            } else {
+                                mRootView.fail("1111");
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        super.onError(t);
+                        if (mRootView != null) {
+                            mRootView.fail(mRootView.getActivity().getString(R.string.server_error));
                         }
                     }
                 });
@@ -380,7 +431,17 @@ public class ElectricPayPresenter extends BasePresenter<ElectricPayContract.PayM
                 .subscribe(new ErrorHandleSubscriber<BaseResponse>(mErrorHandler) {
                     @Override
                     public void onNext(BaseResponse baseResponse) {
-                        mRootView.success();
+                        if (mRootView != null) {
+                            mRootView.success();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        super.onError(t);
+                        if (mRootView != null) {
+                            mRootView.fail(mRootView.getActivity().getString(R.string.server_error));
+                        }
                     }
                 });
     }
@@ -397,10 +458,20 @@ public class ElectricPayPresenter extends BasePresenter<ElectricPayContract.PayM
                 .subscribe(new ErrorHandleSubscriber<BaseResponse>(mErrorHandler) {
                     @Override
                     public void onNext(BaseResponse baseResponse) {
-                        if (baseResponse.isSuccess()) {
-                            mRootView.success();
-                        } else {
-                            mRootView.fail(baseResponse.getRet_msg());
+                        if (mRootView != null) {
+                            if (baseResponse.isSuccess()) {
+                                mRootView.success();
+                            } else {
+                                mRootView.fail(baseResponse.getRet_msg());
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        super.onError(t);
+                        if (mRootView != null) {
+                            mRootView.fail(mRootView.getActivity().getString(R.string.server_error));
                         }
                     }
                 });
