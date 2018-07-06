@@ -104,6 +104,7 @@ public class LifeChooseActivity extends BaseActivity {
         intent.setAction(Intent.ACTION_MAIN);// "android.intent.action.MAIN"
         intent.addCategory(Intent.CATEGORY_HOME); //"android.intent.category.HOME"
         startActivity(intent);
+        System.exit(0);
     }
 
     private void show() {

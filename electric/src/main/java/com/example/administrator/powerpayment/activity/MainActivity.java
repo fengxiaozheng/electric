@@ -6,15 +6,12 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
-import com.example.administrator.powerpayment.activity.app.utils.StringUtils;
-
 public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        System.out.println("                     "+StringUtils.MD5("SN-E6OJK7WWMFZLAE8S"));
         starGApp3();
     }
 
@@ -47,11 +44,5 @@ public class MainActivity extends AppCompatActivity {
 //        uninstall_intent.setData(Uri.parse("package:"+getApplicationInfo().packageName));
 //        startActivity(uninstall_intent);
 finish();
-    }
-}
-
-class test {
-    public static void main(String[] args) {
-        System.out.println(StringUtils.MD5("SN-E6OJK7WWMFZLAE8S"));
     }
 }

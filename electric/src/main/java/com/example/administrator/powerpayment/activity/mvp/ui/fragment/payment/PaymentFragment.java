@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.example.administrator.powerpayment.activity.LifeChooseActivity;
 import com.example.administrator.powerpayment.activity.R;
 
+import java.lang.ref.WeakReference;
 import java.util.Objects;
 
 /**
@@ -24,7 +25,7 @@ import java.util.Objects;
 public class PaymentFragment extends Fragment {
 
     protected LifeChooseActivity activity;
-    private CountDownTimer timer;
+    private MyCountDownTimer timer;
     private android.support.v4.app.FragmentManager mFragmentManager;
     private android.support.v4.app.FragmentTransaction mFragmentTransaction;
 
@@ -62,29 +63,32 @@ public class PaymentFragment extends Fragment {
         super.onResume();
         if (timer == null) {
             System.out.println("          time空了");
-            timer = new CountDownTimer(300 * 1000, 1000) {
-                @Override
-                public void onTick(long millisUntilFinished) {
-                    if (getView() != null) {
-                        if (getView().findViewById(R.id.bottom_time) != null) {
-                            if (millisUntilFinished / 1000 >= 1) {
-                                ((TextView) getView().findViewById(R.id.bottom_time)).setText(String.valueOf(millisUntilFinished / 1000));
-                            }
-                        }
-                    }
-                }
 
-                @Override
-                public void onFinish() {
-                    if (getActivity() instanceof LifeChooseActivity) {
-                        if (Objects.equals(getTag(), "PayResultFragment")) {
-                            backHome();
-                        } else {
-                            back();
-                        }
-                    }
-                }
-            };
+            timer = new MyCountDownTimer(this, 300 * 1000, 1000);
+
+//            timer = new CountDownTimer(300 * 1000, 1000) {
+//                @Override
+//                public void onTick(long millisUntilFinished) {
+//                    if (getView() != null) {
+//                        if (getView().findViewById(R.id.bottom_time) != null) {
+//                            if (millisUntilFinished / 1000 >= 1) {
+//                                ((TextView) getView().findViewById(R.id.bottom_time)).setText(String.valueOf(millisUntilFinished / 1000));
+//                            }
+//                        }
+//                    }
+//                }
+//
+//                @Override
+//                public void onFinish() {
+//                    if (getActivity() instanceof LifeChooseActivity) {
+//                        if (Objects.equals(getTag(), "PayResultFragment")) {
+//                            backHome();
+//                        } else {
+//                            back();
+//                        }
+//                    }
+//                }
+//            };
         } else {
             System.out.println("          time没空");
         }
@@ -150,7 +154,7 @@ public class PaymentFragment extends Fragment {
 
     private void back2() {
         if (mFragmentManager.getBackStackEntryCount() <= 1) {
-        //    activity.finish();
+         //   activity.finish();
                 backHome();
         } else {
             if (Objects.equals(getTag(), "PayResultFragment")) {
@@ -209,24 +213,43 @@ public class PaymentFragment extends Fragment {
     }
 
 
-//    private class MyCountDownTimer extends CountDownTimer {
-//
-//        private WeakReference<Fragment> reference;
-//
-//        public MyCountDownTimer(Fragment fragment, long millisInFuture, long countDownInterval) {
-//            super(millisInFuture, countDownInterval);
-//            reference = new WeakReference<>(fragment);
-//        }
-//
-//
-//        @Override
-//        public void onTick(long millisUntilFinished) {
-//
-//        }
-//
-//        @Override
-//        public void onFinish() {
-//            reference.get() instanceof PaymentFragment
-//        }
-//    }
+    private static class MyCountDownTimer extends CountDownTimer {
+
+        private WeakReference<Fragment> reference;
+
+        public MyCountDownTimer(Fragment fragment, long millisInFuture, long countDownInterval) {
+            super(millisInFuture, countDownInterval);
+            reference = new WeakReference<>(fragment);
+        }
+
+
+        @Override
+        public void onTick(long millisUntilFinished) {
+            if (reference.get() != null) {
+                if (reference.get().getView() != null) {
+                    if (reference.get().getView().findViewById(R.id.bottom_time) != null) {
+                        if (millisUntilFinished / 1000 >= 1) {
+                            ((TextView) reference.get().getView().findViewById(R.id.bottom_time)).setText(String.valueOf(millisUntilFinished / 1000));
+                        }
+                    }
+                }
+            }
+        }
+
+        @Override
+        public void onFinish() {
+            Fragment f = reference.get();
+
+            if (f != null) {
+                if (f instanceof PaymentFragment) {
+                    if (Objects.equals(f.getTag(), "PayResultFragment")) {
+                        ((PaymentFragment) f).backHome();
+                    } else {
+                        ((PaymentFragment) f).back();
+                    }
+                }
+            }
+
+        }
+    }
 }

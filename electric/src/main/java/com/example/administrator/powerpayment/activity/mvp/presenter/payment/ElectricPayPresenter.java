@@ -56,6 +56,7 @@ public class ElectricPayPresenter extends BasePresenter<ElectricPayContract.PayM
     byte iPSAMNum2;
     byte[] bytes;
     private boolean isopen = false;
+    private boolean isCheck = false;
 
     private Handler mMainHandler =new Handler(new Handler.Callback() {
         @Override
@@ -69,7 +70,13 @@ public class ElectricPayPresenter extends BasePresenter<ElectricPayContract.PayM
                 case 2:
                     System.out.println("    卡片数据读取--成功。");
                     System.out.println("    " + Hxtostring(idata));
-                    startIsCardBuy();
+                    if (isCheck) {
+                        System.out.println("      进入补写卡数据校验");
+                        smartCardBuyCheck2();
+                    }else {
+                        System.out.println("      进入电卡数据购电");
+                        startIsCardBuy();
+                    }
                     break;
                 case 3:
                     System.out.println("    卡片数据读取--失败！");
@@ -77,19 +84,19 @@ public class ElectricPayPresenter extends BasePresenter<ElectricPayContract.PayM
                     mRootView.fail("卡片读取失败");
                     break;
                 case 18:
-                    System.out.println("     写卡成功");
+                    System.out.println("     写卡数据成功");
                     smartCardBuyCheck();
                     break;
                 case 21:
-                    System.out.println("     写卡失败");
+                    System.out.println("     写卡数据失败");
                         rewriteCard();
                     break;
                 case 19:
-                    System.out.println("     补写卡成功");
+                    System.out.println("     补写卡数据成功");
                     mRootView.success();
                     break;
                 case 20:
-                    System.out.println("      补写卡失败");
+                    System.out.println("      补写卡数据失败");
                     mRootView.fail("1111");
                     break;
                 default:
@@ -271,6 +278,7 @@ public class ElectricPayPresenter extends BasePresenter<ElectricPayContract.PayM
     private void isCardElectricBuy(String transNo) {
         smartCardBuyTransNo = transNo;
         isopen = true;
+        isCheck = false;
         readCardMsg(0);
     }
 
@@ -418,6 +426,12 @@ public class ElectricPayPresenter extends BasePresenter<ElectricPayContract.PayM
     }
 
     private void smartCardBuyCheck() {
+        isopen = true;
+        isCheck = true;
+        readCardMsg(0);
+    }
+
+    private void smartCardBuyCheck2() {
         SmartCardBuyCheckReq req = new SmartCardBuyCheckReq();
         req.setSesb_no("51401");
         req.setFile1(StringUtils.byteArrayToStr(file1));

@@ -13,12 +13,15 @@ import android.widget.TextView;
 import com.example.administrator.powerpayment.activity.GovernmentActivity;
 import com.example.administrator.powerpayment.activity.R;
 
+import java.lang.ref.WeakReference;
+
 
 public class GovFragment extends Fragment {
 
     protected GovernmentActivity activity;
     private android.support.v4.app.FragmentManager mFragmentManager;
     private android.support.v4.app.FragmentTransaction mFragmentTransaction;
+    private GovCountDownTimer timer;
 
     @Override
     public void onAttach(Activity activity) {
@@ -53,6 +56,9 @@ public class GovFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
+        if (timer == null) {
+            timer = new GovCountDownTimer(this, 300 * 1000, 1000);
+        }
         timer.start();
 
         if (activity.getWindow().findViewById(R.id.back) != null) {
@@ -81,23 +87,23 @@ public class GovFragment extends Fragment {
         }
     }
 
-    private CountDownTimer timer = new CountDownTimer(300 * 1000, 1000) {
-        @Override
-        public void onTick(long millisUntilFinished) {
-            if (getView() != null) {
-                if (getView().findViewById(R.id.bottom_time) != null) {
-                    if (millisUntilFinished / 1000 >= 1) {
-                        ((TextView) getView().findViewById(R.id.bottom_time)).setText(String.valueOf(millisUntilFinished / 1000));
-                    }
-                }
-            }
-        }
-
-        @Override
-        public void onFinish() {
-            back();
-        }
-    };
+//    private CountDownTimer timer = new CountDownTimer(300 * 1000, 1000) {
+//        @Override
+//        public void onTick(long millisUntilFinished) {
+//            if (getView() != null) {
+//                if (getView().findViewById(R.id.bottom_time) != null) {
+//                    if (millisUntilFinished / 1000 >= 1) {
+//                        ((TextView) getView().findViewById(R.id.bottom_time)).setText(String.valueOf(millisUntilFinished / 1000));
+//                    }
+//                }
+//            }
+//        }
+//
+//        @Override
+//        public void onFinish() {
+//            back();
+//        }
+//    };
 
     protected void start(Fragment current, Fragment next, String tag) {
         mFragmentManager = getFragmentManager();
@@ -135,7 +141,7 @@ public class GovFragment extends Fragment {
 
     private void back2() {
         if (mFragmentManager.getBackStackEntryCount() <= 1) {
-        //    activity.finish();
+         //   activity.finish();
             backHome();
         } else {
             mFragmentManager.popBackStack();
@@ -156,6 +162,42 @@ public class GovFragment extends Fragment {
             e.printStackTrace();
         }
         activity.finish();
+    }
+
+    private static class GovCountDownTimer extends CountDownTimer {
+
+        private WeakReference<Fragment> reference;
+
+        public GovCountDownTimer(Fragment fragment, long millisInFuture, long countDownInterval) {
+            super(millisInFuture, countDownInterval);
+            reference = new WeakReference<>(fragment);
+        }
+
+
+        @Override
+        public void onTick(long millisUntilFinished) {
+            if (reference.get() != null) {
+                if (reference.get().getView() != null) {
+                    if (reference.get().getView().findViewById(R.id.bottom_time) != null) {
+                        if (millisUntilFinished / 1000 >= 1) {
+                            ((TextView) reference.get().getView().findViewById(R.id.bottom_time)).setText(String.valueOf(millisUntilFinished / 1000));
+                        }
+                    }
+                }
+            }
+        }
+
+        @Override
+        public void onFinish() {
+            Fragment f = reference.get();
+
+            if (f != null) {
+                if (f instanceof GovFragment) {
+                    ((GovFragment) f).back();
+                }
+            }
+
+        }
     }
 
 }
