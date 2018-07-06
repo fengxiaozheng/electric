@@ -4,7 +4,7 @@
     android:layout_height="@dimen/has_keyboard_body_height"
     android:layout_marginTop="@dimen/user_info_top"
     android:gravity="center"
-    tools:context="com.payexpress.electric.mvp.ui.activity.payment.electric.CPUserInfoFragment">
+    tools:context=".mvp.ui.fragment.payment.electric.CPUserInfoFragment">
 
     <LinearLayout
         android:id="@+id/e_smart"

@@ -5,7 +5,7 @@
     android:layout_marginTop="@dimen/user_info_top"
     android:gravity="center"
     android:orientation="horizontal"
-    tools:context=".mvp.ui.activity.payment.electric.CPCheckUserFragment">
+    tools:context=".mvp.ui.fragment.payment.electric.CPCheckUserFragment">
 
 
        <LinearLayout

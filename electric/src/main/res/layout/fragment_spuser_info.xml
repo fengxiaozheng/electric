@@ -4,7 +4,7 @@ android:layout_width="match_parent"
 android:layout_height="@dimen/has_keyboard_body_height"
 android:layout_marginTop="@dimen/user_info_top"
 android:gravity="center"
-    tools:context="com.payexpress.electric.mvp.ui.activity.payment.electric.SPUserInfoFragment">
+    tools:context=".mvp.ui.fragment.payment.electric.SPUserInfoFragment">
 
     <LinearLayout
         android:id="@+id/e_smart"
@@ -90,7 +90,7 @@ android:gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
-            android:layout_marginTop="53dp"
+            android:layout_marginTop="20dp"
             android:orientation="horizontal">
             <TextView
                 android:layout_width="wrap_content"

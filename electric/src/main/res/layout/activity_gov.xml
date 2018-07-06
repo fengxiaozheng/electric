@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@mipmap/bg"
-    tools:context="com.payexpress.electric.mvp.ui.activity.gov.GovActivity">
+    tools:context="com.example.administrator.powerpayment.activity.GovernmentActivity">
 
     <include layout="@layout/head"/>
 

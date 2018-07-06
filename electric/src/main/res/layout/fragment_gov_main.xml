@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="com.payexpress.electric.mvp.ui.activity.gov.GovMainFragment">
+    tools:context=".mvp.ui.fragment.gov.GovMainFragment">
 
         <FrameLayout
             android:layout_marginTop="@dimen/body_top"

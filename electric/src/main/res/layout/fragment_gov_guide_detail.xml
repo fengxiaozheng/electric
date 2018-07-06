@@ -4,7 +4,7 @@
     android:layout_height="@dimen/has_bottom_body_height"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_marginTop="@dimen/body_top"
-    tools:context="com.payexpress.electric.mvp.ui.activity.gov.GovGuideDetailFragment">
+    tools:context=".mvp.ui.fragment.gov.GovGuideDetailFragment">
 
 <ScrollView
     android:layout_width="1814dp"
@@ -73,6 +73,7 @@
             <org.sufficientlysecure.htmltextview.HtmlTextView
                 android:id="@+id/detail_content"
                 android:layout_marginTop="20dp"
+                android:textSize="28sp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
@@ -85,6 +86,7 @@
             <org.sufficientlysecure.htmltextview.HtmlTextView
                 android:id="@+id/detail_condition"
                 android:layout_marginTop="20dp"
+                android:textSize="28sp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
@@ -97,6 +99,7 @@
             <org.sufficientlysecure.htmltextview.HtmlTextView
                 android:id="@+id/detail_policy"
                 android:layout_marginTop="20dp"
+                android:textSize="28sp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
@@ -109,6 +112,7 @@
             <org.sufficientlysecure.htmltextview.HtmlTextView
                 android:id="@+id/detail_apply"
                 android:layout_marginTop="20dp"
+                android:textSize="28sp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
             </org.sufficientlysecure.htmltextview.HtmlTextView>
@@ -118,6 +122,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:layout_marginBottom="20dp"
             android:layout_marginTop="40dp">
             <TextView
                 android:layout_width="wrap_content"
@@ -126,6 +131,7 @@
                 android:text="@string/str_062"/>
             <org.sufficientlysecure.htmltextview.HtmlTextView
                 android:id="@+id/detail_time"
+                android:textSize="@dimen/guide_detail_content"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
         </LinearLayout>

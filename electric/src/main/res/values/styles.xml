@@ -26,5 +26,9 @@
         <item name="android:backgroundDimEnabled">true</item>
     </style>
 
+    <style name="AppTheme.Splash">
+        <item name="android:windowBackground">@mipmap/bg</item>
+    </style>
+
 
 </resources>

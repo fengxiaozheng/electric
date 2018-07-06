@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.payexpress.electric">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.example.administrator.powerpayment.activity">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -18,21 +20,21 @@
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
-    <!--允许程序访问CellID或WiFi热点来获取粗略的位置-->
+    <!-- 允许程序访问CellID或WiFi热点来获取粗略的位置 -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
-        android:name="com.jess.arms.base.BaseApplication"
+        android:name=".app.MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/arms_log"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".mvp.ui.activity.UserActivity" />
+        <activity android:name=".mvp.ui.fragment.UserActivity" />
 
-        <meta-data android:name="com.amap.api.v2.apikey"
-            android:value="91e8a16f0d71a7caec80bb1615e9f4ba">
-        </meta-data>
+        <meta-data
+            android:name="com.amap.api.v2.apikey"
+            android:value="91e8a16f0d71a7caec80bb1615e9f4ba"></meta-data>
         <!--
         autolayout meta
         配置设计图的宽高,配合AutoLauout控件使用,在设计图尺寸以外的其它尺寸手机上,也能达到和设计图一样的效果
@@ -47,28 +49,34 @@
 
         <!-- arms配置 -->
         <meta-data
-            android:name="com.payexpress.electric.app.GlobalConfiguration"
+            android:name="com.example.administrator.powerpayment.activity.app.GlobalConfiguration"
             android:value="ConfigModule" />
 
-        <activity android:name=".mvp.ui.activity.MainActivity"
-                  android:launchMode="singleTask">
+        <activity
+            android:name=".MainActivity"
+            android:theme="@style/AppTheme.Splash"
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".mvp.ui.activity.gov.GovActivity" />
-        <activity android:name=".mvp.ui.activity.life.LifeActivity" />
-        <activity android:name=".mvp.ui.activity.payment.PaymentActivity" />
-        <activity android:name=".mvp.ui.activity.payment.electric.ElectricActivity" />
-        <activity android:name=".mvp.ui.activity.payment.electric.SmartPowerActivity" />
-        <activity android:name=".mvp.ui.activity.payment.electric.CommonPowerActivity" />
-        <activity android:name=".mvp.ui.activity.payment.electric.RewriteCardActivity" />
-        <activity android:name=".mvp.ui.activity.payment.electric.CPCheckUserActivity">
+        <activity
+            android:name=".GovernmentActivity"
+            android:exported="true" />
+        <activity
+            android:name=".mvp.ui.fragment.life.LifementActivity"
+            android:exported="true" />
+        <activity
+            android:name=".LifeChooseActivity"
+            android:exported="true" />
+        <activity android:name=".BaseActivity" />
 
-        </activity>
-        <activity android:name=".mvp.ui.activity.BaseActivity" />
+        <service
+            android:name=".app.service.MyJobService"
+            android:enabled="true"
+            android:exported="true"></service>
     </application>
 
 </manifest>

@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@mipmap/bg"
-    tools:context="com.payexpress.electric.mvp.ui.activity.life.LifeActivity">
+    tools:context=".mvp.ui.fragment.life.LifementActivity">
 
     <include layout="@layout/head"/>
 

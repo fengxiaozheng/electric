@@ -17,7 +17,7 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
     }
     defaultConfig {
-        applicationId "com.payexpress.electric"
+        applicationId "com.example.administrator.powerpayment.activity"
         minSdkVersion rootProject.ext.android["minSdkVersion"]
         targetSdkVersion rootProject.ext.android["targetSdkVersion"]
         versionCode rootProject.ext.android["versionCode"]
@@ -38,8 +38,8 @@ android {
         release {
             buildConfigField "boolean", "LOG_DEBUG", "false"
             buildConfigField "boolean", "USE_CANARY", "false"
-            minifyEnabled true
-            shrinkResources true
+            minifyEnabled false
+            shrinkResources false
             zipAlignEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
@@ -74,7 +74,11 @@ dependencies {
     implementation rootProject.ext.dependencies["zbar"]
     implementation rootProject.ext.dependencies["retrofit-converter-gson"]
     implementation rootProject.ext.dependencies["3dmap"]
+    implementation rootProject.ext.dependencies["fresco"]
     implementation 'org.sufficientlysecure:html-textview:3.5'
+    //implementation 'com.github.iwgang:countdownview:2.1.6'
+    implementation 'com.sunfusheng:marqueeview:1.3.3'
+    implementation 'com.facebook.fresco:imagepipeline-okhttp3:0.12.0+'
     //view
     annotationProcessor(rootProject.ext.dependencies["butterknife-compiler"]) {
         exclude module: 'support-annotations'

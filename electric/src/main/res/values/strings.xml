@@ -74,7 +74,7 @@
     <string name="str_056">购电失败</string>
     <string name="str_057">办事指南</string>
     <string name="str_058">事务中心</string>
-    <string name="str_059">业务办理</string>
+    <string name="str_059">业务查询</string>
     <string name="str_060">一、事项名称：</string>
     <string name="str_061">二、事项类别：</string>
     <string name="str_062">七、办理时限：</string>
@@ -82,10 +82,11 @@
     <string name="str_064">四、前置条件：</string>
     <string name="str_065">五、政策内容：</string>
     <string name="str_066">六、申请资料：</string>
-    <string name="str_067">仅跑一次</string>
-    <string name="str_068">请输入身份证号码</string>
+    <string name="str_067">政策查询</string>
+    <string name="str_068">请输入身份证号码或业务单号</string>
     <string name="str_069">一、机构名称：</string>
     <string name="str_070">二、业务状态：</string>
     <string name="str_071">三、创建时间：</string>
     <string name="str_072">四、详细</string>
+    <string name="str_073">立即查询</string>
 </resources>

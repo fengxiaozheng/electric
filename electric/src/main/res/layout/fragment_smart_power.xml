@@ -6,7 +6,7 @@
     android:layout_marginTop="@dimen/body_top"
     android:gravity="center_horizontal"
     android:orientation="horizontal"
-    tools:context=".mvp.ui.activity.payment.electric.SmartPowerFragment">
+    tools:context=".mvp.ui.fragment.payment.electric.SmartPowerFragment">
 
 
     <LinearLayout

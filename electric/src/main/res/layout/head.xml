@@ -1,60 +1,118 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="140dp"
-    android:background="@color/head_color"
-    android:gravity="center_vertical">
+<!--<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="140dp"-->
+    <!--android:background="@color/head_color"-->
+    <!--android:gravity="center_vertical">-->
 
-    <ImageView
-        android:layout_width="340dp"
-        android:layout_height="126dp"
-        android:layout_marginLeft="@dimen/head_margin"
-        android:src="@mipmap/logo" />
+    <!--<ImageView-->
+        <!--android:layout_width="340dp"-->
+        <!--android:layout_height="126dp"-->
+        <!--android:layout_marginLeft="@dimen/head_margin"-->
+        <!--android:src="@mipmap/logo" />-->
 
-    <LinearLayout
-        android:layout_width="wrap_content"
+    <!--<LinearLayout-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_centerInParent="true"-->
+        <!--android:gravity="center_vertical"-->
+        <!--android:orientation="horizontal">-->
+
+        <!--<View-->
+            <!--android:layout_width="2dp"-->
+            <!--android:layout_height="100dp"-->
+            <!--android:layout_marginLeft="@dimen/head_margin"-->
+            <!--android:background="#ffffffff" />-->
+
+        <!--<ImageView-->
+            <!--android:layout_width="48dp"-->
+            <!--android:layout_height="42dp"-->
+            <!--android:layout_marginLeft="@dimen/head_margin"-->
+            <!--android:src="@mipmap/message" />-->
+
+        <!--<TextView-->
+            <!--android:layout_width="700dp"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_marginLeft="34dp"-->
+            <!--android:ellipsize="end"-->
+            <!--android:gravity="center_vertical"-->
+            <!--android:text="【限行提示】今天星期三，限行尾号 3 和 8"-->
+            <!--android:textColor="#ffffffff"-->
+            <!--android:textSize="36sp" />-->
+
+        <!--<View-->
+            <!--android:layout_width="2dp"-->
+            <!--android:layout_height="100dp"-->
+            <!--android:layout_marginLeft="@dimen/head_margin"-->
+            <!--android:background="#ffffffff" />-->
+    <!--</LinearLayout>-->
+
+    <!--<TextView-->
+        <!--android:id="@+id/heat_time"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_alignParentEnd="true"-->
+        <!--android:layout_marginEnd="20dp"-->
+        <!--android:gravity="center"-->
+        <!--android:textColor="#ffffffff"-->
+        <!--android:textSize="36sp" />-->
+
+<!--</RelativeLayout>-->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+android:layout_width="match_parent"
+android:layout_height="140dp"
+android:background="#2c161616"
+android:gravity="center_vertical"
+android:orientation="horizontal">
+
+<TextView
+    android:layout_width="372dp"
+    android:layout_height="104dp"
+    android:layout_marginLeft="30dp"
+    android:background="@mipmap/logo" />
+
+<TextView
+    android:layout_width="2dp"
+    android:layout_height="match_parent"
+    android:layout_marginBottom="20dp"
+    android:layout_marginLeft="20dp"
+    android:layout_marginRight="10dp"
+    android:layout_marginTop="20dp"
+    android:background="#d6d5d5" />
+
+    <com.sunfusheng.marqueeview.MarqueeView
+        android:id="@+id/l_msg_tv"
+        android:layout_width="1150dp"
         android:layout_height="match_parent"
-        android:layout_centerInParent="true"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
+        app:mvTextSize="46sp"
+        app:mvAnimDuration="1000"
+        app:mvDirection="bottom_to_top"
+        app:mvInterval="10000"
+        app:mvTextColor="@color/white"
+        app:mvSingleLine="true"
+        app:mvGravity="center"
+        />
 
-        <View
-            android:layout_width="2dp"
-            android:layout_height="100dp"
-            android:layout_marginLeft="@dimen/head_margin"
-            android:background="#ffffffff" />
+<TextView
+    android:layout_width="2dp"
+    android:layout_height="match_parent"
+    android:layout_marginBottom="20dp"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
+    android:layout_marginTop="20dp"
+    android:background="#d6d5d5" />
 
-        <ImageView
-            android:layout_width="48dp"
-            android:layout_height="42dp"
-            android:layout_marginLeft="@dimen/head_margin"
-            android:src="@mipmap/message" />
+<TextView
+    android:id="@+id/head_time"
+    android:layout_width="300dp"
+    android:layout_height="match_parent"
+    android:layout_marginLeft="10dp"
+    android:gravity="center"
+    android:text="2017年12月19日\n星期二  5:45"
+    android:textColor="#ffffff"
+    android:textSize="36sp" />
 
-        <TextView
-            android:layout_width="700dp"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="34dp"
-            android:ellipsize="end"
-            android:gravity="center_vertical"
-            android:text="【限行提示】今天星期三，限行尾号 3 和 8"
-            android:textColor="#ffffffff"
-            android:textSize="36sp" />
+</LinearLayout>
 
-        <View
-            android:layout_width="2dp"
-            android:layout_height="100dp"
-            android:layout_marginLeft="@dimen/head_margin"
-            android:background="#ffffffff" />
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/heat_time"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="20dp"
-        android:gravity="center"
-        android:textColor="#ffffffff"
-        android:textSize="36sp" />
-
-</RelativeLayout>

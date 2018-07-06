@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="@dimen/gov_info_zn_item"
-    tools:context="com.payexpress.electric.mvp.ui.activity.gov.GovGuideFragment">
+    tools:context=".mvp.ui.fragment.gov.GovGuideFragment">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/gov_recycler"

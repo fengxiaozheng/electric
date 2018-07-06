@@ -4,7 +4,7 @@
     android:layout_height="@dimen/has_bottom_body_height"
     android:layout_marginTop="@dimen/body_top"
     android:orientation="vertical"
-    tools:context="com.payexpress.electric.mvp.ui.activity.payment.electric.CPBalanceFragment">
+    tools:context=".mvp.ui.fragment.payment.electric.CPBalanceFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <LinearLayout

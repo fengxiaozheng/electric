@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="@dimen/has_bottom_body_height"
     android:layout_marginTop="@dimen/body_top"
-    tools:context="com.payexpress.electric.mvp.ui.activity.payment.electric.RewriteResultFragment">
+    tools:context=".mvp.ui.fragment.payment.electric.RewriteResultFragment">
 
     <LinearLayout
         android:layout_width="640dp"

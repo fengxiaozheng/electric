@@ -6,7 +6,7 @@
     android:layout_marginTop="@dimen/user_info_top"
     android:gravity="center"
     android:orientation="horizontal"
-    tools:context="com.payexpress.electric.mvp.ui.activity.payment.electric.StartPayFragment">
+    tools:context=".mvp.ui.fragment.payment.electric.StartPayFragment">
 
     <LinearLayout
         android:layout_width="624dp"

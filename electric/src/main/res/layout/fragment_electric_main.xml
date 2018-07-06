@@ -8,7 +8,7 @@
     android:gravity="center"
     android:orientation="horizontal"
     android:layout_marginBottom="@dimen/body_bottom"
-    tools:context=".mvp.ui.activity.payment.electric.SmartPowerActivity">
+    tools:context=".mvp.ui.fragment.payment.electric.SmartPowerActivity">
 
 
     <LinearLayout

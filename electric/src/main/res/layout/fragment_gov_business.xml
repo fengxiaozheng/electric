@@ -44,7 +44,7 @@
             android:layout_marginLeft="40dp"
             android:layout_marginTop="100dp"
             android:background="@drawable/button_next"
-            android:text="@string/str_035"/>
+            android:text="@string/str_073"/>
     </LinearLayout>
 
     <include layout="@layout/keyboard"/>
