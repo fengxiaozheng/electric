@@ -9,7 +9,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.example.administrator.powerpayment.activity.R;
 import com.example.administrator.powerpayment.activity.app.utils.ToastUtil;
@@ -78,7 +77,6 @@ public class PaymentMainFragment extends BasePaymentFragment<PaymentMainPresente
             mPresenter.initStateUI(mRecyclerView);
             mPresenter.getPaymentMainItem();
         }
-        ToastUtil.show(activity, "无in从未离开城市");
     }
 
     @Override
@@ -89,7 +87,7 @@ public class PaymentMainFragment extends BasePaymentFragment<PaymentMainPresente
     @Override
     public void onItemClick(View view, MainFragmentItemInfo info) {
         if ("01".equals(info.getStatus())) {
-            Toast.makeText(activity, "该功能尚未开通，敬请期待", Toast.LENGTH_SHORT).show();
+            ToastUtil.show(activity, "该功能尚未开通，敬请期待");
             return;
         }
         if ("01".equals(info.getFuncType())) {

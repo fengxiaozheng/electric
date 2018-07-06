@@ -3,10 +3,10 @@ apply plugin: 'com.android.application'
 android {
     signingConfigs {
         config {
-            keyAlias 'kayak'
-            keyPassword 'payexpresscitizen'
-            storeFile file('E:/fengxiaozheng/payexpress-citizen.jks')
-            storePassword 'payexpresscitizen'
+            keyAlias 'wz'
+            keyPassword '384463539'
+            storeFile file('E:/workspace/MVPArms-master/wz.jks')
+            storePassword '384463539'
         }
     }
     compileSdkVersion rootProject.ext.android["compileSdkVersion"]
