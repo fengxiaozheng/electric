@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.administrator.powerpayment.activity.R;
+import com.example.administrator.powerpayment.activity.app.utils.ToastUtil;
 import com.example.administrator.powerpayment.activity.di.component.gov.DaggerGovGuideDetailComponent;
 import com.example.administrator.powerpayment.activity.di.module.gov.GovGuideDetailModule;
 import com.example.administrator.powerpayment.activity.mvp.contract.gov.GovGuideDetailContract;
@@ -135,6 +136,7 @@ public class GovGuideDetailFragment extends BaseGovFragment<GovGuideDetailPresen
         mApply.setHtml("<p>暂无</p>");
         mTime.setHtml("<p>暂无</p>");
         mLoadingView.setVisibility(View.GONE);
-        Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show();
+//        Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show();
+        ToastUtil.show(activity, msg);
     }
 }

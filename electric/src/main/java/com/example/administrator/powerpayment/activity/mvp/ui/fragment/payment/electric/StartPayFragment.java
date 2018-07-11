@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.example.administrator.powerpayment.activity.R;
 import com.example.administrator.powerpayment.activity.app.utils.Psamcmd;
+import com.example.administrator.powerpayment.activity.app.utils.ToastUtil;
 import com.example.administrator.powerpayment.activity.di.component.payment.DaggerElectricPayComponent;
 import com.example.administrator.powerpayment.activity.di.module.payment.EleCtricPayModule;
 import com.example.administrator.powerpayment.activity.mvp.contract.payment.ElectricPayContract;
@@ -205,7 +206,8 @@ public class StartPayFragment extends BasePaymentFragment<ElectricPayPresenter>
 
     @Override
     public void onScanQRCodeOpenCameraError() {
-        Toast.makeText(activity, "打开相机错误", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(activity, "打开相机错误", Toast.LENGTH_SHORT).show();
+          ToastUtil.show(activity,"打开相机错误");
     }
 
     @Override

@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.administrator.powerpayment.activity.R;
+import com.example.administrator.powerpayment.activity.app.utils.ToastUtil;
 import com.example.administrator.powerpayment.activity.di.component.gov.DaggerGovBusinessDetailComponent;
 import com.example.administrator.powerpayment.activity.di.module.gov.GovBusinessDetailModule;
 import com.example.administrator.powerpayment.activity.mvp.contract.gov.GovBusinessDetailContract;
@@ -85,7 +86,8 @@ public class GovBusinessDetailFragment extends BaseGovFragment<GovBusinessDetail
     @Override
     public void fail(String msg) {
         mLoadingView.setVisibility(View.GONE);
-        Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show();
+//        Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show();
+        ToastUtil.show(activity,msg);
     }
 
     @Override

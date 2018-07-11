@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.example.administrator.powerpayment.activity.R;
+import com.example.administrator.powerpayment.activity.app.utils.ToastUtil;
 import com.example.administrator.powerpayment.activity.mvp.ui.adapter.GovAdapter;
 import com.example.administrator.powerpayment.activity.mvp.ui.adapter.OnItemClickListener;
 
@@ -47,7 +48,8 @@ public class LifementActivity extends AppCompatActivity implements OnItemClickLi
     public void onItemClick(View view, int position) {
         switch (position) {
             case 0:
-                Toast.makeText(this, "xx", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, "xx", Toast.LENGTH_SHORT).show();
+                ToastUtil.show(this,"xx");
                 break;
             default:
                 finish();

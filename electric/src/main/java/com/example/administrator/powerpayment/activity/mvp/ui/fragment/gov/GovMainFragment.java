@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.administrator.powerpayment.activity.R;
+import com.example.administrator.powerpayment.activity.app.utils.ToastUtil;
 import com.example.administrator.powerpayment.activity.di.component.gov.DaggerGovMainComponent;
 import com.example.administrator.powerpayment.activity.di.module.gov.GovMainModule;
 import com.example.administrator.powerpayment.activity.mvp.contract.gov.GovMainContract;
@@ -100,7 +101,8 @@ public class GovMainFragment extends BaseGovFragment<GovMainPresenter> implement
     @Override
     public void onItemClick(View view, MainFragmentItemInfo info) {
         if ("01".equals(info.getStatus())) {
-            Toast.makeText(activity, "该功能尚未开通，敬请期待", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(activity, "该功能尚未开通，敬请期待", Toast.LENGTH_SHORT).show();
+              ToastUtil.show(activity,"该功能尚未开通，敬请期待");
             return;
         }
         if ("01".equals(info.getFuncType())) {

@@ -8,6 +8,7 @@ import android.view.MotionEvent;
 import android.widget.Toast;
 
 import com.example.administrator.powerpayment.activity.app.utils.StringUtils;
+import com.example.administrator.powerpayment.activity.app.utils.ToastUtil;
 import com.example.administrator.powerpayment.activity.mvp.model.api.Api;
 import com.example.administrator.powerpayment.activity.mvp.ui.fragment.payment.PaymentMainFragment;
 import com.example.administrator.powerpayment.activity.mvp.ui.widget.LoadingDailog;
@@ -109,7 +110,8 @@ public class LifeChooseActivity extends BaseActivity {
 
     private void show() {
         if (TextUtils.isEmpty(StringUtils.getConfig(this, Api.termPsd))) {
-            Toast.makeText(this, "请重试", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "请重试", Toast.LENGTH_SHORT).show();
+              ToastUtil.show(this,"请重试");
             return;
         }
         AlertDialog.Builder builder = new AlertDialog.Builder(this);

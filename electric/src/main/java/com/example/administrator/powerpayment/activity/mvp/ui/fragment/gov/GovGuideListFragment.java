@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.administrator.powerpayment.activity.R;
+import com.example.administrator.powerpayment.activity.app.utils.ToastUtil;
 import com.example.administrator.powerpayment.activity.di.component.gov.DaggerGovGuideListComponent;
 import com.example.administrator.powerpayment.activity.di.module.gov.GovGuideListModule;
 import com.example.administrator.powerpayment.activity.mvp.contract.gov.GovGuideListContract;
@@ -124,7 +125,8 @@ public class GovGuideListFragment extends BaseGovFragment<GovGuideListPresenter>
         }
         if (1 == code) {
             mPageControl.setVisibility(View.GONE);
-            Toast.makeText(activity, "数据异常，请重试", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(activity, "数据异常，请重试", Toast.LENGTH_SHORT).show();
+            ToastUtil.show(activity, "数据异常，请重试");
         }
 
     }
@@ -156,7 +158,8 @@ public class GovGuideListFragment extends BaseGovFragment<GovGuideListPresenter>
     public void moreFail() {
         activity.dismissDialog();
             mPageControl.setVisibility(View.GONE);
-            Toast.makeText(activity, "数据异常，请重试", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(activity, "数据异常，请重试", Toast.LENGTH_SHORT).show();
+            ToastUtil.show(activity, "数据异常，请重试");
     }
 
     @Override

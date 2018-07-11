@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.example.administrator.powerpayment.activity.R;
 import com.example.administrator.powerpayment.activity.app.utils.KeyboardUtils;
+import com.example.administrator.powerpayment.activity.app.utils.ToastUtil;
 import com.example.administrator.powerpayment.activity.mvp.model.entity.paymentEntity.ElectricPayInfo;
 import com.example.administrator.powerpayment.activity.mvp.model.entity.paymentEntity.SmartUserInfo;
 import com.example.administrator.powerpayment.activity.mvp.ui.adapter.KeyboardAdapter;
@@ -240,14 +241,16 @@ public class SPUserInfoFragment extends PaymentFragment implements
             Pattern pattern = Pattern.compile(regex);
             Matcher matcher = pattern.matcher(phone);
             if (!matcher.matches()) {
-                Toast.makeText(activity, "请输入正确的手机号码", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(activity, "请输入正确的手机号码", Toast.LENGTH_SHORT).show();
+                ToastUtil.show(activity,"请输入正确的手机号码");
                 return;
             }
         }
         String amount = mAmount.getText().toString();
         if (TextUtils.isEmpty(amount) ||
                 Double.parseDouble(amount) == 0) {
-            Toast.makeText(activity, "请输入正确的金额", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(activity, "请输入正确的金额", Toast.LENGTH_SHORT).show();
+            ToastUtil.show(activity,"请输入正确的金额");
             return;
         }
         ElectricPayInfo info = new ElectricPayInfo();

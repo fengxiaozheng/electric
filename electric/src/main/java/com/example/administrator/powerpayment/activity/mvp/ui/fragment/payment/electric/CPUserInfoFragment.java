@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.example.administrator.powerpayment.activity.R;
 import com.example.administrator.powerpayment.activity.app.utils.KeyboardUtils;
+import com.example.administrator.powerpayment.activity.app.utils.ToastUtil;
 import com.example.administrator.powerpayment.activity.mvp.model.entity.paymentEntity.CPUserInfoRes;
 import com.example.administrator.powerpayment.activity.mvp.model.entity.paymentEntity.ElectricPayInfo;
 import com.example.administrator.powerpayment.activity.mvp.ui.adapter.KeyboardAdapter;
@@ -183,7 +184,8 @@ public class CPUserInfoFragment extends PaymentFragment implements
         if (v.getId() == R.id.cp_next) {
             String amount = mEditText.getText().toString();
             if (TextUtils.isEmpty(amount)) {
-                Toast.makeText(activity, "请输入金额", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(activity, "请输入金额", Toast.LENGTH_SHORT).show();
+                  ToastUtil.show(activity,"请输入金额");
             } else {
                 ElectricPayInfo info = new ElectricPayInfo();
                 info.setFlag(0);
