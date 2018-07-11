@@ -23,6 +23,7 @@ import android.widget.Toast;
 import com.example.administrator.powerpayment.activity.R;
 import com.example.administrator.powerpayment.activity.app.utils.Psamcmd;
 import com.example.administrator.powerpayment.activity.app.utils.StringUtils;
+import com.example.administrator.powerpayment.activity.app.utils.ToastUtil;
 import com.example.administrator.powerpayment.activity.di.component.payment.DaggerRewriteInputComponent;
 import com.example.administrator.powerpayment.activity.di.module.payment.RewriteInputModule;
 import com.example.administrator.powerpayment.activity.mvp.contract.payment.RewriteInputContract;
@@ -128,11 +129,13 @@ public class RewriteInputFragment extends BasePaymentFragment<RewriteInputPresen
     void click() {
         String str = mEditText.getText().toString();
         if (TextUtils.isEmpty(str)) {
-            Toast.makeText(activity, "请输入密码", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(activity, "请输入密码", Toast.LENGTH_SHORT).show();
+            ToastUtil.show(activity,"请输入密码");
             return;
         }
         if (!str.equals(StringUtils.getConfig(activity, Api.termPsd))) {
-            Toast.makeText(activity, "密码错误，请重新输入", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(activity, "密码错误，请重新输入", Toast.LENGTH_SHORT).show();
+            ToastUtil.show(activity,"密码错误，请重新输入");
             return;
         }
         if (isFirst) {

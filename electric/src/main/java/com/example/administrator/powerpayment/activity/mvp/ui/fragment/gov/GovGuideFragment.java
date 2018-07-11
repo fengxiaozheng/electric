@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.administrator.powerpayment.activity.R;
+import com.example.administrator.powerpayment.activity.app.utils.ToastUtil;
 import com.example.administrator.powerpayment.activity.di.component.gov.DaggerGovGuideComponent;
 import com.example.administrator.powerpayment.activity.di.module.gov.GovGuideModule;
 import com.example.administrator.powerpayment.activity.mvp.contract.gov.GovGuideContract;
@@ -129,6 +130,7 @@ public class GovGuideFragment extends BaseGovFragment<GovGuidePresenter>
     @Override
     public void fail() {
         mLoadingView.setVisibility(View.GONE);
-        Toast.makeText(activity, "暂无数据，请稍后重试", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(activity, "暂无数据，请稍后重试", Toast.LENGTH_SHORT).show();
+        ToastUtil.show(activity,"暂无数据，请稍后重试");
     }
 }

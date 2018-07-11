@@ -21,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.administrator.powerpayment.activity.R;
+import com.example.administrator.powerpayment.activity.app.utils.ToastUtil;
 import com.example.administrator.powerpayment.activity.di.component.payment.DaggerCPCheckComponent;
 import com.example.administrator.powerpayment.activity.di.module.payment.CPCheckModule;
 import com.example.administrator.powerpayment.activity.mvp.contract.payment.CPCheckContract;
@@ -180,7 +181,8 @@ public class CPCheckUserFragment extends BasePaymentFragment<CPCheckPresenter>
     @Override
     public void fail(String msg) {
         activity.dismissDialog();
-        Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show();
+//        Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show();
+        ToastUtil.show(activity,msg);
     }
 
     @Override
@@ -243,7 +245,8 @@ public class CPCheckUserFragment extends BasePaymentFragment<CPCheckPresenter>
     void click() {
         String str = mEditText.getText().toString();
         if (TextUtils.isEmpty(str) || str.length() < 10) {
-            Toast.makeText(activity, "请输入十位用户号", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(activity, "请输入十位用户号", Toast.LENGTH_SHORT).show();
+            ToastUtil.show(activity, "请输入十位用户号");
             return;
         }
         switch (mParam) {

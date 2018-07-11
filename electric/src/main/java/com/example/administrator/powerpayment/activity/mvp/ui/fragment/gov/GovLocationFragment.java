@@ -22,6 +22,7 @@ import com.amap.api.maps.MapsInitializer;
 import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.Marker;
 import com.example.administrator.powerpayment.activity.R;
+import com.example.administrator.powerpayment.activity.app.utils.ToastUtil;
 import com.example.administrator.powerpayment.activity.di.component.gov.DaggerGovLocationComponent;
 import com.example.administrator.powerpayment.activity.di.module.gov.GovLocationModule;
 import com.example.administrator.powerpayment.activity.mvp.contract.gov.GovLocationContract;
@@ -111,7 +112,8 @@ public class GovLocationFragment extends BaseGovFragment<GovLocationPresenter>
 
     @Override
     public void fail(String msg) {
-        Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show();
+//        Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show();
+        ToastUtil.show(activity,msg);
     }
 
     @Override

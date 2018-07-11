@@ -20,6 +20,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.administrator.powerpayment.activity.R;
+import com.example.administrator.powerpayment.activity.app.utils.ToastUtil;
 import com.example.administrator.powerpayment.activity.di.component.gov.DaggerGovBusinessComponent;
 import com.example.administrator.powerpayment.activity.di.module.gov.GovBusinessModule;
 import com.example.administrator.powerpayment.activity.mvp.contract.gov.GovBusinessContract;
@@ -76,7 +77,8 @@ public class GovBusinessFragment extends BaseGovFragment<GovBusinessPresenter>
     @Override
     public void fail(String msg) {
         activity.dismissDialog();
-        Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show();
+//        Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show();
+        ToastUtil.show(activity,msg);
     }
 
     @Override
@@ -120,7 +122,8 @@ public class GovBusinessFragment extends BaseGovFragment<GovBusinessPresenter>
         String str = mEditText.getText().toString();
 
         if (TextUtils.isEmpty(str)) {
-            Toast.makeText(activity, getString(R.string.str_068), Toast.LENGTH_SHORT).show();
+//            Toast.makeText(activity, getString(R.string.str_068), Toast.LENGTH_SHORT).show();
+            ToastUtil.show(activity, getString(R.string.str_068));
             return;
         }
         if (mPresenter != null) {

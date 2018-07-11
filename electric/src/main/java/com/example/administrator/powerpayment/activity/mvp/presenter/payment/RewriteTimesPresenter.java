@@ -9,6 +9,7 @@ import com.example.administrator.powerpayment.activity.R;
 import com.example.administrator.powerpayment.activity.app.utils.IRfidParam;
 import com.example.administrator.powerpayment.activity.app.utils.Psamcmd;
 import com.example.administrator.powerpayment.activity.app.utils.StringUtils;
+import com.example.administrator.powerpayment.activity.app.utils.ToastUtil;
 import com.example.administrator.powerpayment.activity.mvp.contract.payment.RewriteTimesContract.Model;
 import com.example.administrator.powerpayment.activity.mvp.contract.payment.RewriteTimesContract.View;
 import com.example.administrator.powerpayment.activity.mvp.model.entity.paymentEntity.RewriteCardListRes;
@@ -225,7 +226,8 @@ public class RewriteTimesPresenter extends BasePresenter<Model, View> {
                                 writeToCard(rewriteCardRes);
                             } else {
                                 dialog.dismiss();
-                                Toast.makeText(mRootView.getActivity(), rewriteCardRes.getRet_msg(), Toast.LENGTH_SHORT).show();
+//                                Toast.makeText(mRootView.getActivity(), rewriteCardRes.getRet_msg(), Toast.LENGTH_SHORT).show();
+                                ToastUtil.show(mRootView.getActivity(), rewriteCardRes.getRet_msg());
                             }
                         }
                     }

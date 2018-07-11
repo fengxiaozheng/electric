@@ -12,6 +12,8 @@ import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.widget.Toast;
 
+import com.example.administrator.powerpayment.activity.app.utils.ToastUtil;
+
 import java.util.List;
 
 @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -48,8 +50,9 @@ public class MyJobService extends JobService {
     @Override
     public boolean onStartJob(JobParameters params) {
 
-        Toast.makeText(this, "服务启动", Toast.LENGTH_SHORT).show();
-        System.out.println("          开始工作");
+//        Toast.makeText(this, "服务启动", Toast.LENGTH_SHORT).show();
+        ToastUtil.show(this,"服务启动");
+        System.out.println("开始工作");
 
         return false;
     }
