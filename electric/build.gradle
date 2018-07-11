@@ -5,8 +5,8 @@ android {
         config {
             keyAlias 'wz'
             keyPassword '384463539'
-//            storeFile file('E:/workspace/MVPArms-master/wz.jks')
-            storeFile file('I:/citizen_android/wz.jks')
+            storeFile file('E:/workspace/MVPArms-master/wz.jks')
+        //    storeFile file('I:/citizen_android/wz.jks')
             storePassword '384463539'
         }
     }
