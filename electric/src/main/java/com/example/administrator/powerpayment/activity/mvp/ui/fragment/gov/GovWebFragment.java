@@ -18,8 +18,6 @@ import android.widget.FrameLayout;
 
 import com.example.administrator.powerpayment.activity.R;
 
-import java.lang.ref.WeakReference;
-
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link GovWebFragment#newInstance} factory method to
@@ -90,7 +88,15 @@ public class GovWebFragment extends GovFragment {
         mWebSettings.setJavaScriptEnabled(true);
         mWebSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
         mWebSettings.setLoadsImagesAutomatically(true);
-        mWebView.setWebViewClient(new MyWebViewClient(this));
+        mWebView.setWebViewClient(new WebViewClient(){
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    view.loadUrl(request.getUrl().toString());
+                }
+                return true;
+            }
+        });
     }
 
     //销毁Webview
@@ -109,24 +115,5 @@ public class GovWebFragment extends GovFragment {
             mWebView = null;
         }
         super.onDestroy();
-    }
-
-    private class MyWebViewClient extends WebViewClient {
-        private WeakReference<Fragment> reference;
-
-        public MyWebViewClient(Fragment fragment) {
-            reference = new WeakReference<>(fragment);
-        }
-
-        @Override
-        public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-            Fragment f = reference.get();
-            if (f != null) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    view.loadUrl(request.getUrl().toString());
-                }
-            }
-            return true;
-        }
     }
 }

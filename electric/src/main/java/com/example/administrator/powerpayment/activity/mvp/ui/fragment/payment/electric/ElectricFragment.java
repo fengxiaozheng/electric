@@ -1,7 +1,6 @@
 package com.example.administrator.powerpayment.activity.mvp.ui.fragment.payment.electric;
 
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -68,48 +67,6 @@ public class ElectricFragment extends PaymentFragment implements View.OnClickLis
                 break;
 
         }
-    }
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        System.out.println("数据：111111111111111:onAttach");
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        System.out.println("数据：111111111111111:onStart");
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        System.out.println("数据：111111111111111:onPause");
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        System.out.println("数据：111111111111111:onResume");
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        System.out.println("数据：111111111111111:onDestory");
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        System.out.println("数据：111111111111111:onDeView");
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        System.out.println("数据：111111111111111:onDetach");
     }
 
 }

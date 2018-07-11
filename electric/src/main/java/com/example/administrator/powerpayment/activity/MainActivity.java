@@ -6,14 +6,28 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        starGApp3();
+    //    starGApp3();
+    //    startMyService();
     }
+
+//    private void startMyService() {
+//        try {
+//            Intent toService = new Intent(this, DMCenterService.class);
+////            toService = new Intent(this, DeviceManagementService.class);
+//            startService(toService);
+//            Log.e("mian", "开始DMCenterService");
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//
+//    }
 
     private void starGApp3() {
         try {

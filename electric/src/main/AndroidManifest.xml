@@ -77,6 +77,15 @@
             android:name=".app.service.MyJobService"
             android:enabled="true"
             android:exported="true"></service>
+        <service
+            android:name="com.using.services.DMCenterService"
+            android:exported="false" />
+
+        <service
+            android:name="com.tencent.smtt.export.external.DexClassLoaderProviderService"
+            android:label="dexopt"
+            android:process=":dexopt" ></service>
+
     </application>
 
 </manifest>

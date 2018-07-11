@@ -25,7 +25,7 @@ public class GovernmentActivity extends BaseActivity {
         mFragmentTransaction.commit();
         builder = new LoadingDailog.Builder(this);
         loadingView = builder.setMessage("请稍等...").create();
-        initText(getIntent());
+    //    initText(getIntent());
         initDate();
     }
 

@@ -91,16 +91,19 @@ public class RewriteTimesPresenter extends BasePresenter<Model, View> {
                     System.out.println("    卡片数据读取--失败！");
                     System.out.println("    " + Hxtostring(idata));
                     if (dialog != null) {
+                        dialog.findViewById(R.id.iv_close).setVisibility(android.view.View.VISIBLE);
                         dialog.readCardError();
                     }
                     break;
                 case 19:
                     System.out.println("     次数补写成功");
+                    dialog.findViewById(R.id.iv_close).setVisibility(android.view.View.VISIBLE);
                     dialog.success();
                     break;
                 case 20:
                     System.out.println("      次数补写失败");
                     if (dialog != null) {
+                        dialog.findViewById(R.id.iv_close).setVisibility(android.view.View.VISIBLE);
                         dialog.fail();
                     }
                     break;
@@ -191,6 +194,7 @@ public class RewriteTimesPresenter extends BasePresenter<Model, View> {
     }
 
     public void startRewrite(String userNo, String payCount) {
+        dialog.findViewById(R.id.iv_close).setVisibility(android.view.View.INVISIBLE);
         dialog.shown();
         isopen = true;
         user_no = userNo;

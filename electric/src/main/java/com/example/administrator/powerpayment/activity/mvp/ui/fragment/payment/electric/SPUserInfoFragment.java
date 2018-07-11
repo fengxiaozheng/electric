@@ -1,7 +1,6 @@
 package com.example.administrator.powerpayment.activity.mvp.ui.fragment.payment.electric;
 
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -14,7 +13,6 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -29,8 +27,6 @@ import com.example.administrator.powerpayment.activity.mvp.ui.adapter.KeyboardAd
 import com.example.administrator.powerpayment.activity.mvp.ui.adapter.OnItemClickListener;
 import com.example.administrator.powerpayment.activity.mvp.ui.fragment.payment.PaymentFragment;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.text.DecimalFormat;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -286,63 +282,9 @@ public class SPUserInfoFragment extends PaymentFragment implements
         }
     };
 
-    private void disableShowInput(EditText editText) {
-        Class<EditText> cls = EditText.class;
-        Method method;
-        try {
-            method = cls.getMethod("setShowSoftInputOnFocus", boolean.class);
-            method.setAccessible(true);
-            method.invoke(editText, false);
-        } catch (Exception e) {//TODO: handle exception
-        }
-        try {
-            method = cls.getMethod("setSoftInputShownOnFocus", boolean.class);
-            method.setAccessible(true);
-            method.invoke(editText, false);
-        } catch (Exception e) {//TODO: handle exception
-        }
-    }
-
     @Override
     public void onDestroy() {
         fixInputMethodManagerLeak(activity);
         super.onDestroy();
     }
-
-    private void fixInputMethodManagerLeak(Context destContext) {
-        if (destContext == null) {
-            return;
-        }
-
-        InputMethodManager imm = (InputMethodManager) destContext.getSystemService(Context.INPUT_METHOD_SERVICE);
-        if (imm == null) {
-            return;
-        }
-
-        String [] arr = new String[]{"mCurRootView", "mServedView", "mNextServedView"};
-        Field f = null;
-        Object obj_get = null;
-        for (int i = 0;i < arr.length;i ++) {
-            String param = arr[i];
-            try{
-                f = imm.getClass().getDeclaredField(param);
-                if (f.isAccessible() == false) {
-                    f.setAccessible(true);
-                } // author: sodino mail:sodino@qq.com
-                obj_get = f.get(imm);
-                if (obj_get != null && obj_get instanceof View) {
-                    View v_get = (View) obj_get;
-                    if (v_get.getContext() == destContext) { // 被InputMethodManager持有引用的context是想要目标销毁的
-                        f.set(imm, null); // 置空，破坏掉path to gc节点
-                    } else {
-                        // 不是想要目标销毁的，即为又进了另一层界面了，不要处理，避免影响原逻辑,也就不用继续for循环了
-                        break;
-                    }
-                }
-            }catch(Throwable t){
-                t.printStackTrace();
-            }
-        }
-    }
-
 }

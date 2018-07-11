@@ -19,6 +19,7 @@ public interface RewriteCardContract {
     interface View extends IView {
         void success();
         void fail(String msg);
+        void rewriteCard2(RewriteCardRes res);
         Activity getActivity();
     }
 

@@ -3,8 +3,7 @@ package com.example.administrator.powerpayment.activity.mvp.presenter.payment;
 import android.os.Handler;
 import android.os.Message;
 
-import com.jess.arms.di.scope.FragmentScope;
-import com.jess.arms.mvp.BasePresenter;
+import com.example.administrator.powerpayment.activity.R;
 import com.example.administrator.powerpayment.activity.app.utils.IRfidParam;
 import com.example.administrator.powerpayment.activity.app.utils.Psamcmd;
 import com.example.administrator.powerpayment.activity.app.utils.StringUtils;
@@ -12,6 +11,8 @@ import com.example.administrator.powerpayment.activity.mvp.contract.payment.Rewr
 import com.example.administrator.powerpayment.activity.mvp.contract.payment.RewriteInputContract.View;
 import com.example.administrator.powerpayment.activity.mvp.model.entity.paymentEntity.RewriteTimesAllParams;
 import com.example.administrator.powerpayment.activity.mvp.ui.widget.AlertDialog;
+import com.jess.arms.di.scope.FragmentScope;
+import com.jess.arms.mvp.BasePresenter;
 
 import javax.inject.Inject;
 
@@ -47,6 +48,7 @@ public class RewriteInputPresenter extends BasePresenter<Model, View> {
                     System.out.println("    检查到卡片。");
                     System.out.println("    " + Hxtostring(code_id));
                     System.out.println("    " + StringUtils.byteArrayToStr(code_id));
+                    dialog.findViewById(R.id.iv_close).setVisibility(android.view.View.INVISIBLE);
                     dialog.updateInfo();
                     break;
                 case 2:
@@ -74,6 +76,7 @@ public class RewriteInputPresenter extends BasePresenter<Model, View> {
                     System.out.println("    卡片数据读取--失败！");
                     System.out.println("    " + Hxtostring(idata));
                     if (dialog != null) {
+                        dialog.findViewById(R.id.iv_close).setVisibility(android.view.View.VISIBLE);
                         dialog.fail();
                     }
                     break;
@@ -85,6 +88,7 @@ public class RewriteInputPresenter extends BasePresenter<Model, View> {
     });
 
     public void readCard() {
+        dialog.findViewById(R.id.iv_close).setVisibility(android.view.View.VISIBLE);
         dialog.shown();
         isopen = true;
         readCardMsg(0);

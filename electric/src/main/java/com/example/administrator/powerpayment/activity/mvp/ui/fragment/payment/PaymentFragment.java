@@ -2,19 +2,25 @@ package com.example.administrator.powerpayment.activity.mvp.ui.fragment.payment;
 
 import android.app.Activity;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.webkit.WebView;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.administrator.powerpayment.activity.LifeChooseActivity;
 import com.example.administrator.powerpayment.activity.R;
 
 import java.lang.ref.WeakReference;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.Objects;
 
 /**
@@ -122,8 +128,8 @@ public class PaymentFragment extends Fragment {
     protected void start(Fragment current, Fragment next, String tag) {
         mFragmentManager = getFragmentManager();
         mFragmentTransaction = mFragmentManager.beginTransaction();
-        mFragmentTransaction.setCustomAnimations(R.anim.v_fragment_enter,R.anim.v_fragment_pop_exit,
-                R.anim.v_fragment_pop_enter,  R.anim.v_fragment_exit);
+//        mFragmentTransaction.setCustomAnimations(R.anim.v_fragment_enter,R.anim.v_fragment_pop_exit,
+//                R.anim.v_fragment_pop_enter,  R.anim.v_fragment_exit);
         mFragmentTransaction.hide(current);
         mFragmentTransaction.add(R.id.e_frame, next, tag);
         mFragmentTransaction.addToBackStack(tag);
@@ -154,8 +160,8 @@ public class PaymentFragment extends Fragment {
 
     private void back2() {
         if (mFragmentManager.getBackStackEntryCount() <= 1) {
-         //   activity.finish();
-                backHome();
+            activity.finish();
+        //        backHome();
         } else {
             if (Objects.equals(getTag(), "PayResultFragment")) {
                 payResult();
@@ -250,6 +256,60 @@ public class PaymentFragment extends Fragment {
                 }
             }
 
+        }
+    }
+
+    protected void disableShowInput(EditText editText) {
+        Class<EditText> cls = EditText.class;
+        Method method;
+        try {
+            method = cls.getMethod("setShowSoftInputOnFocus", boolean.class);
+            method.setAccessible(true);
+            method.invoke(editText, false);
+        } catch (Exception e) {//TODO: handle exception
+        }
+        try {
+            method = cls.getMethod("setSoftInputShownOnFocus", boolean.class);
+            method.setAccessible(true);
+            method.invoke(editText, false);
+        } catch (Exception e) {//TODO: handle exception
+        }
+    }
+
+
+    protected void fixInputMethodManagerLeak(Context destContext) {
+        if (destContext == null) {
+            return;
+        }
+
+        InputMethodManager imm = (InputMethodManager) destContext.getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm == null) {
+            return;
+        }
+
+        String [] arr = new String[]{"mCurRootView", "mServedView", "mNextServedView"};
+        Field f = null;
+        Object obj_get = null;
+        for (int i = 0;i < arr.length;i ++) {
+            String param = arr[i];
+            try{
+                f = imm.getClass().getDeclaredField(param);
+                if (f.isAccessible() == false) {
+                    f.setAccessible(true);
+                } // author: sodino mail:sodino@qq.com
+                obj_get = f.get(imm);
+                if (obj_get != null && obj_get instanceof View) {
+                    View v_get = (View) obj_get;
+                    if (v_get.getContext() == destContext) { // 被InputMethodManager持有引用的context是想要目标销毁的
+                        f.set(imm, null); // 置空，破坏掉path to gc节点
+                    } else {
+                        // 不是想要目标销毁的，即为又进了另一层界面了，不要处理，避免影响原逻辑,也就不用继续for循环了
+                        break;
+                    }
+                }
+            }catch(Throwable t){
+                t.printStackTrace();
+            }
         }
     }
 }

@@ -1,5 +1,7 @@
 package com.example.administrator.powerpayment.activity;
 
+import android.app.Activity;
+import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,6 +20,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.sunfusheng.marqueeview.MarqueeView;
 
+import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -36,13 +39,22 @@ public class BaseActivity extends AppCompatActivity {
     private Calendar calendar;
     private Date date;
     private boolean isFirst;
+    private MyHandler handler;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
         super.onCreate(savedInstanceState, persistentState);
-//        Intent intent = new Intent();
-//        intent.setClass(this, MyJobService.class);
-//        startService(intent);
+//        if (!isServiceRunning(this, "com.using.services.DMCenterService")) {
+//            try {
+//                Intent toService = new Intent(this, DMCenterService.class);
+////            toService = new Intent(this, DeviceManagementService.class);
+//                startService(toService);
+//                Log.e("mian", "开始DMCenterService");
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//        }
+
     }
 
     protected void initText(Intent intent) {
@@ -62,7 +74,7 @@ public class BaseActivity extends AppCompatActivity {
                 info.add("欢迎使用");
             }
             marqueeView.startWithList(info);
-         } catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -74,7 +86,8 @@ public class BaseActivity extends AppCompatActivity {
         dateFormat = new SimpleDateFormat("yyyy年MM月dd日");// HH:mm:ss
         timeFormat = new SimpleDateFormat("HH:mm:ss");
         isFirst = true;
-        new TimeThread().start();
+        handler = new MyHandler(this);
+        new TimeThread(this).start();
     }
 
     private String getdayOfWeek() {
@@ -109,41 +122,83 @@ public class BaseActivity extends AppCompatActivity {
         return result;
     }
 
-    private class TimeThread extends Thread {
+    private static class TimeThread extends Thread {
+        private WeakReference<Activity> reference;
+
+        public TimeThread(Activity activity) {
+            reference = new WeakReference<Activity>(activity);
+        }
+
         @Override
         public void run() {
             super.run();
-            do {
-                try {
-                    if (!isFirst) {
-                        Thread.sleep(1000);
-                    }
-                    isFirst = false;
-                    Message message = new Message();
-                    message.what = 1;
-                    handler.sendMessage(message);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+            if (reference.get() != null) {
+                if (reference.get() instanceof BaseActivity) {
+                    ((BaseActivity) reference.get()).doRun();
                 }
-            } while (true);
+            }
 
         }
     }
 
-    private Handler handler = new Handler(new Handler.Callback() {
-        @Override
-        public boolean handleMessage(Message msg) {
-            switch (msg.what) {
-                case 1:
-                    date = new Date(System.currentTimeMillis());
-                    mTime.setText(String.format("%s\n%s\n%s", dateFormat.format(date), getdayOfWeek(), timeFormat.format(date)));
-                    break;
-                default:
-                    break;
+    private void doRun() {
+        do {
+            try {
+                if (!isFirst) {
+                    Thread.sleep(1000);
+                }
+                isFirst = false;
+                Message message = new Message();
+                message.what = 1;
+                handler.sendMessage(message);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
-            return false;
+        } while (true);
+    }
+
+    private static class MyHandler extends Handler {
+        private WeakReference<Activity> reference;
+
+        public MyHandler(Activity activity) {
+            reference = new WeakReference<Activity>(activity);
         }
-    });
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            if (reference.get() != null) {
+                if (reference.get() instanceof BaseActivity) {
+                    ((BaseActivity) reference.get()).doHandler(msg.what);
+                }
+            }
+        }
+    }
+
+//    private Handler handler = new Handler(new Handler.Callback() {
+//        @Override
+//        public boolean handleMessage(Message msg) {
+//            switch (msg.what) {
+//                case 1:
+//                    date = new Date(System.currentTimeMillis());
+//                    mTime.setText(String.format("%s\n%s\n%s", dateFormat.format(date), getdayOfWeek(), timeFormat.format(date)));
+//                    break;
+//                default:
+//                    break;
+//            }
+//            return false;
+//        }
+//    });
+
+    private void doHandler(int what) {
+        switch (what) {
+            case 1:
+                date = new Date(System.currentTimeMillis());
+                mTime.setText(String.format("%s\n%s\n%s", dateFormat.format(date), getdayOfWeek(), timeFormat.format(date)));
+                break;
+            default:
+                break;
+        }
+    }
 
     @Override
     protected void onDestroy() {
@@ -151,6 +206,7 @@ public class BaseActivity extends AppCompatActivity {
         fixInputMethodManagerLeak(this);
         super.onDestroy();
     }
+
 
     private void fixInputMethodManagerLeak(Context destContext) {
         if (destContext == null) {
@@ -162,12 +218,12 @@ public class BaseActivity extends AppCompatActivity {
             return;
         }
 
-        String [] arr = new String[]{"mCurRootView", "mServedView", "mNextServedView"};
+        String[] arr = new String[]{"mCurRootView", "mServedView", "mNextServedView"};
         Field f = null;
         Object obj_get = null;
-        for (int i = 0;i < arr.length;i ++) {
+        for (int i = 0; i < arr.length; i++) {
             String param = arr[i];
-            try{
+            try {
                 f = imm.getClass().getDeclaredField(param);
                 if (f.isAccessible() == false) {
                     f.setAccessible(true);
@@ -182,9 +238,26 @@ public class BaseActivity extends AppCompatActivity {
                         break;
                     }
                 }
-            }catch(Throwable t){
+            } catch (Throwable t) {
                 t.printStackTrace();
             }
         }
     }
+
+    private boolean isServiceRunning(Context context, String ServiceName) {
+        if (("").equals(ServiceName) || ServiceName == null)
+            return false;
+        ActivityManager myManager = (ActivityManager) context
+                .getSystemService(Context.ACTIVITY_SERVICE);
+        ArrayList<ActivityManager.RunningServiceInfo> runningService = (ArrayList<ActivityManager.RunningServiceInfo>) myManager
+                .getRunningServices(30);
+        for (int i = 0; i < runningService.size(); i++) {
+            if (runningService.get(i).service.getClassName().toString()
+                    .equals(ServiceName)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }
