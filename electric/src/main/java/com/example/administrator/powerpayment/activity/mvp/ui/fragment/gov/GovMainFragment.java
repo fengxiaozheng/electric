@@ -8,9 +8,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
+import android.widget.TextView;
 
+import com.example.administrator.powerpayment.activity.BuildConfig;
 import com.example.administrator.powerpayment.activity.R;
+import com.example.administrator.powerpayment.activity.app.utils.StringUtils;
 import com.example.administrator.powerpayment.activity.app.utils.ToastUtil;
 import com.example.administrator.powerpayment.activity.di.component.gov.DaggerGovMainComponent;
 import com.example.administrator.powerpayment.activity.di.module.gov.GovMainModule;
@@ -36,6 +38,8 @@ public class GovMainFragment extends BaseGovFragment<GovMainPresenter> implement
     RecyclerView mRecyclerView;
     @BindView(R.id.loadingView)
     LoadingView mLoadingView;
+    @BindView(R.id.seriNo)
+    TextView mTextView;
     @Inject
     RecyclerView.LayoutManager mLayoutManager;
     @Inject
@@ -75,6 +79,7 @@ public class GovMainFragment extends BaseGovFragment<GovMainPresenter> implement
             mPresenter.initStateUI(mRecyclerView);
             mPresenter.getTermArea();
         }
+        mTextView.setText(String.format("%s    %s", StringUtils.getUuid(activity), BuildConfig.VERSION_NAME));
     }
 
     @Override
@@ -111,7 +116,7 @@ public class GovMainFragment extends BaseGovFragment<GovMainPresenter> implement
         } else {
             Fragment cls;
             cls = Fragment.instantiate(activity, info.getUrl());
-            start(this, cls, info.getUrl());
+            start(this, cls, cls.getClass().getSimpleName());
         }
 
     }

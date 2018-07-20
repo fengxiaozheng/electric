@@ -1,6 +1,8 @@
 package com.example.administrator.powerpayment.activity.mvp.model.paymentModel;
 
 import com.alibaba.fastjson.JSON;
+import com.example.administrator.powerpayment.activity.mvp.model.entity.paymentEntity.CardBalanceRes;
+import com.example.administrator.powerpayment.activity.mvp.model.entity.paymentEntity.UserNoReq;
 import com.jess.arms.di.scope.FragmentScope;
 import com.jess.arms.integration.IRepositoryManager;
 import com.jess.arms.mvp.BaseModel;
@@ -29,5 +31,12 @@ public class SmartPowerModel extends BaseModel implements SmartPowerContract.Mod
     public Observable<QuerySmartCardRes> querySmartCardInfo(QuerySmartCardReq req) {
         return mRepositoryManager.obtainRetrofitService(PaymentService.class)
                 .querySmartCardInfo(JSON.toJSONString(req));
+    }
+
+    @Override
+    public Observable<CardBalanceRes> queryCardBalance(UserNoReq req) {
+        return mRepositoryManager
+                .obtainRetrofitService(PaymentService.class)
+                .queryCardBalance(JSON.toJSONString(req));
     }
 }

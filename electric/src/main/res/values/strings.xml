@@ -16,6 +16,7 @@
     <string name="notice4">1、户号由十位数字组成，是用电主体唯一标识</string>
     <string name="notice5">1、此功能仅限查询，显示最近5笔缴费记录</string>
     <string name="notice6">1、主管密码为本机器密码</string>
+    <string name="show_card">忘带卡？点我</string>
     <string name="str_001">社保</string>
     <string name="str_002">税务</string>
     <string name="str_003">房产</string>
@@ -37,7 +38,7 @@
     <string name="str_019">广电</string>
     <string name="str_020">加油卡</string>
     <string name="str_021">保险</string>
-    <string name="str_022">智能电表购电</string>
+    <string name="str_022">智能电卡购电</string>
     <string name="str_023">普通电表缴费</string>
     <string name="str_024">电卡补写</string>
     <string name="str_025">需携带电卡</string>
@@ -73,7 +74,7 @@
     <string name="str_055">请将电卡“芯片”向上，插入卡槽</string>
     <string name="str_056">购电失败</string>
     <string name="str_057">办事指南</string>
-    <string name="str_058">事务中心</string>
+    <string name="str_058">公共服务站</string>
     <string name="str_059">业务查询</string>
     <string name="str_060">一、事项名称：</string>
     <string name="str_061">二、事项类别：</string>
@@ -89,4 +90,5 @@
     <string name="str_071">三、创建时间：</string>
     <string name="str_072">四、详细</string>
     <string name="str_073">立即查询</string>
+    <string name="str_074">请输入主管密码</string>
 </resources>

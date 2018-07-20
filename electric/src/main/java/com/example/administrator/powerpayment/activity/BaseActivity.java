@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -19,6 +18,7 @@ import com.example.administrator.powerpayment.activity.mvp.model.entity.TitleBea
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.sunfusheng.marqueeview.MarqueeView;
+import com.using.services.DMCenterService;
 
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;
@@ -42,19 +42,19 @@ public class BaseActivity extends AppCompatActivity {
     private MyHandler handler;
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
-        super.onCreate(savedInstanceState, persistentState);
-//        if (!isServiceRunning(this, "com.using.services.DMCenterService")) {
-//            try {
-//                Intent toService = new Intent(this, DMCenterService.class);
-////            toService = new Intent(this, DeviceManagementService.class);
-//                startService(toService);
-//                Log.e("mian", "开始DMCenterService");
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//        }
-
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (!isServiceWork(this, "com.using.services.DMCenterService")) {
+            try {
+                Intent toService = new Intent(this, DMCenterService.class);
+//            toService = new Intent(this, DeviceManagementService.class);
+                startService(toService);
+                System.out.println("           再次启动service");
+                Log.e("mian", "开始DMCenterService");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     protected void initText(Intent intent) {
@@ -174,21 +174,6 @@ public class BaseActivity extends AppCompatActivity {
         }
     }
 
-//    private Handler handler = new Handler(new Handler.Callback() {
-//        @Override
-//        public boolean handleMessage(Message msg) {
-//            switch (msg.what) {
-//                case 1:
-//                    date = new Date(System.currentTimeMillis());
-//                    mTime.setText(String.format("%s\n%s\n%s", dateFormat.format(date), getdayOfWeek(), timeFormat.format(date)));
-//                    break;
-//                default:
-//                    break;
-//            }
-//            return false;
-//        }
-//    });
-
     private void doHandler(int what) {
         switch (what) {
             case 1:
@@ -244,20 +229,22 @@ public class BaseActivity extends AppCompatActivity {
         }
     }
 
-    private boolean isServiceRunning(Context context, String ServiceName) {
-        if (("").equals(ServiceName) || ServiceName == null)
-            return false;
-        ActivityManager myManager = (ActivityManager) context
+    private boolean isServiceWork(Context mContext, String serviceName) {
+        boolean isWork = false;
+        ActivityManager myAM = (ActivityManager) mContext
                 .getSystemService(Context.ACTIVITY_SERVICE);
-        ArrayList<ActivityManager.RunningServiceInfo> runningService = (ArrayList<ActivityManager.RunningServiceInfo>) myManager
-                .getRunningServices(30);
-        for (int i = 0; i < runningService.size(); i++) {
-            if (runningService.get(i).service.getClassName().toString()
-                    .equals(ServiceName)) {
-                return true;
+        List<ActivityManager.RunningServiceInfo> myList = myAM.getRunningServices(40);
+        if (myList.size() <= 0) {
+            return false;
+        }
+        for (int i = 0; i < myList.size(); i++) {
+            String mName = myList.get(i).service.getClassName().toString();
+            if (mName.equals(serviceName)) {
+                isWork = true;
+                break;
             }
         }
-        return false;
+        return isWork;
     }
 
 }

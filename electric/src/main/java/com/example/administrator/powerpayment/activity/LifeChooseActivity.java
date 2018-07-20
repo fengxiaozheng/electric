@@ -2,10 +2,12 @@ package com.example.administrator.powerpayment.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Settings;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.view.MotionEvent;
-import android.widget.Toast;
 
 import com.example.administrator.powerpayment.activity.app.utils.StringUtils;
 import com.example.administrator.powerpayment.activity.app.utils.ToastUtil;
@@ -15,8 +17,6 @@ import com.example.administrator.powerpayment.activity.mvp.ui.widget.LoadingDail
 
 public class LifeChooseActivity extends BaseActivity {
 
-    private android.support.v4.app.FragmentManager mFragmentManager;
-    private android.support.v4.app.FragmentTransaction mFragmentTransaction;
     private LoadingDailog.Builder  builder;
     private LoadingDailog loadingView;
     private int up = 0;
@@ -27,14 +27,14 @@ public class LifeChooseActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payment);
-        mFragmentManager = getSupportFragmentManager();
-        mFragmentTransaction = mFragmentManager.beginTransaction();
+        FragmentManager mFragmentManager = getSupportFragmentManager();
+        FragmentTransaction mFragmentTransaction = mFragmentManager.beginTransaction();
         mFragmentTransaction.add(R.id.e_frame, PaymentMainFragment.newInstance(), "PaymentMainFragment");
         mFragmentTransaction.addToBackStack("PaymentMainFragment");
         mFragmentTransaction.commit();
         builder = new LoadingDailog.Builder(this);
         loadingView = builder.setMessage("请稍等...").create();
-    //    initText(getIntent());
+        initText(getIntent());
         initDate();
     }
 
@@ -101,11 +101,12 @@ public class LifeChooseActivity extends BaseActivity {
     }
 
     private void toHome() {
-        Intent intent = new Intent();
-        intent.setAction(Intent.ACTION_MAIN);// "android.intent.action.MAIN"
-        intent.addCategory(Intent.CATEGORY_HOME); //"android.intent.category.HOME"
-        startActivity(intent);
-        System.exit(0);
+//        Intent intent = new Intent();
+//        intent.setAction(Intent.ACTION_MAIN);// "android.intent.action.MAIN"
+//        intent.addCategory(Intent.CATEGORY_HOME); //"android.intent.category.HOME"
+//        startActivity(intent);
+//        System.exit(0);
+        startActivity(new Intent(Settings.ACTION_SETTINGS));
     }
 
     private void show() {

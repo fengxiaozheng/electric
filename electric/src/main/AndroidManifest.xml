@@ -29,6 +29,8 @@
         android:icon="@mipmap/arms_log"
         android:label="@string/app_name"
         android:supportsRtl="true"
+        android:largeHeap="true"
+        android:persistent="true"
         android:theme="@style/AppTheme">
         <activity android:name=".mvp.ui.fragment.UserActivity" />
 
@@ -58,7 +60,8 @@
             android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.HOME" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -74,17 +77,8 @@
         <activity android:name=".BaseActivity" />
 
         <service
-            android:name=".app.service.MyJobService"
-            android:enabled="true"
-            android:exported="true"></service>
-        <service
             android:name="com.using.services.DMCenterService"
             android:exported="false" />
-
-        <service
-            android:name="com.tencent.smtt.export.external.DexClassLoaderProviderService"
-            android:label="dexopt"
-            android:process=":dexopt" ></service>
 
     </application>
 

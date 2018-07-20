@@ -6,9 +6,15 @@
     tools:context=".mvp.ui.fragment.gov.GovWebFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <WebView
+    <com.example.administrator.powerpayment.activity.mvp.ui.widget.X5WebView
         android:id="@+id/gov_web"
         android:layout_marginTop="-120dp"
         android:layout_width="match_parent"
         android:layout_height="940dp"/>
+    <ProgressBar
+        android:id="@+id/web_bar"
+        android:layout_width="match_parent"
+        android:layout_height="8dp"
+        android:visibility="gone"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"/>
 </FrameLayout>

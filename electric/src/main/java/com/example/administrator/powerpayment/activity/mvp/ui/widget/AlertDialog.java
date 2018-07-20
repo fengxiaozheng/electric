@@ -86,4 +86,12 @@ public class AlertDialog extends Dialog {
             tv_content.setText("正在补写，请勿拔卡");
         });
     }
+
+    public void queryBalance(){
+        handler.post(() -> {
+            iv_content.setImageResource(R.mipmap.ka);
+            info.setVisibility(View.GONE);
+            tv_content.setText("查询中，请勿拔卡");
+        });
+    }
 }

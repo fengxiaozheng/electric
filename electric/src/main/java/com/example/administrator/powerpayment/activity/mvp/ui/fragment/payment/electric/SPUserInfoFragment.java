@@ -8,7 +8,6 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,7 +16,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.administrator.powerpayment.activity.R;
 import com.example.administrator.powerpayment.activity.app.utils.KeyboardUtils;
@@ -210,7 +208,7 @@ public class SPUserInfoFragment extends PaymentFragment implements
                     amountBuilder.append("8");
                     break;
                 case 8:
-                    telBuilder.append("9");
+                    amountBuilder.append("9");
                     break;
                 case 9:
                     amountBuilder.append("0");
@@ -247,11 +245,17 @@ public class SPUserInfoFragment extends PaymentFragment implements
             }
         }
         String amount = mAmount.getText().toString();
-        if (TextUtils.isEmpty(amount) ||
-                Double.parseDouble(amount) == 0) {
+        Pattern pattern=Pattern.compile("^(([1-9]{1}\\d*)|([0]{1}))(\\.(\\d){0,2})?$"); // 判断小数点后2位的数字的正则表达式
+        Matcher match=pattern.matcher(amount);
+        if (!match.matches()) {
 //            Toast.makeText(activity, "请输入正确的金额", Toast.LENGTH_SHORT).show();
             ToastUtil.show(activity,"请输入正确的金额");
             return;
+        }else {
+            if (Double.parseDouble(amount) == 0) {
+                ToastUtil.show(activity,"请输入正确的金额");
+                return;
+            }
         }
         ElectricPayInfo info = new ElectricPayInfo();
         info.setFlag(mParam.getFlag());
@@ -288,6 +292,10 @@ public class SPUserInfoFragment extends PaymentFragment implements
     @Override
     public void onDestroy() {
         fixInputMethodManagerLeak(activity);
+        if (mTelphone != null) {
+            mTelphone.removeTextChangedListener(watch);
+            mAmount.removeTextChangedListener(watch);
+        }
         super.onDestroy();
     }
 }

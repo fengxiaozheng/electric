@@ -2,8 +2,10 @@ package com.example.administrator.powerpayment.activity.mvp.presenter.payment;
 
 import com.example.administrator.powerpayment.activity.R;
 import com.example.administrator.powerpayment.activity.mvp.contract.payment.SmartPowerContract;
+import com.example.administrator.powerpayment.activity.mvp.model.entity.paymentEntity.CardBalanceRes;
 import com.example.administrator.powerpayment.activity.mvp.model.entity.paymentEntity.QuerySmartCardReq;
 import com.example.administrator.powerpayment.activity.mvp.model.entity.paymentEntity.QuerySmartCardRes;
+import com.example.administrator.powerpayment.activity.mvp.model.entity.paymentEntity.UserNoReq;
 import com.jess.arms.di.scope.FragmentScope;
 import com.jess.arms.mvp.BasePresenter;
 import com.jess.arms.utils.RxLifecycleUtils;
@@ -60,6 +62,36 @@ public class SmartPowerPresenter extends BasePresenter<SmartPowerContract.Model,
                                 mRootView.success(querySmartCardRes);
                             } else {
                                 mRootView.fail(querySmartCardRes.getRet_msg());
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        super.onError(t);
+                        if (mRootView != null) {
+                            mRootView.fail(mRootView.getActivity().getString(R.string.server_error));
+                        }
+                    }
+                });
+    }
+
+    public void getBalance(String userNo) {
+        UserNoReq req = new UserNoReq();
+        req.setGrid_user_code(userNo);
+        mModel.queryCardBalance(req)
+                .subscribeOn(Schedulers.io())
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .compose(RxLifecycleUtils.bindToLifecycle(mRootView))
+                .subscribe(new ErrorHandleSubscriber<CardBalanceRes>(mErrorHandler) {
+                    @Override
+                    public void onNext(CardBalanceRes cardBalanceRes) {
+                        if (mRootView != null) {
+                            if (cardBalanceRes.isSuccess()) {
+                                mRootView.queryBalanceSuccess(cardBalanceRes);
+                            } else {
+                                mRootView.queryBalanceFail("未采集");
                             }
                         }
                     }

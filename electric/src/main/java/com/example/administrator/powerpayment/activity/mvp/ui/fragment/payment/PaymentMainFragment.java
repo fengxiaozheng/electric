@@ -9,8 +9,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
+import com.example.administrator.powerpayment.activity.BuildConfig;
 import com.example.administrator.powerpayment.activity.R;
+import com.example.administrator.powerpayment.activity.app.utils.StringUtils;
 import com.example.administrator.powerpayment.activity.app.utils.ToastUtil;
 import com.example.administrator.powerpayment.activity.di.component.payment.DaggerPaymentMainComponent;
 import com.example.administrator.powerpayment.activity.di.module.payment.PaymentMainModule;
@@ -39,6 +42,8 @@ public class PaymentMainFragment extends BasePaymentFragment<PaymentMainPresente
     RecyclerView mRecyclerView;
     @BindView(R.id.loadingView)
     LoadingView mLoadingView;
+    @BindView(R.id.seriNo)
+    TextView mTextView;
     @Inject
     RecyclerView.LayoutManager mLayoutManager;
     @Inject
@@ -77,6 +82,7 @@ public class PaymentMainFragment extends BasePaymentFragment<PaymentMainPresente
             mPresenter.initStateUI(mRecyclerView);
             mPresenter.getPaymentMainItem();
         }
+        mTextView.setText(String.format("%s    %s", StringUtils.getUuid(activity), BuildConfig.VERSION_NAME));
     }
 
     @Override
@@ -96,7 +102,7 @@ public class PaymentMainFragment extends BasePaymentFragment<PaymentMainPresente
         } else {
             Fragment cls;
             cls = Fragment.instantiate(activity, info.getUrl());
-            start(this, cls, info.getUrl());
+            start(this, cls, cls.getClass().getSimpleName());
         }
     }
 

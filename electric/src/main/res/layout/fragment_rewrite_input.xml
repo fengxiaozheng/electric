@@ -36,7 +36,7 @@
                 android:textSize="@dimen/electric_item_text"
                 android:inputType="numberPassword"
                 android:textColor="@color/input_color"
-                android:hint="@string/str_034"/>
+                android:hint="@string/str_074"/>
         </LinearLayout>
         <Button
             android:id="@+id/btn_next"

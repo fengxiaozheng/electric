@@ -16,7 +16,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.administrator.powerpayment.activity.R;
 import com.example.administrator.powerpayment.activity.app.utils.ToastUtil;
@@ -302,6 +301,9 @@ public class CPCheckUserFragment extends BasePaymentFragment<CPCheckPresenter>
     @Override
     public void onDestroy() {
         fixInputMethodManagerLeak(activity);
+        if (mEditText != null) {
+            mEditText.removeTextChangedListener(watch);
+        }
         super.onDestroy();
     }
 

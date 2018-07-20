@@ -85,7 +85,7 @@ public class StringUtils {
 
             prefs.edit().putString(PREFS_DEVICE_ID, uuid).commit();
         }
-
+        //return "SN-HA7PLV9DT865BA85";
         return uuid != null ? uuid.toUpperCase() : null;
     }
 

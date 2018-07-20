@@ -10,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 
 import com.example.administrator.powerpayment.activity.R;
@@ -19,6 +20,7 @@ import com.example.administrator.powerpayment.activity.app.utils.StringUtils;
 import com.example.administrator.powerpayment.activity.di.component.payment.DaggerSmartPowerComponent;
 import com.example.administrator.powerpayment.activity.di.module.payment.SmartPowerModule;
 import com.example.administrator.powerpayment.activity.mvp.contract.payment.SmartPowerContract;
+import com.example.administrator.powerpayment.activity.mvp.model.entity.paymentEntity.CardBalanceRes;
 import com.example.administrator.powerpayment.activity.mvp.model.entity.paymentEntity.QuerySmartCardRes;
 import com.example.administrator.powerpayment.activity.mvp.model.entity.paymentEntity.SmartUserInfo;
 import com.example.administrator.powerpayment.activity.mvp.presenter.payment.SmartPowerPresenter;
@@ -61,6 +63,7 @@ public class SmartPowerFragment extends BasePaymentFragment<SmartPowerPresenter>
     byte[] bytes;
     private boolean isopen = false;
     private MyHandler mMainHandler;
+    private int f;
 
     public SmartPowerFragment() {
         // Required empty public constructor
@@ -96,18 +99,7 @@ public class SmartPowerFragment extends BasePaymentFragment<SmartPowerPresenter>
 
     @OnClick(R.id.s_hasCard)
     void hasCard() {
-        if (isFirst) {
-            com.halio.Rfid.powerOff();
-            com.halio.Rfid.closeCommPort();
-            com.halio.Rfid.powerOn();
-            com.halio.Rfid.openCommPort();
-            Psamcmd.ResetGPIO(55);
-            Psamcmd.ResetGPIO(94);
-        }
-        if (mMainHandler == null) {
-            mMainHandler = new MyHandler(this);
-        }
-        isFirst = false;
+        f = 0;
         querySmartCardInfo();
     }
 
@@ -119,14 +111,14 @@ public class SmartPowerFragment extends BasePaymentFragment<SmartPowerPresenter>
 
     @OnClick(R.id.s_check)
     void check() {
-        start(SmartPowerFragment.this, CPCheckUserFragment.newInstance(2),
-                "CPCheckUserFragment");
+        f = 2;
+        querySmartCardInfo();
     }
 
     @OnClick(R.id.s_query_balance)
     void query() {
-        start(SmartPowerFragment.this, CPCheckUserFragment.newInstance(4),
-                "CPCheckUserFragment");
+        f = 4;
+        querySmartCardInfo();
     }
 
     @Override
@@ -149,14 +141,55 @@ public class SmartPowerFragment extends BasePaymentFragment<SmartPowerPresenter>
     }
 
     @Override
+    public void queryBalanceSuccess(CardBalanceRes res) {
+        dialog.dismiss();
+        start(this,
+                CPBalanceFragment.newInstance(res.getBalance(), true), "CPBalanceFragment");
+    }
+
+    @Override
+    public void queryBalanceFail(String msg) {
+        dialog.dismiss();
+        start(this,
+                CPBalanceFragment.newInstance(msg, true), "CPBalanceFragment");
+    }
+
+    @Override
     public void showMessage(@NonNull String message) {
 
     }
 
+
     private void querySmartCardInfo() {
+        //f：2--购电记录；4:--余额查询
+        if (isFirst) {
+            com.halio.Rfid.powerOff();
+            com.halio.Rfid.closeCommPort();
+            com.halio.Rfid.powerOn();
+            com.halio.Rfid.openCommPort();
+            Psamcmd.ResetGPIO(55);
+            Psamcmd.ResetGPIO(94);
+        }
+        if (mMainHandler == null) {
+            mMainHandler = new MyHandler(this);
+        }
+        isFirst = false;
         dialog.findViewById(R.id.iv_close).setVisibility(android.view.View.VISIBLE);
         dialog.shown();
         isopen = true;
+        if (2 == f || 4 == f) {
+            Button button = dialog.findViewById(R.id.no_card);
+            button.setVisibility(View.VISIBLE);
+            button.setOnClickListener(v ->  {
+                    button.setVisibility(View.INVISIBLE);
+                    dialog.dismiss();
+                    start(SmartPowerFragment.this, CPCheckUserFragment.newInstance(f),
+                    "CPCheckUserFragment");});
+            dialog.findViewById(R.id.iv_close).setOnClickListener(v ->{
+                button.setVisibility(View.INVISIBLE);
+                dialog.dismiss();
+            });
+        }
         readCardMsg();
     }
 
@@ -174,17 +207,28 @@ public class SmartPowerFragment extends BasePaymentFragment<SmartPowerPresenter>
                 System.out.println("    " + Hxtostring(code_id));
                 System.out.println("    " + StringUtils.byteArrayToStr(code_id));
                 dialog.findViewById(R.id.iv_close).setVisibility(android.view.View.INVISIBLE);
+                dialog.findViewById(R.id.no_card).setVisibility(android.view.View.INVISIBLE);
                 dialog.updateInfo();
                 break;
             case 2:
                 System.out.println("    卡片数据读取--成功。usercode=" + userCode);
                 System.out.println("    " + Hxtostring(idata));
-                if (mPresenter != null) {
-                    mPresenter.getCardInfo(StringUtils.byteArrayToStr(file1),
-                            StringUtils.byteArrayToStr(file2),
-                            StringUtils.byteArrayToStr(file3),
-                            StringUtils.byteArrayToStr(file4),
-                            StringUtils.byteArrayToStr(file5));
+                if (2 == f) {
+                    dialog.dismiss();
+                    start(this,
+                            CPRecordFragment.newInstance(false, userCode), "CPRecordFragment");
+                }else if (4 == f) {
+                    if (mPresenter != null) {
+                        mPresenter.getBalance(userCode);
+                    }
+                } else {
+                    if (mPresenter != null) {
+                        mPresenter.getCardInfo(StringUtils.byteArrayToStr(file1),
+                                StringUtils.byteArrayToStr(file2),
+                                StringUtils.byteArrayToStr(file3),
+                                StringUtils.byteArrayToStr(file4),
+                                StringUtils.byteArrayToStr(file5));
+                    }
                 }
                 break;
             case 3:
@@ -192,6 +236,7 @@ public class SmartPowerFragment extends BasePaymentFragment<SmartPowerPresenter>
                 System.out.println("    " + Hxtostring(idata));
                 if (dialog != null) {
                     dialog.findViewById(R.id.iv_close).setVisibility(android.view.View.VISIBLE);
+                    dialog.findViewById(R.id.no_card).setVisibility(android.view.View.INVISIBLE);
                     dialog.fail();
                 }
                 break;
@@ -300,6 +345,7 @@ public class SmartPowerFragment extends BasePaymentFragment<SmartPowerPresenter>
     public void onDestroy() {
         isopen = false;
         if (dialog != null) {
+            dialog.findViewById(R.id.no_card).setVisibility(View.INVISIBLE);
             if (dialog.isShowing()) {
                 dialog.dismiss();
             }

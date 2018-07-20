@@ -25,7 +25,7 @@ package com.example.administrator.powerpayment.activity.mvp.model.api;
  * ================================================
  */
 public interface Api {
-    //String ELECTRIC_BASE_URL = "http://182.140.224.136:7080/";测试
+  //  String ELECTRIC_BASE_URL = "http://182.140.224.136:7080/";//测试
   //  String ELECTRIC_BASE_URL = "http://118.122.120.25:10000/";
     String ELECTRIC_BASE_URL = "https://mpos.cdzft.cn:18099/";//生产
    // String ELECTRIC_ACCESS_TOKEN = "ZFTUSER_5BCAACF499D30D1E3B16AFA719797012";//测试

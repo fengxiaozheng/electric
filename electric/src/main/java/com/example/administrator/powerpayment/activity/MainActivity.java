@@ -4,7 +4,10 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
+
+import com.using.services.DMCenterService;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -13,21 +16,22 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-    //    starGApp3();
-    //    startMyService();
+        starGApp3();
+        startMyService();
     }
 
-//    private void startMyService() {
-//        try {
-//            Intent toService = new Intent(this, DMCenterService.class);
-////            toService = new Intent(this, DeviceManagementService.class);
-//            startService(toService);
-//            Log.e("mian", "开始DMCenterService");
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//
-//    }
+    private void startMyService() {
+        try {
+            Intent toService = new Intent(this, DMCenterService.class);
+//            toService = new Intent(this, DeviceManagementService.class);
+            startService(toService);
+            System.out.println("           启动service");
+            Log.e("mian", "开始DMCenterService");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
 
     private void starGApp3() {
         try {

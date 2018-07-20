@@ -6,7 +6,6 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,7 +13,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.administrator.powerpayment.activity.R;
 import com.example.administrator.powerpayment.activity.app.utils.KeyboardUtils;
@@ -26,6 +24,8 @@ import com.example.administrator.powerpayment.activity.mvp.ui.adapter.OnItemClic
 import com.example.administrator.powerpayment.activity.mvp.ui.fragment.payment.PaymentFragment;
 
 import java.text.DecimalFormat;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class CPUserInfoFragment extends PaymentFragment implements
@@ -183,18 +183,24 @@ public class CPUserInfoFragment extends PaymentFragment implements
     public void onClick(View v) {
         if (v.getId() == R.id.cp_next) {
             String amount = mEditText.getText().toString();
-            if (TextUtils.isEmpty(amount)) {
+            Pattern pattern = Pattern.compile("^(([1-9]{1}\\d*)|([0]{1}))(\\.(\\d){0,2})?$"); // 判断小数点后2位的数字的正则表达式
+            Matcher match = pattern.matcher(amount);
+            if (!match.matches()) {
 //                Toast.makeText(activity, "请输入金额", Toast.LENGTH_SHORT).show();
-                  ToastUtil.show(activity,"请输入金额");
+                ToastUtil.show(activity, "请输入正确的金额");
             } else {
-                ElectricPayInfo info = new ElectricPayInfo();
-                info.setFlag(0);
-                info.setUser_no(mParam.getGrid_user_code());
-                info.setUser_name(mParam.getGrid_user_name());
-                info.setUser_address(mParam.getAddress());
-                info.setPay_amount(format.format(Double.parseDouble(amount)));
-                start(CPUserInfoFragment.this,
-                        StartPayFragment.newInstance(info), "StartPayFragment");
+                if (Double.parseDouble(amount) == 0) {
+                    ToastUtil.show(activity, "请输入正确的金额");
+                } else {
+                    ElectricPayInfo info = new ElectricPayInfo();
+                    info.setFlag(0);
+                    info.setUser_no(mParam.getGrid_user_code());
+                    info.setUser_name(mParam.getGrid_user_name());
+                    info.setUser_address(mParam.getAddress());
+                    info.setPay_amount(format.format(Double.parseDouble(amount)));
+                    start(CPUserInfoFragment.this,
+                            StartPayFragment.newInstance(info), "StartPayFragment");
+                }
             }
         }
     }
@@ -202,6 +208,9 @@ public class CPUserInfoFragment extends PaymentFragment implements
     @Override
     public void onDestroy() {
         fixInputMethodManagerLeak(activity);
+        if (mEditText != null) {
+            mEditText.removeTextChangedListener(watch);
+        }
         super.onDestroy();
     }
 }

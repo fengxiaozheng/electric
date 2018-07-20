@@ -13,12 +13,11 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.amap.api.maps.AMap;
 import com.amap.api.maps.CameraUpdateFactory;
-import com.amap.api.maps.MapView;
 import com.amap.api.maps.MapsInitializer;
+import com.amap.api.maps.TextureMapView;
 import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.Marker;
 import com.example.administrator.powerpayment.activity.R;
@@ -29,7 +28,10 @@ import com.example.administrator.powerpayment.activity.mvp.contract.gov.GovLocat
 import com.example.administrator.powerpayment.activity.mvp.model.entity.govEntity.GovLocationInfo;
 import com.example.administrator.powerpayment.activity.mvp.model.entity.govEntity.GovLocationRes;
 import com.example.administrator.powerpayment.activity.mvp.presenter.gov.GovLocationPresenter;
+import com.example.administrator.powerpayment.activity.mvp.ui.widget.ImageLoadingDrawable;
 import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.drawee.generic.GenericDraweeHierarchy;
+import com.facebook.drawee.generic.GenericDraweeHierarchyBuilder;
 import com.facebook.drawee.interfaces.DraweeController;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.jess.arms.di.component.AppComponent;
@@ -42,7 +44,7 @@ import java.util.List;
 public class GovLocationFragment extends BaseGovFragment<GovLocationPresenter>
     implements GovLocationContract.View, AMap.OnMarkerClickListener{
 
-    private MapView mMapView;
+    private TextureMapView mMapView;
     private AMap mAMap;
     private List<GovLocationInfo> infos;
     private AlertDialog dialog;
@@ -172,6 +174,12 @@ public class GovLocationFragment extends BaseGovFragment<GovLocationPresenter>
         mTime.setText(String.format("上班时间：%s~%s", info.getWorkStart(), info.getWorkEnd()));
         mTel.setText(String.format("电话：%s", info.getTel()));
         Uri uri = Uri.parse(info.getUrl()+info.getImageUrl());
+        GenericDraweeHierarchyBuilder builder1 =
+                new GenericDraweeHierarchyBuilder(getResources());
+        GenericDraweeHierarchy hierarchy = builder1
+                .setProgressBarImage(new ImageLoadingDrawable())
+                .build();
+        mImg.setHierarchy(hierarchy);
         DraweeController controller = Fresco.newDraweeControllerBuilder()
                 .setUri(uri)
                 .setAutoPlayAnimations(true)

@@ -1,6 +1,5 @@
 package com.example.administrator.powerpayment.activity.mvp.ui.fragment.gov;
 
-import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -10,12 +9,12 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.webkit.WebView;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.administrator.powerpayment.activity.GovernmentActivity;
 import com.example.administrator.powerpayment.activity.R;
+import com.example.administrator.powerpayment.activity.mvp.ui.widget.X5WebView;
 
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;
@@ -30,9 +29,9 @@ public class GovFragment extends Fragment {
     private GovCountDownTimer timer;
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        this.activity = (GovernmentActivity) activity;
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        this.activity = (GovernmentActivity) context;
     }
 
     @Override
@@ -102,7 +101,6 @@ public class GovFragment extends Fragment {
         mFragmentTransaction.add(R.id.e_frame, next, tag);
         mFragmentTransaction.addToBackStack(tag);
         mFragmentTransaction.commit();
-
     }
 
     protected void back() {
@@ -111,7 +109,7 @@ public class GovFragment extends Fragment {
         if (getTag() != null) {
             if (getTag().equals("GovWebFragment")
                     && getView().findViewById(R.id.gov_web) != null) {
-                WebView webView = getView().findViewById(R.id.gov_web);
+                X5WebView webView = getView().findViewById(R.id.gov_web);
                 System.out.println("      "+ webView.getUrl());
                 if (webView.getUrl().contains("government/info#/detail")) {
                     webView.goBack();
@@ -129,15 +127,15 @@ public class GovFragment extends Fragment {
 
     private void back2() {
         if (mFragmentManager.getBackStackEntryCount() <= 1) {
-            activity.finish();
-        //    backHome();
+        //    activity.finish();
+            backHome();
         } else {
             mFragmentManager.popBackStack();
             //    getCurrent.onStart();
         }
     }
 
-    private void backHome() {
+    protected void backHome() {
     //    startActivity(new Intent(activity, MainActivity.class));
         try {
             Intent intent = new Intent();

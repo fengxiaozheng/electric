@@ -1,6 +1,5 @@
 package com.example.administrator.powerpayment.activity.mvp.ui.fragment.payment;
 
-import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -11,12 +10,12 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.webkit.WebView;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.administrator.powerpayment.activity.LifeChooseActivity;
 import com.example.administrator.powerpayment.activity.R;
+import com.example.administrator.powerpayment.activity.mvp.ui.widget.X5WebView;
 
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;
@@ -36,9 +35,9 @@ public class PaymentFragment extends Fragment {
     private android.support.v4.app.FragmentTransaction mFragmentTransaction;
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        this.activity = (LifeChooseActivity) activity;
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        this.activity = (LifeChooseActivity) context;
     }
 
     @Override
@@ -71,30 +70,6 @@ public class PaymentFragment extends Fragment {
             System.out.println("          time空了");
 
             timer = new MyCountDownTimer(this, 300 * 1000, 1000);
-
-//            timer = new CountDownTimer(300 * 1000, 1000) {
-//                @Override
-//                public void onTick(long millisUntilFinished) {
-//                    if (getView() != null) {
-//                        if (getView().findViewById(R.id.bottom_time) != null) {
-//                            if (millisUntilFinished / 1000 >= 1) {
-//                                ((TextView) getView().findViewById(R.id.bottom_time)).setText(String.valueOf(millisUntilFinished / 1000));
-//                            }
-//                        }
-//                    }
-//                }
-//
-//                @Override
-//                public void onFinish() {
-//                    if (getActivity() instanceof LifeChooseActivity) {
-//                        if (Objects.equals(getTag(), "PayResultFragment")) {
-//                            backHome();
-//                        } else {
-//                            back();
-//                        }
-//                    }
-//                }
-//            };
         } else {
             System.out.println("          time没空");
         }
@@ -134,7 +109,6 @@ public class PaymentFragment extends Fragment {
         mFragmentTransaction.add(R.id.e_frame, next, tag);
         mFragmentTransaction.addToBackStack(tag);
         mFragmentTransaction.commit();
-
     }
 
     protected void back() {
@@ -142,7 +116,7 @@ public class PaymentFragment extends Fragment {
         if (getTag() != null) {
             if (getTag().equals("GovWebFragment")
                     && getView().findViewById(R.id.gov_web) != null) {
-                WebView webView = getView().findViewById(R.id.gov_web);
+                X5WebView webView = getView().findViewById(R.id.gov_web);
                 System.out.println("      "+ webView.getUrl());
                 if (webView.getUrl().contains("government/info#/detail")) {
                     webView.goBack();
@@ -160,8 +134,8 @@ public class PaymentFragment extends Fragment {
 
     private void back2() {
         if (mFragmentManager.getBackStackEntryCount() <= 1) {
-            activity.finish();
-        //        backHome();
+        //    activity.finish();
+                backHome();
         } else {
             if (Objects.equals(getTag(), "PayResultFragment")) {
                 payResult();
